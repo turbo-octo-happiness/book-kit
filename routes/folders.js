@@ -1,11 +1,11 @@
-var pg = require('pg');
-var express = require('express');
-var jsonParser = require('body-parser').json();
-var queries = require('../db/queries');
-var getBookmarks = require('../get_function');
-var delBookmarkFolder = require('../delete_function');
+const pg = require('pg');
+const express = require('express');
+const jsonParser = require('body-parser').json();
+const queries = require('../db/queries');
+const getBookmarks = require('../get_function');
+const delBookmarkFolder = require('../delete_function');
 
-var router = express.Router();
+const router = express.Router();
 
 /**
  * @description `GET /folder/bookmark/:folderName` endpoint; returns an array of
