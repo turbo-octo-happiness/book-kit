@@ -92,16 +92,20 @@ router.post('/', jsonParser, function(request, response) {
 });
 
 /**
- * @description `PUT /folder/:folderid` endpoint. Takes an object with the following
+ * @description `PUT /` endpoint. Takes an object with the following
  * fields: folderid and new foldername. If update in the database
  * is successful, then the edited folder is returned to the caller.
  */
 
-router.put('/:foldername', jsonParser, function (request, response) {
+router.put('/', jsonParser, function (request, response) {
  const folderid = request.params.folderid;
  if (!request.body.foldername) {
    response.status(422).json({
      message: 'Missing field: foldername'
+   });
+ } if else (!request.body.folderid) {
+   response.status(422).json({
+     message: 'Missing field: folderid'
    });
  } else {
    var client = new pg.Client(queries.CONNECT_URL);
