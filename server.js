@@ -1,19 +1,12 @@
 /* ---- Dependencies ---- */
-var pg = require('pg');
-var express = require('express');
-var bodyParser = require('body-parser');
-var queries = require('./db/queries');
-var getBookmarks = require('./get_function');
-var delBookmarkFolder = require('./delete_function');
-
-var bookmarksRoutes = require('./routes/bookmarks');
-var foldersRoutes = require('./routes/folders');
-var tagsRoutes = require('./routes/tags');
+const express = require('express');
+const bookmarksRoutes = require('./routes/bookmarks');
+const foldersRoutes = require('./routes/folders');
+const tagsRoutes = require('./routes/tags');
 
 
 /* ---- Initial Setup ---- */
-var app = express();
-var jsonParser = bodyParser.json();
+const app = express();
 app.disable('etag');
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -31,6 +24,7 @@ app.use('/tags', tagsRoutes);
 
 /* ---- Set port and start server ---- */
 app.set('port', (process.env.PORT || 5000));
+
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
