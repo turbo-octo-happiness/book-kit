@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+
+const propTypes = {
+  tileArr: PropTypes.array,
+};
 
 function BookmarkTiles(props) {
   return (
@@ -9,5 +13,7 @@ function BookmarkTiles(props) {
     </section>
   );
 }
+
+BookmarkTiles.propTypes = propTypes;
 
 module.exports = BookmarkTiles;

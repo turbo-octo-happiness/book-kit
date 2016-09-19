@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Folder from './bookmark-form-folder';
+
+const propTypes = {
+  onAdd: PropTypes.func,
+  folders: PropTypes.array,
+};
 
 class BookmarkForm extends React.Component {
   constructor() {
@@ -24,7 +29,7 @@ class BookmarkForm extends React.Component {
   }
 
   render() {
-    let folderArr = [];
+    const folderArr = [];
     this.props.folders.forEach((folder, index) => {
       folderArr.push(<Folder key={index} folder={folder} />);
     });
@@ -132,5 +137,7 @@ class BookmarkForm extends React.Component {
     );
   }
 }
+
+BookmarkForm.propTypes = propTypes;
 
 module.exports = BookmarkForm;

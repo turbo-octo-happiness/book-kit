@@ -1,5 +1,16 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+
+const propTypes = {
+  onEdit: PropTypes.func,
+  bookmark: PropTypes.array,
+  show: PropTypes.bool,
+  delete: PropTypes.bool,
+  folderArr: PropTypes.array,
+  onShowEdit: PropTypes.func,
+  onShowDelete: PropTypes.func,
+  onDelete: PropTypes.func,
+};
 
 class BookmarkView extends React.Component {
   constructor() {
@@ -19,10 +30,10 @@ class BookmarkView extends React.Component {
   }
 
   render() {
-    let textStyle = this.props.show ? { display: 'none' } : {};
-    let inputStyle = this.props.show ? {} : { display: 'none' };
-    let textDeleteStyle = this.props.delete ? { display: 'none' } : {};
-    let deleteStyle = this.props.delete ? {} : { display: 'none' };
+    const textStyle = this.props.show ? { display: 'none' } : {};
+    const inputStyle = this.props.show ? {} : { display: 'none' };
+    const textDeleteStyle = this.props.delete ? { display: 'none' } : {};
+    const deleteStyle = this.props.delete ? {} : { display: 'none' };
 
     return (
       <section className="bookmark-section">
@@ -125,5 +136,7 @@ class BookmarkView extends React.Component {
     );
   }
 }
+
+BookmarkView.propTypes = propTypes;
 
 module.exports = BookmarkView;

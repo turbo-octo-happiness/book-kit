@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
 import NavFolder from './nav-folder';
+
+const propTypes = {
+  dispatch: PropTypes.func,
+  folder: PropTypes.string,
+};
 
 class FolderContainer extends React.Component {
   constructor() {
@@ -44,6 +49,8 @@ class FolderContainer extends React.Component {
     );
   }
 }
+
+FolderContainer.propTypes = propTypes;
 
 const Container = connect()(FolderContainer);
 

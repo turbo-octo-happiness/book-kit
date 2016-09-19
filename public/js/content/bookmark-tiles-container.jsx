@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import BookmarkTiles from './bookmark-tiles';
 import Tile from './bookmark-tiles-child';
+
+const propTypes = {
+  params: PropTypes.object,
+  bookmarks: PropTypes.array,
+  search: PropTypes.string,
+};
 
 function BookmarkTilesContainer(props) {
   let tileArr = [];
@@ -85,6 +91,8 @@ const mapStateToProps = state => {
     search: state.search,
   };
 };
+
+BookmarkTilesContainer.propTypes = propTypes;
 
 const Container = connect(mapStateToProps)(BookmarkTilesContainer);
 

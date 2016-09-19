@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
+const propTypes = {
+  screenshot: PropTypes.string,
+  title: PropTypes.string,
+  id: PropTypes.string,
+};
+
 function Tile(props) {
-  let style = {
+  const style = {
     backgroundImage: `url(${props.screenshot})`,
   };
 
@@ -19,5 +25,7 @@ function Tile(props) {
     </Link>
   );
 }
+
+Tile.propTypes = propTypes;
 
 module.exports = Tile;

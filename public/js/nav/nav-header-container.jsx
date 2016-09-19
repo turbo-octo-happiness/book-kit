@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './nav-header';
 import actions from '../redux/actions';
+
+const propTypes = {
+  dispatch: PropTypes.func,
+  folders: PropTypes.array,
+};
+
 
 class NavbarContainer extends React.Component {
   constructor() {
@@ -29,6 +35,8 @@ class NavbarContainer extends React.Component {
     );
   }
 }
+
+NavbarContainer.propTypes = propTypes;
 
 const mapStateToProps = (state) => {
   return {
