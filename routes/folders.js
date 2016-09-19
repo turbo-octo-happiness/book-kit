@@ -92,7 +92,7 @@ router.post('/', jsonParser, function(request, response) {
 });
 
 /**
- * @description `PUT /` endpoint. Takes an object with the following
+ * @description `PUT /folders` endpoint. Takes an object with the following
  * fields: folderid and new foldername. If update in the database
  * is successful, then the edited folder is returned to the caller.
  */
