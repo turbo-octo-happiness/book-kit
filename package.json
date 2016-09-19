@@ -1,0 +1,73 @@
+{
+  "name": "bookmarks-fullstack-backend",
+  "version": "1.0.0",
+  "description": "API for the Bookmark-fullstack project.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "heroku-postbuild": "npm run build",
+    "test": "mocha --compilers js:babel-register test/**/*.js*",
+    "mkdir": "mkdir -p public/build",
+    "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:img && npm run build:js",
+    "watch": "npm run watch:html & npm run watch:css & npm run watch:img & npm run watch:js",
+    "clean": "rm -rf public/build",
+    "build:html": "npm run clean:html && cp public/index.html public/build/",
+    "watch:html": "npm run build:html && chokidar public/index.html -c 'npm run build:html'",
+    "clean:html": "rm -f public/build/index.html",
+    "build:css": "npm run clean:css && lessc --source-map public/css/index.less public/build/$npm_package_name.$npm_package_version.css && cp public/css/reset.css public/build/",
+    "watch:css": "npm run build:css && chokidar 'public/css/**/*.less' -c 'npm run build:css'",
+    "clean:css": "rm -f public/build/style.css public/build/reset.css",
+    "build:js": "npm run clean:js && webpack",
+    "watch:js": "npm run build:js && webpack --watch",
+    "clean:js": "rm -f public/build/$npm_package_name.$npm_package_version.js",
+    "build:img": "npm run clean:img && cp -r public/img/ public/build/",
+    "clean:img": "rm -rf public/build/img/",
+    "watch:img": "npm run build:img && webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LifelongLearner13/bookmarks-fullstack-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LifelongLearner13/bookmarks-fullstack-backend/issues"
+  },
+  "homepage": "https://github.com/LifelongLearner13/bookmarks-fullstack-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "pg": "^6.0.3",
+    "babel-core": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-register": "^6.14.0",
+    "chai": "^3.5.0",
+    "chokidar-cli": "^1.2.0",
+    "eslint": "^3.3.1",
+    "eslint-config-airbnb": "^10.0.1",
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-jsx-a11y": "^2.1.0",
+    "eslint-plugin-react": "^6.1.2",
+    "less": "^2.7.1",
+    "mocha": "^3.0.2",
+    "react-addons-test-utils": "^15.3.1",
+    "webpack": "^1.13.1"
+  },
+  "devDependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.6.1",
+    "react-router-form": "^1.0.2",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.3.0",
+    "eslint-plugin-react": "^6.0.0",
+    "mocha": "^3.0.2"
+  }
+}
