@@ -1,10 +1,7 @@
-var path = require('path');
+const path = require('path');
+const packageData = require('./package.json');
 
-var webpack = require('webpack');
-
-var packageData = require('./package.json');
-
-var filename = [packageData.name, packageData.version, 'js'];
+const filename = [packageData.name, packageData.version, 'js'];
 
 module.exports = {
   entry: path.resolve(__dirname, 'public/js/index.jsx'),
@@ -19,11 +16,12 @@ module.exports = {
       exclude: /(node_modules)/,
       loader: 'babel',
       query: {
-        presets: ['es2015', 'react']
-      }
-    }]
+        presets: ['es2015', 'react'],
+        plugins: ['transform-object-rest-spread'],
+      },
+    }],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
   },
 };
