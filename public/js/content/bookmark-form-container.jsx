@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import BookmarkForm from './bookmark-form';
 import actions from '../redux/actions';
+
+const propTypes = {
+  folders: PropTypes.object,
+  dispatch: PropTypes.func,
+};
 
 class BookmarkFormContainer extends React.Component {
   constructor() {
@@ -29,6 +34,8 @@ const mapStateToProps = state => {
     folders: state.folders,
   };
 };
+
+BookmarkFormContainer.propTypes = propTypes;
 
 const Container = connect(mapStateToProps)(BookmarkFormContainer);
 
