@@ -98,12 +98,11 @@ router.post('/', jsonParser, function(request, response) {
  */
 
 router.put('/', jsonParser, function (request, response) {
- const folderid = request.params.folderid;
  if (!request.body.foldername) {
    response.status(422).json({
      message: 'Missing field: foldername'
    });
- } if else (!request.body.folderid) {
+ } else if (!request.body.folderid) {
    response.status(422).json({
      message: 'Missing field: folderid'
    });
@@ -114,12 +113,13 @@ router.put('/', jsonParser, function (request, response) {
        response.sendStatus('500');
      }
      // Paramitarize query to protect against SQL injection
-     client.query(queries.UPDATE_FOLDER, [request.body.foldername, folderid],
-       function(err, result) {
+     client.query(queries.UPDATE_FOLDER, [request.body.foldername, request.body.folderid],
+       function (err, result) {
          if (err) {
            console.error(err);
            response.sendStatus('500');
          }
+         console.log(result.rows)
          response.json(result.rows[0]);
 
          // disconnect the client

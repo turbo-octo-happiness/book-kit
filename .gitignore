@@ -1,4 +1,11 @@
+# OS Files
 .DS_Store
-build
+
+# NPM installs
 node_modules
-build/*
+
+# Webpack builds
+build
+
+# Log Files
+*.log

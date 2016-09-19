@@ -4,7 +4,8 @@ var CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/bookmar
 /* ---- Postgres Queries Used by the API ---- */
 var SELECT_TAG = 'SELECT tag FROM tag;';
 var SELECT_FOLDER = 'SELECT folderid, foldername FROM folder;';
-var SELECT_BOOKMARK = 'SELECT bookmarkid, url, title, description, foldername, screenshot FROM bookmark NATURAL JOIN folder;';
+var SELECT_BOOKMARK = `SELECT bookmarkid, url, title, description, foldername, folderid, screenshot
+FROM bookmark NATURAL JOIN folder;`;
 var SELECT_BOOKMARK_BY_FOLDER = function(folder) {
   return `SELECT bookmarkid, url, title, description, foldername, screenshot
           FROM bookmark NATURAL JOIN folder
