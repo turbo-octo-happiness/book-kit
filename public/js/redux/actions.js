@@ -77,6 +77,8 @@ function addBookmark(newBookmark) {
       body: JSON.stringify(newBookmark),
     };
 
+    console.log(newBookmark);
+
     const url = 'http://localhost:5000/bookmarks';
     fetch(url, init).then((res) => {
       if (res.status < 200 || res.status >= 300) {
