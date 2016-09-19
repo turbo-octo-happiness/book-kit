@@ -169,7 +169,7 @@ POST /bookmarks
   "tag": "Redux"
 }
 
-Status: 200 Updated
+Status: 200 Success
 {
   "bookmarkid": 6,
   "url": "http://redux.js.org/docs/basics/Actions.html",
@@ -198,7 +198,7 @@ POST /bookmark
   "folderid": 3
 }
 
-Status: 200 Updated
+Status: 200 Success
 {
   "foldername": "Coding",
   "folderid": 3

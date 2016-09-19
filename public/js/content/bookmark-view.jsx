@@ -25,7 +25,7 @@ class BookmarkView extends React.Component {
       description: this.description.value,
       folderid: this.folder.value,
       screenshot: this.screenshot.value,
-      bookmarkid: this.props.bookmark[0].bookmarkid,
+      bookmarkid: this.props.bookmark.bookmarkid,
     });
   }
 
@@ -38,19 +38,19 @@ class BookmarkView extends React.Component {
     return (
       <section className="bookmark-section">
         <div className="col-md-6" style={textStyle}>
-          <h2>{this.props.bookmark[0].title}</h2>
+          <h2>{this.props.bookmark.title}</h2>
           <h4>
-            <a href={this.props.bookmark[0].url}>
-              {this.props.bookmark[0].url}
+            <a href={this.props.bookmark.url}>
+              {this.props.bookmark.url}
             </a>
           </h4>
-          <p>{this.props.bookmark[0].description}</p>
+          <p>{this.props.bookmark.description}</p>
           <h4>Folder:</h4>
-          <p>{this.props.bookmark[0].foldername}</p>
+          <p>{this.props.bookmark.foldername}</p>
         </div>
         <div className="col-md-6" style={textStyle}>
           <img
-            src={this.props.bookmark[0].screenshot}
+            src={this.props.bookmark.screenshot}
             alt="placeholder"
             className="img-rounded"
             width="400"
@@ -63,7 +63,7 @@ class BookmarkView extends React.Component {
               type="text"
               className="form-control"
               ref={title => { this.title = title; }}
-              defaultValue={this.props.bookmark[0].title}
+              defaultValue={this.props.bookmark.title}
               placeholder="Title *" required
             />
             <h4>URL *</h4>
@@ -71,7 +71,7 @@ class BookmarkView extends React.Component {
               type="text"
               className="form-control"
               ref={url => { this.url = url; }}
-              defaultValue={this.props.bookmark[0].url}
+              defaultValue={this.props.bookmark.url}
               placeholder="URL *"
               required
             />
@@ -80,7 +80,7 @@ class BookmarkView extends React.Component {
               type="text"
               className="form-control"
               ref={description => { this.description = description; }}
-              defaultValue={this.props.bookmark[0].description}
+              defaultValue={this.props.bookmark.description}
               placeholder="Description"
             />
             <h4>Screenshot URL</h4>
@@ -88,7 +88,7 @@ class BookmarkView extends React.Component {
               type="text"
               className="form-control"
               ref={screenshot => { this.screenshot = screenshot; }}
-              defaultValue={this.props.bookmark[0].screenshot}
+              defaultValue={this.props.bookmark.screenshot}
               placeholder="Screenshot URL"
             />
             <h4>Folder *</h4>
@@ -124,7 +124,7 @@ class BookmarkView extends React.Component {
           <Link to={'/'} style={deleteStyle}>
             <button
               className="btn btn-default"
-              onClick={() => { this.props.onDelete(this.props.bookmark[0].bookmarkid); }}
+              onClick={() => { this.props.onDelete(this.props.bookmark.bookmarkid); }}
             >Confirm
             </button>
           </Link>

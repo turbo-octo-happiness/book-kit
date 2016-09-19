@@ -69,7 +69,7 @@ class BookmarkViewContainer extends React.Component {
         onDelete={this.onDelete}
         delete={this.state.delete}
         show={this.state.show}
-        bookmark={bookmark}
+        bookmark={bookmark[0]}
         folderArr={folderArr}
       />
     );
