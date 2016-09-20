@@ -101,15 +101,13 @@ Searching
 
 ## version 1.1 (MVP By Friday 9/26)
 
-- [] Landing page
-
 - [] User accounts
 
   - separate set of data per account
   - authentication
   - sharing
 
-- [] Combine repos
+- [x] Combine repos
 
 ## Possible additional features
 
@@ -123,9 +121,9 @@ Searching
 
   - Pull info from page
   - example: <http://bookit.thinkful.example/create?url=http%2a%2a%2fetc.etc.etc%2f&title=Example+Bookmark>
-  - Seperate window or popup window
-  -
+  - Seperate window or popup window -
 
 - Update design to match Thinkful's style guide.
+
 - Use embed links from YouTube/other video sites
 - Grab info from website, i.e. metadata

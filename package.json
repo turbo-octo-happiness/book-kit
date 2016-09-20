@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "dev": "nodemon server.js",
     "heroku-postbuild": "npm run build",
     "test": "mocha --compilers js:babel-register test/**/*.js*",
     "mkdir": "mkdir -p public/build",
@@ -45,7 +46,8 @@
     "react-router": "^2.6.1",
     "react-router-form": "^1.0.2",
     "redux": "^3.5.2",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "morgan": "^1.7.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
