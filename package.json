@@ -35,10 +35,11 @@
   },
   "homepage": "https://github.com/turbo-octo-happiness/book-kit#readme",
   "dependencies": {
+    "auth0-js": "^7.2.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "pg": "^6.0.3",
     "isomorphic-fetch": "^2.2.1",
+    "pg": "^6.0.3",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
