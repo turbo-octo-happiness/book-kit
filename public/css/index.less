@@ -32,6 +32,7 @@ header {
           min-width: 0;
           padding-left: 0;
           padding-right: 0;
+          margin: 0;
           margin-left: 1rem;
           height: 2rem;
 
@@ -61,26 +62,55 @@ header {
   }
 }
 
-.bookmark-tile {
-  h3 {
-    height: 15rem;
-    position: relative;
-    z-index: 1;
-    margin: 0.5rem;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+.main-section {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1020px;
+  margin: 0 auto;
+
+  .sidebar {
+    width: 35rem;
+    
+    ul {
+      li {
+        list-style: none;
+        margin: 0;
+      }
+    }
   }
-  .bg {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    opacity: .4;
-    background-size: cover;
-    border-radius: 0.8rem;
+
+  .grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .bookmark-tile {
+      list-style: none;
+      margin: 0;
+
+      h3 {
+        height: 12rem;
+        width: 15rem;
+        position: relative;
+        z-index: 1;
+        margin: 0.5rem;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .bg {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: .4;
+        background-size: cover;
+        border-radius: 0.8rem;
+      }
+    }
   }
 }

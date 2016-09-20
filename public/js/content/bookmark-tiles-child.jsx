@@ -14,7 +14,7 @@ function Tile(props) {
 
   return (
     <Link to={`/bookmarks/${props.id}`}>
-      <li className="bookmark-tile col-md-3">
+      <li className="bookmark-tile">
         <h3>
           <div className="bg" style={style} />
           <span>
