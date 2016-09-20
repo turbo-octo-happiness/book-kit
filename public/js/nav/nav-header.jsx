@@ -95,33 +95,20 @@ class Navbar extends React.Component {
               </Link>
             </li>
             <li>
-              {/* <a data-toggle="modal" data-target="#add-form">
-                <span aria-hidden="true" className="icon-plus add-bookmark" />
-              </a> */}
-
-              <a className='button button__white add-bookmark' href='#'><span>+</span></a>
-
+              <a className="button button__white add-bookmark" href="#">
+                <span>+</span>
+              </a>
               {/* <div className="modal fade" id="add-form">
                 <BookmarkFormContainer />
               </div> */}
             </li>
           </ul>
-
-
-
-
-
-
-
           <input
             type="text"
             onChange={this.props.onAddInput}
             placeholder="Search..."
             className="search-bar form-control"
           />
-
-
-
         </nav>
       </header>
     );
