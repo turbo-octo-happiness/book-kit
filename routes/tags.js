@@ -1,11 +1,10 @@
-var pg = require('pg');
-var express = require('express');
-var jsonParser = require('body-parser').json();
-var queries = require('../db/queries');
-var getBookmarks = require('../get_function');
-var delBookmarkFolder = require('../delete_function');
+const pg = require('pg');
+const express = require('express');
+// const jsonParser = require('body-parser').json();
+const queries = require('../db/queries');
+const getBookmarks = require('../get_function');
 
-var router = express.Router();
+const router = express.Router();
 
 /**
 @TODO: Add id to tags table
@@ -15,10 +14,10 @@ var router = express.Router();
  * @description `GET /tags/bookmarks/:tagName` endpoint; returns an array of
  * bookmarks with the provided tag name.
  */
-router.get('/bookmarks/:tagName', function(request, response) {
-  getBookmarks('', request.params.tagName).then(function(result) {
+router.get('/bookmarks/:tagName', (request, response) => {
+  getBookmarks('', request.params.tagName).then((result) => {
     response.json(result.rows);
-  }, function(err) {
+  }, (err) => {
     response.status('404').json(err);
   });
 });
@@ -27,30 +26,30 @@ router.get('/bookmarks/:tagName', function(request, response) {
  * @description `GET /tags` endpoint; returns an array of
  * tags stored in the database.
  */
-router.get('/', function(request, response) {
-  var client = new pg.Client(queries.CONNECT_URL);
-  client.connect(function(err) {
+router.get('/', (request, response) => {
+  const client = new pg.Client(queries.CONNECT_URL);
+  client.connect((err) => {
     if (err) {
       console.error(err);
       response.sendStatus('500');
     }
-    client.query(queries.SELECT_TAG, function(err, result) {
-      if (err) {
-        console.error(err);
+    client.query(queries.SELECT_TAG, (queryErr, result) => {
+      if (queryErr) {
+        console.error(queryErr);
         response.sendStatus('500');
       }
 
       // Convert the array of tag objects returned from database
       // into an array of Strings.
-      var resultsToReturn = result.rows.map(function(value) {
+      const resultsToReturn = result.rows.map((value) => {
         return value.tag;
       });
 
       response.json(resultsToReturn);
 
       // disconnect the client
-      client.end(function(err) {
-        if (err) throw err;
+      client.end((exitErr) => {
+        if (exitErr) throw exitErr;
       });
     });
   });
