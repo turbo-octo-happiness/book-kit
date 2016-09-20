@@ -2,7 +2,9 @@
 exports.CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/bookmarks';
 
 /* ---- Postgres Queries Used by the API ---- */
-exports.SELECT_TAG = 'SELECT tag FROM tag;';
+exports.SELECT_TAG = `SELECT tag
+                      FROM tag NATURAL JOIN bookmark_tags NATURAL JOIN bookmark NATURAL JOIN user
+                      WHERE userid = $1;`;
 
 exports.SELECT_FOLDER = `SELECT DISTINCT folderid, foldername
                         FROM folder NATURAL JOIN bookmark NATURAL JOIN user
@@ -28,7 +30,7 @@ exports.SELECT_BOOKMARK_BY_TAG = `SELECT bookmark.bookmarkid, url, title, descri
                                     FROM bookmark JOIN bookmark_tags ON bookmark.bookmarkid =
                                       bookmark_tags.bookmarkid
                                     JOIN tag ON bookmark_tags.tagid = tag.tagid
-                                    WHERE tag.tag = $1);`;
+                                    WHERE tag.tagid = $1);`;
 
 exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                               folderid, screenshot, userid)
