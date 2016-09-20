@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import Folder from './nav-folder-container';
 import BookmarkFormContainer from '../content/bookmark-form-container';
 
 const propTypes = {
@@ -22,11 +21,6 @@ class Navbar extends React.Component {
   }
 
   render() {
-    const folderArr = [];
-    this.props.folders.forEach((folder, index) => {
-      folderArr.push(<Folder key={index} folder={folder} />);
-    });
-
     return (
       <header>
         <nav className="navbar">
