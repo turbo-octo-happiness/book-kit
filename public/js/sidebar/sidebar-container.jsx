@@ -8,46 +8,33 @@ const propTypes = {
   folders: PropTypes.object,
 };
 
-class SidebarContainer extends React.Component {
-  constructor() {
-    super();
-    this.onShowEdit = this.onShowEdit.bind(this);
-    this.onEdit = this.onEdit.bind(this);
-    this.onDelete = this.onDelete.bind(this);
-    this.state = {
-      show: false,
-    };
-  }
-
-  onDelete(id) {
-    // FIXME: issue when deleting a folder that is being used by a bookmark
-    // it doesn't fail gracefully. should warn the user
-    this.props.dispatch(actions.deleteFolder(id));
-  }
-
-  onEdit(id, folderName, event) {
-    event.preventDefault();
-    this.props.dispatch(actions.editFolder(id, folderName));
-    this.onShowEdit();
-  }
-
-  onShowEdit() {
-    this.setState({
-      show: !this.state.show,
-    });
-  }
-
-  render() {
+function SidebarContainer(props) {
+  // make folders array here
+  const foldersArr = this.props.folders.map((folder, index) => {
     return (
-      <Sidebar
-        show={this.state.show}
-        onShowEdit={this.onShowEdit}
-        onDelete={this.onDelete}
-        onEdit={this.onEdit}
-        folders={this.props.folders}
-      />
+      <Folder key={index} folder={folder} />
     );
-  }
+  });
+
+  // const tagsArr = this.props.tags.map((tag, index) => {
+  //   return (
+  //     <Tag key={index} tag={tag} />
+  //   );
+  // });
+
+  return (
+    <section className="sidebar">
+      <h3>Folders:</h3>
+      <ul>
+        {foldersArr}
+      </ul>
+
+      <h3>Tags:</h3>
+      <ul>
+        {/* {tagsArr} */}
+      </ul>
+    </section>
+  );
 }
 
 SidebarContainer.propTypes = propTypes;
