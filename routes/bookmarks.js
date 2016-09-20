@@ -1,33 +1,31 @@
-const pg = require('pg');
 const express = require('express');
 const jsonParser = require('body-parser').json();
 const queries = require('../db/queries');
-const getBookmarks = require('../get_function');
-const delBookmarkFolder = require('../delete_function');
+const dbConnect = require('../dbConnect');
 
 const router = express.Router();
 
-/* ---- GET REQUESTS ---- */
 /**
- * @description `GET /bookmarks` enpoint; returns an array of all the
- * bookmarks stored in the database.
+ * @description `GET /bookmarks/:userid` enpoint; returns an array of all the
+ * bookmarks associated with a given user.
  */
-router.get('/', (request, response) => {
-  getBookmarks().then((result) => {
+router.get('/:userid', (request, response) => {
+  const userid = request.params.userid;
+
+  dbConnect(queries.SELECT_BOOKMARK, [userid]).then((result) => {
     response.json(result.rows);
-  }, (err) => {
-    response.status('404').json(err);
+  }).catch((errorcode) => {
+    response.status(errorcode);
   });
 });
 
 /**
  * @description `POST /bookmarks` endpoint. Takes an object with the following
  * fields: url, title, description (optional), foldername,
- * screenshot (optional). If insert into database is successful, then the
- * new bookmark is returned to the caller.
+ * screenshot (optional), and userid. If insertion into database
+ * is successful, then the new bookmark is returned to the caller.
  */
 router.post('/', jsonParser, (request, response) => {
-  console.log('POST BOOKMARK');
   if (!request.body.url) {
     response.status(422).json({
       message: 'Missing field: URL',
@@ -38,37 +36,25 @@ router.post('/', jsonParser, (request, response) => {
     });
   } else if (!request.body.folderid) {
     response.status(422).json({
-      message: 'Incorrect field type: title',
+      message: 'Incorrect field type: folderid',
+    });
+  } else if (!request.body.userid) {
+    response.status(422).json({
+      message: 'Incorrect field type: userid',
     });
   } else {
     // Handle the two optional bookmark fields. If user did not provide a
     // value use defaults.
     const bdescription = request.body.description ? request.body.description : '';
-    const bscreenshot = request.body.screenshot ? request.body.screenshot : 'http://placekitten.com/200/300';
+    const bscreenshot = request.body.screenshot ?
+      request.body.screenshot : 'http://placekitten.com/200/300';
 
-    const client = new pg.Client(queries.CONNECT_URL);
-    client.connect((err) => {
-      if (err) {
-        console.error(err);
-        response.sendStatus('500');
-      }
-
-      // Paramitarize query to protect against SQL injection
-      client.query(queries.INSERT_BOOKMARK, [request.body.url, request.body.title, bdescription,
-          request.body.folderid, bscreenshot, 1],
-        (queryErr, result) => {
-          if (queryErr) {
-            console.log('inside query');
-            console.error(queryErr);
-            response.sendStatus('500');
-          }
-          response.status(201).json(result.rows[0]);
-
-          // disconnect the client
-          client.end((exitErr) => {
-            if (exitErr) throw err;
-          });
-        });
+    dbConnect(queries.INSERT_BOOKMARK, [request.body.url, request.body.title, bdescription,
+      request.body.folderid, bscreenshot, request.body.userid,
+    ]).then((result) => {
+      response.json(result.rows[0]);
+    }).catch((errorCode) => {
+      response.status(errorCode);
     });
   }
 });
@@ -76,12 +62,13 @@ router.post('/', jsonParser, (request, response) => {
 /**
  * @description `PUT /bookmarks/:bookmarkid` endpoint. Takes an object with the following
  * fields: url, title, description (optional), folderid,
- * screenshot (optional). If update in the database is successful, then the
+ * screenshot (optional), and userid. If update in the database is successful, then the
  * edited bookmark is returned to the caller.
  */
 
 router.put('/:bookmarkid', jsonParser, (request, response) => {
   const bookmarkid = request.params.bookmarkid;
+
   if (!request.body.url) {
     response.status(422).json({
       message: 'Missing field: URL',
@@ -92,6 +79,10 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
     });
   } else if (!request.body.folderid) {
     response.status(422).json();
+  } else if (!request.body.userid) {
+    response.status(422).json({
+      message: 'Incorrect field type: userid',
+    });
   } else {
     // Handle the two optional bookmark fields. If user did not provide a
     // value use defaults.
@@ -99,28 +90,13 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
     const bscreenshot = request.body.screenshot ?
       request.body.screenshot : 'http://placekitten.com/200/300';
 
-    const client = new pg.Client(queries.CONNECT_URL);
-    client.connect((queryErr) => {
-      if (queryErr) {
-        response.sendStatus('500');
-      }
-
-      // Paramitarize query to protect against SQL injection
-      client.query(queries.UPDATE_BOOKMARK, [request.body.url, request.body.title, bdescription,
-          request.body.folderid, bscreenshot, 1, bookmarkid,
-        ],
-        (err, result) => {
-          if (err) {
-            response.sendStatus('500');
-          }
-          response.status(200).json(result.rows[0]);
-
-          // disconnect the client
-          client.end((exitErr) => {
-            if (exitErr) throw err;
-          });
-        }
-      );
+    // Paramitarize query to protect against SQL injection
+    dbConnect(queries.UPDATE_BOOKMARK, [request.body.url, request.body.title, bdescription,
+      request.body.folderid, bscreenshot, request.body.userid, bookmarkid,
+    ]).then((results) => {
+      response.json(results.rows[0]);
+    }).catch((errorCode) => {
+      response.status(errorCode);
     });
   }
 });
@@ -133,10 +109,11 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
  */
 router.delete('/:bookmarkid', (request, response) => {
   const id = request.params.bookmarkid;
-  delBookmarkFolder(id, null).then((result) => {
-    response.json(result.rows);
-  }, (err) => {
-    response.status('404').json(err);
+
+  dbConnect(queries.DELETE_BOOKMARK, [id]).then((result) => {
+    response.json(result.rows[0]);
+  }).catch((errorCode) => {
+    response.status(errorCode);
   });
 });
 

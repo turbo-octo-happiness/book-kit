@@ -6,26 +6,27 @@ exports.SELECT_TAG = 'SELECT tag FROM tag;';
 
 exports.SELECT_FOLDER = 'SELECT folderid, foldername FROM folder;';
 
-exports.SELECT_BOOKMARK = `SELECT bookmarkid, url, title, description,
-                            foldername, folderid, screenshot
-                          FROM bookmark NATURAL JOIN folder;`;
+exports.SELECT_BOOKMARK = `SELECT bookmarkid, url, title, description, foldername, folderid,
+                            screenshot
+                          FROM bookmark NATURAL JOIN folder NATURAL JOIN user
+                          WHERE userid = $1;`;
 
-exports.SELECT_BOOKMARK_BY_FOLDER = (folder) => {
-  return `SELECT bookmarkid, url, title, description, foldername, screenshot
-          FROM bookmark NATURAL JOIN folder
-          WHERE foldername = '${folder}';`;
-};
+exports.SELECT_BOOKMARK_BY_FOLDER = `SELECT bookmarkid, url, title, description, foldername,
+                                      screenshot
+                                    FROM bookmark NATURAL JOIN folder
+                                    WHERE foldername = $1;`;
 
-exports.SELECT_BOOKMARK_BY_TAG = (tag) => {
-  return `SELECT bookmark.bookmarkid, url, title, description, foldername, screenshot, tag
-          FROM bookmark JOIN bookmark_tags ON bookmark.bookmarkid = bookmark_tags.bookmarkid
-          JOIN tag ON bookmark_tags.tagid = tag.tagid
-          WHERE bookmark.bookmarkid in (
-            SELECT bookmark.bookmarkid
-              FROM bookmark JOIN bookmark_tags ON bookmark.bookmarkid = bookmark_tags.bookmarkid
-              JOIN tag ON bookmark_tags.tagid = tag.tagid
-              WHERE tag.tag = '${tag}');`;
-};
+exports.SELECT_BOOKMARK_BY_TAG = `SELECT bookmark.bookmarkid, url, title, description, foldername,
+                                    screenshot, tag
+                                  FROM bookmark JOIN bookmark_tags ON bookmark.bookmarkid =
+                                    bookmark_tags.bookmarkid
+                                  JOIN tag ON bookmark_tags.tagid = tag.tagid
+                                  WHERE bookmark.bookmarkid in (
+                                    SELECT bookmark.bookmarkid
+                                    FROM bookmark JOIN bookmark_tags ON bookmark.bookmarkid =
+                                      bookmark_tags.bookmarkid
+                                    JOIN tag ON bookmark_tags.tagid = tag.tagid
+                                    WHERE tag.tag = $1);`;
 
 exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                               folderid, screenshot, userid)
@@ -35,13 +36,10 @@ exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
 exports.INSERT_FOLDER = `INSERT INTO folder(foldername) VALUES ($1)
                         RETURNING folderid, foldername;`;
 
-exports.DELETE_BOOKMARK = (bookmarkid) => {
-  return `DELETE FROM bookmark WHERE bookmarkid = '${bookmarkid}' RETURNING *;`;
-};
+exports.DELETE_BOOKMARK = 'DELETE FROM bookmark WHERE bookmarkid = $1 RETURNING *;';
 
-exports.DELETE_FOLDER = (folderid) => {
-  return `DELETE FROM folder WHERE folderid = '${folderid}' RETURNING *;`;
-};
+
+exports.DELETE_FOLDER = 'DELETE FROM folder WHERE folderid = $1 RETURNING *;';
 
 exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot,
                             userid) = ($1, $2, $3, $4, $5, $6)
