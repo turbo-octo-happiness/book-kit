@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Nav from './nav/nav-header-container';
+import Sidebar from './sidebar/sidebar-container';
 import actions from './redux/actions';
+
+const propTypes = {
+  dispatch: PropTypes.func,
+  children: PropTypes.object,
+};
 
 class PageContainer extends React.Component {
   componentDidMount() {
@@ -13,13 +19,16 @@ class PageContainer extends React.Component {
     return (
       <div>
         <Nav />
-        <section className="main-section container">
+        <section className="main-section">
+          <Sidebar />
           {this.props.children}
         </section>
       </div>
     );
   }
 }
+
+PageContainer.propTypes = propTypes;
 
 const Container = connect()(PageContainer);
 

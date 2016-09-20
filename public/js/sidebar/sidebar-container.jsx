@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Sidebar from './sidebar';
+import Folder from './sidebar-folder-container';
 import actions from '../redux/actions';
 
 const propTypes = {
@@ -10,7 +10,7 @@ const propTypes = {
 
 function SidebarContainer(props) {
   // make folders array here
-  const foldersArr = this.props.folders.map((folder, index) => {
+  const foldersArr = props.folders.map((folder, index) => {
     return (
       <Folder key={index} folder={folder} />
     );

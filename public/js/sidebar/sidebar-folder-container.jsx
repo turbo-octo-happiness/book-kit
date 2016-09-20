@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
-import NavFolder from './nav-folder';
+import SidebarFolder from './sidebar-folder';
 
 const propTypes = {
   dispatch: PropTypes.func,
   folder: PropTypes.object,
 };
 
-class FolderContainer extends React.Component {
+class SidebarFolderContainer extends React.Component {
   constructor() {
     super();
     this.onShowEdit = this.onShowEdit.bind(this);
@@ -39,7 +39,7 @@ class FolderContainer extends React.Component {
 
   render() {
     return (
-      <NavFolder
+      <SidebarFolder
         show={this.state.show}
         onShowEdit={this.onShowEdit}
         onDelete={this.onDelete}
@@ -50,8 +50,8 @@ class FolderContainer extends React.Component {
   }
 }
 
-FolderContainer.propTypes = propTypes;
+SidebarFolderContainer.propTypes = propTypes;
 
-const Container = connect()(FolderContainer);
+const Container = connect()(SidebarFolderContainer);
 
 module.exports = Container;
