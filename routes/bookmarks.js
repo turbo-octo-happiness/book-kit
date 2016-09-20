@@ -27,6 +27,7 @@ router.get('/', function(request, response) {
  * new bookmark is returned to the caller.
  */
 router.post('/', jsonParser, function(request, response) {
+  console.log('POST BOOKMARK')
   if (!request.body.url) {
     response.status(422).json({
       message: 'Missing field: URL'
@@ -61,7 +62,7 @@ router.post('/', jsonParser, function(request, response) {
           response.status(201).json(result.rows[0]);
 
           // disconnect the client
-          client.end(function(err) {
+          client.end((err) => {
             if (err) throw err;
           });
         });

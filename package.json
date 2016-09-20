@@ -46,7 +46,8 @@
     "react-router": "^2.6.1",
     "react-router-form": "^1.0.2",
     "redux": "^3.5.2",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "morgan": "^1.7.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

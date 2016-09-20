@@ -8,6 +8,10 @@ var delBookmarkFolder = require('../delete_function');
 var router = express.Router();
 
 /**
+@TODO: Add id to tags table
+*/
+
+/**
  * @description `GET /tags/bookmarks/:tagName` endpoint; returns an array of
  * bookmarks with the provided tag name.
  */

@@ -11,10 +11,11 @@ const router = express.Router();
  * @description `GET /folder/bookmark/:folderName` endpoint; returns an array of
  * bookmarks with the provided folder name.
  */
-router.get('/bookmarks/:folderid', function(request, response) {
-  getBookmarks(request.params.folderName).then(function(result) {
+// Don't need
+router.get('/bookmarks/:folderid', (request, response) => {
+  getBookmarks(request.params.folderName).then((result) => {
     response.json(result.rows);
-  }, function(err) {
+  }, (err) => {
     response.status('404').json(err);
   });
 });
@@ -23,32 +24,32 @@ router.get('/bookmarks/:folderid', function(request, response) {
  * @description `GET /folders` endpoint; returns an array of
  * folders stored in the database.
  */
- // return id and name
-router.get('/', function(request, response) {
-  var client = new pg.Client(queries.CONNECT_URL);
-  client.connect(function(err) {
+// return id and name
+router.get('/', (request, response) => {
+  const client = new pg.Client(queries.CONNECT_URL);
+  client.connect((err) => {
     console.log('client connected');
     if (err) {
       console.error(err);
       response.sendStatus('500');
     }
-    client.query(queries.SELECT_FOLDER, function(err, result) {
+    client.query(queries.SELECT_FOLDER, (queryErr, result) => {
       if (err) {
-        console.error(err);
+        console.error(queryErr);
         response.sendStatus('500');
       }
 
       // Convert the array of folder objects returned from database
       // into an array of Strings.
-      var resultsToReturn = result.rows.map(function(value) {
+      const resultsToReturn = result.rows.map((value) => {
         return value;
       });
 
       response.json(resultsToReturn);
 
       // disconnect the client
-      client.end(function(err) {
-        if (err) throw err;
+      client.end((exitErr) => {
+        if (exitErr) throw exitErr;
       });
     });
   });
@@ -59,15 +60,15 @@ router.get('/', function(request, response) {
  * field: foldername. If insert into database is successful, then the
  * new folder name is returned to the caller.
  */
-router.post('/', jsonParser, function(request, response) {
-  console.log(request.body.foldername)
+router.post('/', jsonParser, (request, response) => {
+  console.log(request.body.foldername);
   if (!request.body.foldername) {
     response.status(422).json({
-      message: 'Missing field: foldername'
+      message: 'Missing field: foldername',
     });
   } else {
-    var client = new pg.Client(queries.CONNECT_URL);
-    client.connect(function(err) {
+    const client = new pg.Client(queries.CONNECT_URL);
+    client.connect((err) => {
       console.log('client connected');
       if (err) {
         console.error(err);
@@ -75,16 +76,16 @@ router.post('/', jsonParser, function(request, response) {
       }
       // Paramitarize query to protect against SQL injection
       client.query(queries.INSERT_FOLDER, [request.body.foldername],
-        function(err, result) {
+        (queryErr, result) => {
           if (err) {
-            console.error(err);
+            console.error(queryErr);
             response.sendStatus('500');
           }
           response.json(result.rows[0]);
 
           // disconnect the client
-          client.end(function(err) {
-            if (err) throw err;
+          client.end((exitErr) => {
+            if (exitErr) throw err;
           });
         });
     });
@@ -97,38 +98,38 @@ router.post('/', jsonParser, function(request, response) {
  * is successful, then the edited folder is returned to the caller.
  */
 
-router.put('/', jsonParser, function (request, response) {
- if (!request.body.foldername) {
-   response.status(422).json({
-     message: 'Missing field: foldername'
-   });
- } else if (!request.body.folderid) {
-   response.status(422).json({
-     message: 'Missing field: folderid'
-   });
- } else {
-   var client = new pg.Client(queries.CONNECT_URL);
-   client.connect(function(err) {
-     if (err) {
-       response.sendStatus('500');
-     }
-     // Paramitarize query to protect against SQL injection
-     client.query(queries.UPDATE_FOLDER, [request.body.foldername, request.body.folderid],
-       function (err, result) {
-         if (err) {
-           console.error(err);
-           response.sendStatus('500');
-         }
-         console.log(result.rows)
-         response.json(result.rows[0]);
+router.put('/', jsonParser, (request, response) => {
+  if (!request.body.foldername) {
+    response.status(422).json({
+      message: 'Missing field: foldername',
+    });
+  } else if (!request.body.folderid) {
+    response.status(422).json({
+      message: 'Missing field: folderid',
+    });
+  } else {
+    const client = new pg.Client(queries.CONNECT_URL);
+    client.connect((err) => {
+      if (err) {
+        response.sendStatus('500');
+      }
+      // Paramitarize query to protect against SQL injection
+      client.query(queries.UPDATE_FOLDER, [request.body.foldername, request.body.folderid],
+        (queryErr, result) => {
+          if (err) {
+            console.error(err);
+            response.sendStatus('500');
+          }
+          console.log(result.rows);
+          response.json(result.rows[0]);
 
-         // disconnect the client
-         client.end(function(err) {
-           if (err) throw err;
-         });
-       });
-   });
- }
+          // disconnect the client
+          client.end((exitErr) => {
+            if (exitErr) throw err;
+          });
+        });
+    });
+  }
 });
 
 /**
@@ -137,11 +138,11 @@ router.put('/', jsonParser, function (request, response) {
  * If deleting from the database is successful, then the
  * deleted folder is returned to the caller.
  */
-router.delete('/:folderid', function(request, response) {
+router.delete('/:folderid', (request, response) => {
   const folder = request.params.folderid;
-  delBookmarkFolder(null, folder).then(function(result) {
+  delBookmarkFolder(null, folder).then((result) => {
     response.json(result.rows);
-  }, function(err) {
+  }, (err) => {
     response.status('404').json(err);
   });
 });

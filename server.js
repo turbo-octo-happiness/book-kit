@@ -1,5 +1,6 @@
 /* ---- Dependencies ---- */
 const express = require('express');
+const logger = require('morgan');
 const bookmarksRoutes = require('./routes/bookmarks');
 const foldersRoutes = require('./routes/folders');
 const tagsRoutes = require('./routes/tags');
@@ -7,6 +8,8 @@ const tagsRoutes = require('./routes/tags');
 
 /* ---- Initial Setup ---- */
 const app = express();
+
+app.use(logger('dev')); // log every HTTP request to the console
 app.disable('etag');
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
