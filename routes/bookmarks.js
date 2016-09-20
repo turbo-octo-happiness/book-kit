@@ -93,8 +93,8 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
     // Paramitarize query to protect against SQL injection
     dbConnect(queries.UPDATE_BOOKMARK, [request.body.url, request.body.title, bdescription,
       request.body.folderid, bscreenshot, request.body.userid, bookmarkid,
-    ]).then((results) => {
-      response.json(results.rows[0]);
+    ]).then((result) => {
+      response.json(result.rows[0]);
     }).catch((errorCode) => {
       response.status(errorCode);
     });

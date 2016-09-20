@@ -1,57 +1,28 @@
-const pg = require('pg');
 const express = require('express');
 const jsonParser = require('body-parser').json();
 const queries = require('../db/queries');
-const getBookmarks = require('../get_function');
-const delBookmarkFolder = require('../delete_function');
+const dbConnect = require('../dbConnect');
 
 const router = express.Router();
-
-/**
- * @description `GET /folder/bookmark/:folderName` endpoint; returns an array of
- * bookmarks with the provided folder name.
- */
-// Don't need
-router.get('/bookmarks/:folderid', (request, response) => {
-  getBookmarks(request.params.folderName).then((result) => {
-    response.json(result.rows);
-  }, (err) => {
-    response.status('404').json(err);
-  });
-});
 
 /**
  * @description `GET /folders` endpoint; returns an array of
  * folders stored in the database.
  */
-// return id and name
-router.get('/', (request, response) => {
-  const client = new pg.Client(queries.CONNECT_URL);
-  client.connect((err) => {
-    console.log('client connected');
-    if (err) {
-      console.error(err);
-      response.sendStatus('500');
-    }
-    client.query(queries.SELECT_FOLDER, (queryErr, result) => {
-      if (err) {
-        console.error(queryErr);
-        response.sendStatus('500');
-      }
+router.get('/:userid', (request, response) => {
+  const userid = request.params.userid;
 
-      // Convert the array of folder objects returned from database
-      // into an array of Strings.
-      const resultsToReturn = result.rows.map((value) => {
-        return value;
-      });
-
-      response.json(resultsToReturn);
-
-      // disconnect the client
-      client.end((exitErr) => {
-        if (exitErr) throw exitErr;
-      });
+  // Paramitarize query to protect against SQL injection
+  dbConnect(queries.SELECT_FOLDER, [userid]).then((result) => {
+    // Convert the array of folder objects returned from database
+    // into an array of Strings.
+    const resultsToReturn = result.rows.map((value) => {
+      return value;
     });
+
+    response.json(resultsToReturn);
+  }).catch((errorcode) => {
+    response.status(errorcode);
   });
 });
 
@@ -67,27 +38,11 @@ router.post('/', jsonParser, (request, response) => {
       message: 'Missing field: foldername',
     });
   } else {
-    const client = new pg.Client(queries.CONNECT_URL);
-    client.connect((err) => {
-      console.log('client connected');
-      if (err) {
-        console.error(err);
-        response.sendStatus('500');
-      }
-      // Paramitarize query to protect against SQL injection
-      client.query(queries.INSERT_FOLDER, [request.body.foldername],
-        (queryErr, result) => {
-          if (err) {
-            console.error(queryErr);
-            response.sendStatus('500');
-          }
-          response.json(result.rows[0]);
-
-          // disconnect the client
-          client.end((exitErr) => {
-            if (exitErr) throw err;
-          });
-        });
+    // Paramitarize query to protect against SQL injection
+    dbConnect(queries.INSERT_FOLDER, [request.body.foldername]).then((result) => {
+      response.json(result.rows[0]);
+    }).catch((errorcode) => {
+      response.status(errorcode);
     });
   }
 });
@@ -108,27 +63,13 @@ router.put('/', jsonParser, (request, response) => {
       message: 'Missing field: folderid',
     });
   } else {
-    const client = new pg.Client(queries.CONNECT_URL);
-    client.connect((err) => {
-      if (err) {
-        response.sendStatus('500');
-      }
-      // Paramitarize query to protect against SQL injection
-      client.query(queries.UPDATE_FOLDER, [request.body.foldername, request.body.folderid],
-        (queryErr, result) => {
-          if (err) {
-            console.error(err);
-            response.sendStatus('500');
-          }
-          console.log(result.rows);
-          response.json(result.rows[0]);
-
-          // disconnect the client
-          client.end((exitErr) => {
-            if (exitErr) throw err;
-          });
-        });
-    });
+    // Paramitarize query to protect against SQL injection
+    dbConnect(queries.UPDATE_FOLDER, [request.body.foldername,
+      request.body.folderid]).then((result) => {
+        response.json(result.rows[0]);
+      }).catch((errorcode) => {
+        response.status(errorcode);
+      });
   }
 });
 
@@ -139,12 +80,15 @@ router.put('/', jsonParser, (request, response) => {
  * deleted folder is returned to the caller.
  */
 router.delete('/:folderid', (request, response) => {
-  const folder = request.params.folderid;
-  delBookmarkFolder(null, folder).then((result) => {
-    response.json(result.rows);
-  }, (err) => {
-    response.status('404').json(err);
-  });
+  const folderid = request.params.folderid;
+
+  // Paramitarize query to protect against SQL injection
+  dbConnect(queries.DELETE_FOLDER,
+    [folderid]).then((result) => {
+      response.json(result.rows);
+    }).catch((errorcode) => {
+      response.status(errorcode);
+    });
 });
 
 module.exports = router;
