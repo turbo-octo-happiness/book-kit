@@ -9,10 +9,10 @@ const router = express.Router();
  * @description `GET /bookmarks/:userid` enpoint; returns an array of all the
  * bookmarks associated with a given user.
  */
-router.get('/:userid', (request, response) => {
-  const userid = request.params.userid;
+router.get('/', (request, response) => {
+  // const userid = request.params.userid;
 
-  dbConnect(queries.SELECT_BOOKMARK, [userid]).then((result) => {
+  dbConnect(queries.SELECT_BOOKMARK, [1]).then((result) => {
     response.json(result.rows);
   }).catch((errorcode) => {
     response.status(errorcode);

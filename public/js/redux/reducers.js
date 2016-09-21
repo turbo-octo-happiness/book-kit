@@ -31,6 +31,7 @@ function auth(state = {
       return Object.assign({}, state, {
         isAuthenticated: true,
         profile: action.profile,
+        token: action.token,
         error: ''
       })
     case actionTypes.LOGIN_ERROR:

@@ -27,7 +27,7 @@ const routes = (
   <Router history={hashHistory}>
     <Route path="/" component={Container}>
       {/* <IndexRoute component={Login} /> */}
-      <Route path="access_token=:token" component={Container} />
+      <Route path="access_token=:token" component={PageContainer} />
       <Route path="/main" component={PageContainer}>
         <IndexRoute component={BookmarkTilesContainer} />
         <Route path="/bookmarks/:bookmarkId" component={BookmarkViewContainer} />

@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import { CALL_API } from '../../middleware/api'
 import actionTypes from './constants';
+import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 // import AuthService from '../../utils/AuthService';
 // import Auth0Lock from 'auth0-lock'
 
@@ -9,10 +10,11 @@ import actionTypes from './constants';
 
 /* Auth Lock Actions */
 
-function loginSuccess(profile) {
+function loginSuccess(profile, token) {
   return {
     type: actionTypes.LOGIN_SUCCESS,
-    profile
+    profile,
+    token
   }
 }
 
@@ -23,8 +25,22 @@ function loginError(error) {
   }
 }
 
-export function login() {
-  const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com')
+function login() {
+  var options = {
+        auth: {
+          responseType: 'token',
+          params: {
+            scope: 'openid name email'
+          }
+        }
+      }
+  const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
+    auth: {
+      params: {
+        scope: 'openid email'
+      }
+    }
+  });
   return (dispatch) => {
     console.log('inside dispatch')
     lock.show((error, profile, token) => {
@@ -34,18 +50,20 @@ export function login() {
       }
       localStorage.setItem('profile', JSON.stringify(profile))
       localStorage.setItem('id_token', token)
-      return dispatch(loginSuccess(profile))
+      console.log(token)
+      hashHistory.push('/main')
+      return dispatch(loginSuccess(profile, token))
     })
   }
 }
 
 function logoutSuccess(profile) {
   return {
-    type: LOGOUT_SUCCESS
+    type: actionTypes.LOGOUT_SUCCESS
   }
 }
 
-export function logout() {
+function logout() {
   return dispatch => {
     localStorage.removeItem('id_token');
     localStorage.removeItem('profile');
@@ -421,15 +439,7 @@ function getTags() {
   // };
 }
 
-// exports.requestLogin = requestLogin;
-// exports.receiveLogin = receiveLogin;
-// exports.loginError = loginError;
-// exports.requestLogout = requestLogout;
-// exports.receiveLogout = receiveLogout;
-// exports.logoutError = logoutError;
-// exports.showLock = showLock;
-// exports.lockSuccess = lockSuccess;
-// exports.lockError = lockError;
+exports.logout = logout;
 exports.login = login;
 exports.searchTextChange = searchTextChange;
 exports.addBookmark = addBookmark;
