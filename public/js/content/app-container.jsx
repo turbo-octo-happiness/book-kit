@@ -1,21 +1,51 @@
 import React, { PropTypes as T } from 'react'
+import {login, logout} from '../redux/actions'
+import { connect } from 'react-redux'
+import Auth from './login'
 
 class Container extends React.Component {
-  render() {
-    let children = null;
-    if (this.props.children) {
-      children = React.cloneElement(this.props.children, {
-        // sends auth instance from route to children
-        auth: this.props.route.auth
-      })
-    }
+  constructor(props) {
+    super(props)
+    this.handleLoginClick = this.handleLoginClick.bind(this)
+    this.handleLogoutClick = this.handleLogoutClick.bind(this)
+  }
 
+  handleLoginClick() {
+  this.props.login()
+}
+
+handleLogoutClick() {
+  this.props.logout()
+}
+
+  render() {
+    const { allJedis, singleJedi, error, isAuthenticated, profile } = this.props
     return (
       <div>
-        {children}
+      <Auth
+  isAuthenticated={isAuthenticated}
+  profile={profile}
+  onLoginClick={this.handleLoginClick}
+  onLogoutClick={this.handleLogoutClick}
+/>
+        {this.props.children}
       </div>
     )
   }
 }
 
-export default Container;
+function mapStateToProps(state) {
+  const { auth } = state
+  const { isAuthenticated, profile } = auth
+  return {
+    isAuthenticated,
+    profile
+  }
+}
+
+export default connect(mapStateToProps, {
+  login,
+  logout
+})(Container)
+
+// export default Container;

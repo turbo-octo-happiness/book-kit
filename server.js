@@ -6,7 +6,7 @@ const foldersRoutes = require('./routes/folders');
 const tagsRoutes = require('./routes/tags');
 const jwt = require('express-jwt');
 require('dotenv').config();
-
+console.log(process.env)
 
 /* ---- Initial Setup ---- */
 const app = express();
@@ -19,6 +19,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
 });
+
 const authenticate = jwt({
   secret: new Buffer(process.env.AUTH0_SECRET, 'base64'),
   audience: process.env.AUTH0_CLIENT_ID

@@ -1,99 +1,57 @@
 import fetch from 'isomorphic-fetch';
+import { CALL_API } from '../../middleware/api'
 import actionTypes from './constants';
-import AuthService from '../../utils/AuthService';
+// import AuthService from '../../utils/AuthService';
+// import Auth0Lock from 'auth0-lock'
 
 // URL for heroku: https://shrouded-journey-65738.herokuapp.com/
 // URL for localhost: https://localhost:5000
 
 /* Auth Lock Actions */
-function requestLogin(creds) {
+
+function loginSuccess(profile) {
   return {
-    type: LOGIN_REQUEST,
-    isFetching: true,
-    isAuthenticated: false,
-    creds
+    type: actionTypes.LOGIN_SUCCESS,
+    profile
   }
 }
 
-function receiveLogin(user) {
+function loginError(error) {
   return {
-    type: LOGIN_SUCCESS,
-    isFetching: false,
-    isAuthenticated: true,
-    id_token: user.id_token
+    type: actionTypes.LOGIN_ERROR,
+    error
   }
 }
 
-function loginError(message) {
-  return {
-    type: LOGIN_FAILURE,
-    isFetching: false,
-    isAuthenticated: false,
-    message
-  }
-}
-
-function requestLogout() {
-  return {
-    type: LOGOUT_REQUEST,
-    isFetching: true,
-    isAuthenticated: true
-  }
-}
-
-function receiveLogout() {
-  return {
-    type: LOGOUT_SUCCESS,
-    isFetching: false,
-    isAuthenticated: false
-  }
-}
-
-function logoutError(err) {
-  return {
-    type: LOGOUT_FAILURE,
-    isFetching: false,
-    isAuthenticated: false,
-    err
-  }
-}
-
-function showLock() {
-  return {
-    type: SHOW_LOCK
-  }
-}
-
-function lockSuccess(profile, token) {
-  return {
-    type: LOCK_SUCCESS,
-    profile,
-    token
-  }
-}
-
-function lockError(err) {
-  return {
-    type: LOCK_ERROR,
-    err
-  }
-}
-
-function login() {
-  const lock = new Auth0Lock('YOUR_CLIENT_ID', 'YOUR_CLIENT_DOMAIN');
-  return dispatch => {
-    lock.show((err, profile, token) => {
-      if(err) {
-        dispatch(lockError(err))
-        return
+export function login() {
+  const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com')
+  return (dispatch) => {
+    console.log('inside dispatch')
+    lock.show((error, profile, token) => {
+      console.log('lock.show() ->')
+      if(error) {
+        return dispatch(loginError(error))
       }
       localStorage.setItem('profile', JSON.stringify(profile))
       localStorage.setItem('id_token', token)
-      dispatch(lockSuccess(profile, token))
+      return dispatch(loginSuccess(profile))
     })
   }
 }
 
+function logoutSuccess(profile) {
+  return {
+    type: LOGOUT_SUCCESS
+  }
+}
+
+export function logout() {
+  return dispatch => {
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('profile');
+    return dispatch(logoutSuccess());
+  }
+}
 /* Redux Action Creators */
 
 function searchTextChange(text) {
@@ -463,15 +421,15 @@ function getTags() {
   // };
 }
 
-exports.requestLogin = requestLogin;
-exports.receiveLogin = receiveLogin;
-exports.loginError = loginError;
-exports.requestLogout = requestLogout;
-exports.receiveLogout = receiveLogout;
-exports.logoutError = logoutError;
-exports.showLock = showLock;
-exports.lockSuccess = lockSuccess;
-exports.lockError = lockError;
+// exports.requestLogin = requestLogin;
+// exports.receiveLogin = receiveLogin;
+// exports.loginError = loginError;
+// exports.requestLogout = requestLogout;
+// exports.receiveLogout = receiveLogout;
+// exports.logoutError = logoutError;
+// exports.showLock = showLock;
+// exports.lockSuccess = lockSuccess;
+// exports.lockError = lockError;
 exports.login = login;
 exports.searchTextChange = searchTextChange;
 exports.addBookmark = addBookmark;

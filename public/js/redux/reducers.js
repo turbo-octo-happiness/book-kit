@@ -1,37 +1,52 @@
 import { combineReducers } from 'redux';
 import actionTypes from './constants';
 
-function authReducer(state = {
-  isFetching: false,
-  isAuthenticated: localStorage.getItem('id_token') ? true : false
+const jwtDecode = require('jwt-decode')
+
+function checkTokenExpiry() {
+  let jwt = localStorage.getItem('id_token')
+  if(jwt) {
+    let jwtExp = jwtDecode(jwt).exp;
+    let expiryDate = new Date(0);
+    expiryDate.setUTCSeconds(jwtExp);
+
+    if(new Date() < expiryDate) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function getProfile() {
+  return JSON.parse(localStorage.getItem('profile'));
+}
+
+function auth(state = {
+    isAuthenticated: checkTokenExpiry(),
+    profile: getProfile(),
+    error: ''
   }, action) {
   switch (action.type) {
-     case LOGIN_REQUEST:
+    case actionTypes.LOGIN_SUCCESS:
       return Object.assign({}, state, {
-        isFetching: true,
-        isAuthenticated: false,
-        user: action.creds
-      })
-    case LOGIN_SUCCESS:
-      return Object.assign({}, state, {
-        isFetching: false,
         isAuthenticated: true,
-        errorMessage: ''
+        profile: action.profile,
+        error: ''
       })
-    case LOGIN_FAILURE:
+    case actionTypes.LOGIN_ERROR:
       return Object.assign({}, state, {
-        isFetching: false,
         isAuthenticated: false,
-        errorMessage: action.message
+        profile: null,
+        error: action.error
       })
-    case LOGOUT_SUCCESS:
+    case actionTypes.LOGOUT_SUCCESS:
       return Object.assign({}, state, {
-        isFetching: true,
-        isAuthenticated: false
+        isAuthenticated: false,
+        profile: null
       })
     default:
       return state
-  }
+    }
 }
 
 function searchReducer(state = '', action) {
@@ -164,7 +179,7 @@ function tagReducer(state = [], action) {
 }
 
 const rootReducer = combineReducers({
-  auth: authReducer,
+  auth,
   bookmarks: bookmarkReducer,
   folders: folderReducer,
   tags: tagReducer,
