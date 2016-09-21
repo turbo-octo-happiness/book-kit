@@ -1,51 +1,49 @@
-import React, { PropTypes as T } from 'react'
-import {login, logout} from '../redux/actions'
-import { connect } from 'react-redux'
-import Auth from './login'
+import React, { PropTypes as T } from 'react';
+import { connect } from 'react-redux';
+import { login, logout } from '../redux/actions';
+import Auth from './login';
 
 class Container extends React.Component {
   constructor(props) {
-    super(props)
-    this.handleLoginClick = this.handleLoginClick.bind(this)
-    this.handleLogoutClick = this.handleLogoutClick.bind(this)
+    super(props);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
 
   handleLoginClick() {
-  this.props.login()
-}
+    this.props.login()
+  }
 
-handleLogoutClick() {
-  this.props.logout()
-}
+  handleLogoutClick() {
+    this.props.logout()
+  }
 
   render() {
-    const { allJedis, singleJedi, error, isAuthenticated, profile } = this.props
+    const { error, isAuthenticated, profile } = this.props
     return (
       <div>
-      <Auth
-  isAuthenticated={isAuthenticated}
-  profile={profile}
-  onLoginClick={this.handleLoginClick}
-  onLogoutClick={this.handleLogoutClick}
-/>
+        <Auth
+          isAuthenticated={isAuthenticated}
+          profile={profile}
+          onLoginClick={this.handleLoginClick}
+          onLogoutClick={this.handleLogoutClick}
+        />
         {this.props.children}
       </div>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
-  const { auth } = state
-  const { isAuthenticated, profile } = auth
+  const { auth } = state;
+  const { isAuthenticated, profile } = auth;
   return {
     isAuthenticated,
-    profile
-  }
+    profile,
+  };
 }
 
 export default connect(mapStateToProps, {
   login,
-  logout
-})(Container)
-
-// export default Container;
+  logout,
+})(Container);

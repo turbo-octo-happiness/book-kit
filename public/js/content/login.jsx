@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react';
 
 export default class Auth extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   render() {
@@ -21,6 +21,6 @@ export default class Auth extends Component {
           </ul>
         )}
       </div>
-    )
+    );
   }
 }

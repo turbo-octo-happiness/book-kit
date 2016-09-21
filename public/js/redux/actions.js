@@ -42,15 +42,12 @@ function login() {
     }
   });
   return (dispatch) => {
-    console.log('inside dispatch')
     lock.show((error, profile, token) => {
-      console.log('lock.show() ->')
       if(error) {
         return dispatch(loginError(error))
       }
       localStorage.setItem('profile', JSON.stringify(profile))
       localStorage.setItem('id_token', token)
-      console.log(token)
       hashHistory.push('/main')
       return dispatch(loginSuccess(profile, token))
     })
