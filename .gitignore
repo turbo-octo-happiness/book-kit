@@ -9,3 +9,6 @@ build
 
 # Log Files
 *.log
+
+# Auth
+.env

@@ -1,8 +1,98 @@
 import fetch from 'isomorphic-fetch';
 import actionTypes from './constants';
+import AuthService from '../../utils/AuthService';
 
 // URL for heroku: https://shrouded-journey-65738.herokuapp.com/
 // URL for localhost: https://localhost:5000
+
+/* Auth Lock Actions */
+function requestLogin(creds) {
+  return {
+    type: LOGIN_REQUEST,
+    isFetching: true,
+    isAuthenticated: false,
+    creds
+  }
+}
+
+function receiveLogin(user) {
+  return {
+    type: LOGIN_SUCCESS,
+    isFetching: false,
+    isAuthenticated: true,
+    id_token: user.id_token
+  }
+}
+
+function loginError(message) {
+  return {
+    type: LOGIN_FAILURE,
+    isFetching: false,
+    isAuthenticated: false,
+    message
+  }
+}
+
+function requestLogout() {
+  return {
+    type: LOGOUT_REQUEST,
+    isFetching: true,
+    isAuthenticated: true
+  }
+}
+
+function receiveLogout() {
+  return {
+    type: LOGOUT_SUCCESS,
+    isFetching: false,
+    isAuthenticated: false
+  }
+}
+
+function logoutError(err) {
+  return {
+    type: LOGOUT_FAILURE,
+    isFetching: false,
+    isAuthenticated: false,
+    err
+  }
+}
+
+function showLock() {
+  return {
+    type: SHOW_LOCK
+  }
+}
+
+function lockSuccess(profile, token) {
+  return {
+    type: LOCK_SUCCESS,
+    profile,
+    token
+  }
+}
+
+function lockError(err) {
+  return {
+    type: LOCK_ERROR,
+    err
+  }
+}
+
+function login() {
+  const lock = new Auth0Lock('YOUR_CLIENT_ID', 'YOUR_CLIENT_DOMAIN');
+  return dispatch => {
+    lock.show((err, profile, token) => {
+      if(err) {
+        dispatch(lockError(err))
+        return
+      }
+      localStorage.setItem('profile', JSON.stringify(profile))
+      localStorage.setItem('id_token', token)
+      dispatch(lockSuccess(profile, token))
+    })
+  }
+}
 
 /* Redux Action Creators */
 
@@ -373,6 +463,16 @@ function getTags() {
   // };
 }
 
+exports.requestLogin = requestLogin;
+exports.receiveLogin = receiveLogin;
+exports.loginError = loginError;
+exports.requestLogout = requestLogout;
+exports.receiveLogout = receiveLogout;
+exports.logoutError = logoutError;
+exports.showLock = showLock;
+exports.lockSuccess = lockSuccess;
+exports.lockError = lockError;
+exports.login = login;
 exports.searchTextChange = searchTextChange;
 exports.addBookmark = addBookmark;
 exports.addFolder = addFolder;

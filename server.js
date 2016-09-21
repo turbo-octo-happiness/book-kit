@@ -4,6 +4,8 @@ const logger = require('morgan');
 const bookmarksRoutes = require('./routes/bookmarks');
 const foldersRoutes = require('./routes/folders');
 const tagsRoutes = require('./routes/tags');
+const jwt = require('express-jwt');
+require('dotenv').config();
 
 
 /* ---- Initial Setup ---- */
@@ -16,6 +18,10 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
+});
+const authenticate = jwt({
+  secret: new Buffer(process.env.AUTH0_SECRET, 'base64'),
+  audience: process.env.AUTH0_CLIENT_ID
 });
 
 // Serves the frontend code at the root
