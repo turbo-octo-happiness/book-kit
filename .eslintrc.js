@@ -6,6 +6,7 @@ module.exports = {
         "import"
     ],
     "rules": {
+        "new-cap": [2, { "capIsNewExceptions": ["Router"] }],
         "arrow-body-style": [ "error", "always" ]
     }
 };
