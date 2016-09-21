@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "dev": "nodemon server.js",
     "heroku-postbuild": "npm run build",
     "test": "mocha --compilers js:babel-register test/**/*.js*",
     "mkdir": "mkdir -p public/build",
@@ -35,16 +36,22 @@
   },
   "homepage": "https://github.com/turbo-octo-happiness/book-kit#readme",
   "dependencies": {
+    "auth0-js": "^7.2.0",
     "body-parser": "^1.15.2",
+    "dotenv": "^2.0.0",
     "express": "^4.14.0",
-    "pg": "^6.0.3",
+    "express-jwt": "^5.0.0",
     "isomorphic-fetch": "^2.2.1",
+    "jwt-decode": "^2.1.0",
+    "morgan": "^1.7.0",
+    "pg": "^6.0.3",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
     "react-router-form": "^1.0.2",
     "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0"
   },
   "devDependencies": {

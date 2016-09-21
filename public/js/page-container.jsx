@@ -5,6 +5,7 @@ import actions from './redux/actions';
 
 class PageContainer extends React.Component {
   componentDidMount() {
+    console.log(actions)
     this.props.dispatch(actions.getBookmarks());
     this.props.dispatch(actions.getFolders());
   }

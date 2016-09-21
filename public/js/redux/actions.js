@@ -1,9 +1,75 @@
 import fetch from 'isomorphic-fetch';
+import { CALL_API } from '../../middleware/api'
 import actionTypes from './constants';
+import { Router, Route, hashHistory, IndexRoute } from 'react-router';
+// import AuthService from '../../utils/AuthService';
+// import Auth0Lock from 'auth0-lock'
 
 // URL for heroku: https://shrouded-journey-65738.herokuapp.com/
 // URL for localhost: https://localhost:5000
 
+/* Auth Lock Actions */
+
+function loginSuccess(profile, token) {
+  return {
+    type: actionTypes.LOGIN_SUCCESS,
+    profile,
+    token
+  }
+}
+
+function loginError(error) {
+  return {
+    type: actionTypes.LOGIN_ERROR,
+    error
+  }
+}
+
+function login() {
+  var options = {
+        auth: {
+          responseType: 'token',
+          params: {
+            scope: 'openid name email'
+          }
+        }
+      }
+  const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
+    auth: {
+      params: {
+        scope: 'openid email'
+      }
+    }
+  });
+  return (dispatch) => {
+    console.log('inside dispatch')
+    lock.show((error, profile, token) => {
+      console.log('lock.show() ->')
+      if(error) {
+        return dispatch(loginError(error))
+      }
+      localStorage.setItem('profile', JSON.stringify(profile))
+      localStorage.setItem('id_token', token)
+      console.log(token)
+      hashHistory.push('/main')
+      return dispatch(loginSuccess(profile, token))
+    })
+  }
+}
+
+function logoutSuccess(profile) {
+  return {
+    type: actionTypes.LOGOUT_SUCCESS
+  }
+}
+
+function logout() {
+  return dispatch => {
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('profile');
+    return dispatch(logoutSuccess());
+  }
+}
 /* Redux Action Creators */
 
 function searchTextChange(text) {
@@ -373,6 +439,8 @@ function getTags() {
   // };
 }
 
+exports.logout = logout;
+exports.login = login;
 exports.searchTextChange = searchTextChange;
 exports.addBookmark = addBookmark;
 exports.addFolder = addFolder;
