@@ -3,7 +3,16 @@ import Auth0 from 'auth0-js'
 export default class AuthService {
   constructor(clientId, domain) {
     super()
+    var options = {
+      auth: {
+        responseType: 'token',
+        params: {
+          scope: 'openid name email'
+        }
+      }
+    }
     // Configure Auth0
+    this.lock = new Auth0Lock(clientId, domain, options)
     this.auth0 = new Auth0({
       clientID: clientId,
       domain: domain,
