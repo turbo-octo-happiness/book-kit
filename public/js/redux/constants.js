@@ -1,3 +1,14 @@
+/* Auth Lock Actions */
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
+export const SHOW_LOCK = 'SHOW_LOCK';
+export const LOCK_SUCCESS = 'LOCK_SUCCESS';
+export const LOCK_ERROR = 'LOCK_ERROR';
+
 /* Redux Action Names */
 export const SEARCH_TEXT_CHANGE = 'SEARCH_TEXT_CHANGE';
 
