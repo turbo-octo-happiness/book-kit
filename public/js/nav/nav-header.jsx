@@ -1,31 +1,21 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import Folder from './nav-folder-container';
 import BookmarkFormContainer from '../content/bookmark-form-container';
 
-const propTypes = {
-  addFolder: PropTypes.func,
-  folders: PropTypes.array,
-  onAddInput: PropTypes.func,
-};
-
 class Navbar extends React.Component {
-  constructor() {
-    super();
-    this.onAddFolder = this.onAddFolder.bind(this);
-  }
-
-  onAddFolder(event) {
-    event.preventDefault();
-    this.props.addFolder(this.newFolder.value);
-    this.newFolder.value = '';
-  }
-
   render() {
-    const folderArr = [];
-    this.props.folders.forEach((folder, index) => {
-      folderArr.push(<Folder key={index} folder={folder} />);
-    });
+    const { onLogoutClick, profile, isAuthenticated } = this.props
+    let logoutButton;
+    if (isAuthenticated) {
+      logoutButton = (
+        <div className="navbar-form navbar-right">
+            <img src={profile.picture} height="40px" />
+            <Link to={'/'} >
+              <button className="btn btn-primary" onClick={onLogoutClick}>Logout</button>
+            </Link>
+        </div>
+      )
+    }
 
     return (
       <header>
@@ -47,41 +37,7 @@ class Navbar extends React.Component {
                 </div>
               </li>
             </ul>
-            <form className="navbar-form navbar-right">
-              <div className="form-group">
-                <input
-                  type="text"
-                  onChange={this.props.onAddInput}
-                  placeholder="Search..."
-                  className="search-bar form-control"
-                />
-              </div>
-            </form>
-            <ul className="nav navbar-nav navbar-right">
-              <li className="dropdown">
-                <a
-                  className="dropdown-toggle"
-                  data-toggle="dropdown"
-                  role="button"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >Folders <span className="caret" />
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <form onSubmit={this.onAddFolder}>
-                      <input
-                        className="form-control"
-                        placeholder="Add Folder"
-                        type="text"
-                        ref={newFolder => { this.newFolder = newFolder; }}
-                      />
-                    </form>
-                  </li>
-                  {folderArr}
-                </ul>
-              </li>
-            </ul>
+            {logoutButton}
           </div>
         </nav>
       </header>
@@ -89,6 +45,4 @@ class Navbar extends React.Component {
   }
 }
 
-Navbar.propTypes = propTypes;
-
-module.exports = Navbar;
+export default Navbar;
