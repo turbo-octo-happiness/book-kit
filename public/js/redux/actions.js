@@ -14,50 +14,53 @@ function loginSuccess(profile, token) {
   return {
     type: actionTypes.LOGIN_SUCCESS,
     profile,
-    token
-  }
+    token,
+  };
 }
 
 function loginError(error) {
   return {
     type: actionTypes.LOGIN_ERROR,
-    error
-  }
+    error,
+  };
 }
 
 function login() {
-  var options = {
-        auth: {
-          responseType: 'token',
-          params: {
-            scope: 'openid name email'
-          }
-        }
-      }
+  const options = {
+    auth: {
+      responseType: 'token',
+      params: {
+        scope: 'openid name email',
+      },
+    },
+  };
+
   const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
     auth: {
       params: {
-        scope: 'openid email'
-      }
-    }
+        scope: 'openid email',
+      },
+    },
   });
+
   return (dispatch) => {
     lock.show((error, profile, token) => {
-      if(error) {
-        return dispatch(loginError(error))
+      if (error) {
+        return dispatch(loginError(error));
       }
-      localStorage.setItem('profile', JSON.stringify(profile))
-      localStorage.setItem('id_token', token)
-      hashHistory.push('/main')
-      return dispatch(loginSuccess(profile, token))
-    })
-  }
+
+      localStorage.setItem('profile', JSON.stringify(profile));
+      localStorage.setItem('id_token', token);
+      hashHistory.push('/main');
+      return dispatch(loginSuccess(profile, token));
+    });
+  };
 }
 
 function logoutSuccess(profile) {
   return {
-    type: actionTypes.LOGOUT_SUCCESS
-  }
+    type: actionTypes.LOGOUT_SUCCESS,
+  };
 }
 
 function logout() {
@@ -65,7 +68,7 @@ function logout() {
     localStorage.removeItem('id_token');
     localStorage.removeItem('profile');
     return dispatch(logoutSuccess());
-  }
+  };
 }
 /* Redux Action Creators */
 
