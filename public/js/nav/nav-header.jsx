@@ -16,6 +16,7 @@ class Navbar extends React.Component {
   }
 
   render() {
+    const { onLogoutClick } = this.props
     return (
       <header>
         <nav className="navbar navbar-default">
@@ -37,7 +38,11 @@ class Navbar extends React.Component {
               </li>
             </ul>
             <div className="navbar-form navbar-right">
-              /* TODO: Welcome / Logout display here */
+
+              <ul className="list-inline">
+                <li><button className="btn btn-primary" onClick={onLogoutClick}>Logout</button></li>
+              </ul>
+
             </div>
           </div>
         </nav>

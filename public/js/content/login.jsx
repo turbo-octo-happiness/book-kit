@@ -6,7 +6,7 @@ export default class Auth extends Component {
   }
 
   render() {
-    const { onLoginClick, onLogoutClick, isAuthenticated, profile } = this.props
+    const { onLoginClick, isAuthenticated, profile } = this.props
     return (
       <div style={{ marginTop: '10px' }}>
         { !isAuthenticated ? (
@@ -17,7 +17,6 @@ export default class Auth extends Component {
           <ul className="list-inline">
             <li><img src={profile.picture} height="40px" /></li>
             <li><span>Welcome, {profile.nickname}</span></li>
-            <li><button className="btn btn-primary" onClick={onLogoutClick}>Logout</button></li>
           </ul>
         )}
       </div>

@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './nav-header';
-import actions from '../redux/actions';
+import { logout } from '../redux/actions';
+// import actions from '../redux/actions';
 
 const propTypes = {
   dispatch: PropTypes.func,
@@ -12,25 +13,17 @@ const propTypes = {
 class NavbarContainer extends React.Component {
   constructor() {
     super();
-    this.addFolder = this.addFolder.bind(this);
-    this.onAddInput = this.onAddInput.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
 
-  onAddInput(event) {
-    const text = event.target.value;
-    this.props.dispatch(actions.searchTextChange(text));
-  }
-
-  addFolder(folder) {
-    this.props.dispatch(actions.addFolder(folder));
+  handleLogoutClick() {
+    this.props.logout()
   }
 
   render() {
     return (
       <Navbar
-        folders={this.props.folders}
-        onAddInput={this.onAddInput}
-        addFolder={this.addFolder}
+        onLogoutClick={this.handleLogoutClick}
       />
     );
   }
@@ -44,6 +37,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const Container = connect(mapStateToProps)(NavbarContainer);
-
-module.exports = Container;
+export default connect(mapStateToProps, {
+  logout,
+})(NavbarContainer);

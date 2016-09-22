@@ -1,4 +1,25 @@
 /* Folder Management originally from Navbar */
+
+  onAddInput(event) {
+    const text = event.target.value;
+    this.props.dispatch(actions.searchTextChange(text));
+  }
+
+  addFolder(folder) {
+    this.props.dispatch(actions.addFolder(folder));
+  }
+
+  render() {
+    return (
+      <Navbar
+        folders={this.props.folders}
+        onAddInput={this.onAddInput}
+        addFolder={this.addFolder}
+      />
+    );
+  }
+
+
   onAddFolder(event) {
     event.preventDefault();
     this.props.addFolder(this.newFolder.value);
