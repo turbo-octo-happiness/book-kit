@@ -2,11 +2,9 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './nav-header';
 import { logout } from '../redux/actions';
-// import actions from '../redux/actions';
 
 const propTypes = {
   dispatch: PropTypes.func,
-  folders: PropTypes.array,
 };
 
 
@@ -24,6 +22,8 @@ class NavbarContainer extends React.Component {
     return (
       <Navbar
         onLogoutClick={this.handleLogoutClick}
+        isAuthenticated={this.props.isAuthenticated}
+        profile={this.props.profile}
       />
     );
   }
@@ -31,11 +31,14 @@ class NavbarContainer extends React.Component {
 
 NavbarContainer.propTypes = propTypes;
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
+  const { auth } = state;
+  const { isAuthenticated, profile } = auth;
   return {
-    folders: state.folders,
+    isAuthenticated,
+    profile,
   };
-};
+}
 
 export default connect(mapStateToProps, {
   logout,

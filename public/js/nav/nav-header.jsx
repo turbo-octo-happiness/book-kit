@@ -1,22 +1,22 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-// import Folder from './nav-folder-container';
 import BookmarkFormContainer from '../content/bookmark-form-container';
 
-const propTypes = {
-  addFolder: PropTypes.func,
-  folders: PropTypes.array,
-  onAddInput: PropTypes.func,
-};
-
 class Navbar extends React.Component {
-  constructor() {
-    super();
-
-  }
-
   render() {
-    const { onLogoutClick } = this.props
+    const { onLogoutClick, profile, isAuthenticated } = this.props
+    let logoutButton;
+    if (isAuthenticated) {
+      logoutButton = (
+        <div className="navbar-form navbar-right">
+            <img src={profile.picture} height="40px" />
+            <Link to={'/'} >
+              <button className="btn btn-primary" onClick={onLogoutClick}>Logout</button>
+            </Link>
+        </div>
+      )
+    }
+
     return (
       <header>
         <nav className="navbar navbar-default">
@@ -37,13 +37,7 @@ class Navbar extends React.Component {
                 </div>
               </li>
             </ul>
-            <div className="navbar-form navbar-right">
-
-              <ul className="list-inline">
-                <li><button className="btn btn-primary" onClick={onLogoutClick}>Logout</button></li>
-              </ul>
-
-            </div>
+            {logoutButton}
           </div>
         </nav>
       </header>
@@ -51,6 +45,4 @@ class Navbar extends React.Component {
   }
 }
 
-Navbar.propTypes = propTypes;
-
-module.exports = Navbar;
+export default Navbar;
