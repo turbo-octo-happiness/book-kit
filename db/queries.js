@@ -4,16 +4,16 @@ exports.CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/boo
 /* ---- Postgres Queries Used by the API ---- */
 exports.SELECT_TAG = `SELECT tag
                       FROM tag NATURAL JOIN bookmark_tags NATURAL JOIN bookmark NATURAL JOIN user
-                      WHERE userid = $1;`;
+                      WHERE customerid = $1;`;
 
 exports.SELECT_FOLDER = `SELECT DISTINCT folderid, foldername
-                        FROM folder NATURAL JOIN bookmark NATURAL JOIN user
-                        WHERE userid = $1;`;
+                        FROM folder NATURAL JOIN bookmark NATURAL JOIN customer
+                        WHERE customerid = $1;`;
 
 exports.SELECT_BOOKMARK = `SELECT bookmarkid, url, title, description, foldername, folderid,
                             screenshot
-                          FROM bookmark NATURAL JOIN folder NATURAL JOIN user
-                          WHERE userid = $1;`;
+                          FROM bookmark NATURAL JOIN folder NATURAL JOIN "customer"
+                          WHERE customeridentity = $1;`;
 
 exports.SELECT_BOOKMARK_BY_FOLDER = `SELECT bookmarkid, url, title, description, foldername,
                                       screenshot
@@ -33,7 +33,7 @@ exports.SELECT_BOOKMARK_BY_TAG = `SELECT bookmark.bookmarkid, url, title, descri
                                     WHERE tag.tagid = $1);`;
 
 exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
-                              folderid, screenshot, userid)
+                              folderid, screenshot, customerid)
                             VALUES ($1, $2, $3, $4, $5, $6)
                             RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
@@ -46,9 +46,13 @@ exports.DELETE_BOOKMARK = 'DELETE FROM bookmark WHERE bookmarkid = $1 RETURNING 
 exports.DELETE_FOLDER = 'DELETE FROM folder WHERE folderid = $1 RETURNING *;';
 
 exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot,
-                            userid) = ($1, $2, $3, $4, $5, $6)
+                            customerid) = ($1, $2, $3, $4, $5, $6)
                           WHERE bookmarkid = ($7)
                           RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
 exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($2)
                         RETURNING folderid, foldername;`;
+
+
+exports.INSERT_USER = `INSERT INTO customer(customeridentity)
+                        values ($1) on conflict (customeridentity) do nothing;`;

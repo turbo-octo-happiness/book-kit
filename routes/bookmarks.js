@@ -6,16 +6,29 @@ const dbConnect = require('../dbConnect');
 const router = express.Router();
 
 /**
- * @description `GET /bookmarks/:userid` enpoint; returns an array of all the
- * bookmarks associated with a given user.
+ * @description `GET /bookmarks/:userIdentity` enpoint; returns an array of all the
+ * bookmarks associated with a given user. If the user doesn't exit in the database,
+ * they are added.
  */
-router.get('/', (request, response) => {
-  // const userid = request.params.userid;
-
-  dbConnect(queries.SELECT_BOOKMARK, [1]).then((result) => {
-    response.json(result.rows);
-  }).catch((errorcode) => {
-    response.status(errorcode);
+router.get('/:userIdentity', (request, response) => {
+  const userIdentity = request.params.userIdentity;
+  console.log('userIdentity -> ', userIdentity);
+  dbConnect(queries.SELECT_BOOKMARK, [userIdentity]).then((result) => {
+    console.log('result.rows -> ', result);
+    const resultsToReturn = result.rows;
+    console.log(typeof result + ' === ' + "'undefined' should equal" + typeof result === 'undefined')
+    if (typeof result === 'undefined') {
+      console.lgo('!resultsToReturn');
+      dbConnect(queries.INSERT_USER, [userIdentity]).then(() => {
+        console.log('user');
+        response.json(resultsToReturn);
+      }).catch((userErrorCode) => {
+        response.status(userErrorCode);
+      });
+    }
+    response.json(resultsToReturn);
+  }).catch((errorCode) => {
+    response.status(errorCode);
   });
 });
 

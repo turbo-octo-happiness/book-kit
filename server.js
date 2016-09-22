@@ -6,7 +6,7 @@ const foldersRoutes = require('./routes/folders');
 const tagsRoutes = require('./routes/tags');
 const jwt = require('express-jwt');
 require('dotenv').config();
-console.log(process.env)
+
 
 /* ---- Initial Setup ---- */
 const app = express();
@@ -22,8 +22,10 @@ app.use((req, res, next) => {
 
 const authenticate = jwt({
   secret: new Buffer(process.env.AUTH0_SECRET, 'base64'),
-  audience: process.env.AUTH0_CLIENT_ID
+  audience: process.env.AUTH0_CLIENT_ID,
 });
+
+// app.use(authenticate);
 
 // Serves the frontend code at the root
 app.use(express.static('./public/build/'));

@@ -12,6 +12,8 @@ module.exports = (query, params) => {
       }
 
       client.query(query, params, (queryErr, result) => {
+        console.log('dbConnect -->', result)
+        console.log(queryErr)
         if (queryErr) {
           reject('500');
         }
