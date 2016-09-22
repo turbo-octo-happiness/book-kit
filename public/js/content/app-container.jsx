@@ -36,5 +36,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  login,
+  logout,
 })(Container);
