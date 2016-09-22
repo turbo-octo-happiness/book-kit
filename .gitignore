@@ -12,3 +12,6 @@ build
 
 # Auth
 .env
+
+# Notes
+stuff.jsx

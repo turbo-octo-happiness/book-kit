@@ -1,36 +1,29 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './nav-header';
-import actions from '../redux/actions';
+import { logout } from '../redux/actions';
 
 const propTypes = {
   dispatch: PropTypes.func,
-  folders: PropTypes.array,
 };
 
 
 class NavbarContainer extends React.Component {
   constructor() {
     super();
-    this.addFolder = this.addFolder.bind(this);
-    this.onAddInput = this.onAddInput.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
 
-  onAddInput(event) {
-    const text = event.target.value;
-    this.props.dispatch(actions.searchTextChange(text));
-  }
-
-  addFolder(folder) {
-    this.props.dispatch(actions.addFolder(folder));
+  handleLogoutClick() {
+    this.props.logout()
   }
 
   render() {
     return (
       <Navbar
-        folders={this.props.folders}
-        onAddInput={this.onAddInput}
-        addFolder={this.addFolder}
+        onLogoutClick={this.handleLogoutClick}
+        isAuthenticated={this.props.isAuthenticated}
+        profile={this.props.profile}
       />
     );
   }
@@ -38,12 +31,15 @@ class NavbarContainer extends React.Component {
 
 NavbarContainer.propTypes = propTypes;
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
+  const { auth } = state;
+  const { isAuthenticated, profile } = auth;
   return {
-    folders: state.folders,
+    isAuthenticated,
+    profile,
   };
-};
+}
 
-const Container = connect(mapStateToProps)(NavbarContainer);
-
-module.exports = Container;
+module.exports = connect(mapStateToProps, {
+  logout,
+})(NavbarContainer);

@@ -5,6 +5,7 @@ import { hashHistory } from 'react-router';
 import actions from '../redux/actions';
 
 class Auth extends Component {
+
   constructor(props) {
     super(props);
   }

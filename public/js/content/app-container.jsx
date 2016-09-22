@@ -1,6 +1,6 @@
 import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
-import { login, logout } from '../redux/actions';
+import { logout } from '../redux/actions';
 import Auth from './login';
 
 class Container extends React.Component {
@@ -8,10 +8,6 @@ class Container extends React.Component {
     super(props);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
-
-  // handleLoginClick() {
-  //   this.props.login();
-  // }
 
   handleLogoutClick() {
     this.props.logout();
@@ -24,7 +20,6 @@ class Container extends React.Component {
         <Auth
           isAuthenticated={isAuthenticated}
           profile={profile}
-          // onLoginClick={this.handleLoginClick}
           onLogoutClick={this.handleLogoutClick}
         />
         {this.props.children}
@@ -42,5 +37,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   login,
-  logout,
 })(Container);
