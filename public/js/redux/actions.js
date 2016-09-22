@@ -1,16 +1,22 @@
 import fetch from 'isomorphic-fetch';
+import Auth0Lock from 'auth0-lock';
 import { CALL_API } from '../../middleware/api'
 import actionTypes from './constants';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 // import AuthService from '../../utils/AuthService';
-// import Auth0Lock from 'auth0-lock'
 
 // URL for heroku: https://shrouded-journey-65738.herokuapp.com/
 // URL for localhost: https://localhost:5000
 
 /* Auth Lock Actions */
 
-function loginSuccess(profile, token) {
+/*
+eric's acct:
+id: 6ElpyE9EazmBox2b9PAWytCnFJQTxBCa
+domain: ericsnell.auth0.com
+*/
+
+function loginSuccess(token, profile) {
   return {
     type: actionTypes.LOGIN_SUCCESS,
     profile,
@@ -22,38 +28,6 @@ function loginError(error) {
   return {
     type: actionTypes.LOGIN_ERROR,
     error,
-  };
-}
-
-function login() {
-  const options = {
-    auth: {
-      responseType: 'token',
-      params: {
-        scope: 'openid name email',
-      },
-    },
-  };
-
-  const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
-    auth: {
-      params: {
-        scope: 'openid email',
-      },
-    },
-  });
-
-  return (dispatch) => {
-    lock.show((error, profile, token) => {
-      if (error) {
-        return dispatch(loginError(error));
-      }
-
-      localStorage.setItem('profile', JSON.stringify(profile));
-      localStorage.setItem('id_token', token);
-      hashHistory.push('/main');
-      return dispatch(loginSuccess(profile, token));
-    });
   };
 }
 
@@ -440,7 +414,8 @@ function getTags() {
 }
 
 exports.logout = logout;
-exports.login = login;
+exports.loginSuccess = loginSuccess;
+exports.loginError = loginError;
 exports.searchTextChange = searchTextChange;
 exports.addBookmark = addBookmark;
 exports.addFolder = addFolder;

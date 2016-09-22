@@ -6,16 +6,15 @@ import Auth from './login';
 class Container extends React.Component {
   constructor(props) {
     super(props);
-    this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
 
-  handleLoginClick() {
-    this.props.login()
-  }
+  // handleLoginClick() {
+  //   this.props.login();
+  // }
 
   handleLogoutClick() {
-    this.props.logout()
+    this.props.logout();
   }
 
   render() {
@@ -25,7 +24,7 @@ class Container extends React.Component {
         <Auth
           isAuthenticated={isAuthenticated}
           profile={profile}
-          onLoginClick={this.handleLoginClick}
+          // onLoginClick={this.handleLoginClick}
           onLogoutClick={this.handleLogoutClick}
         />
         {this.props.children}
@@ -35,11 +34,9 @@ class Container extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { auth } = state;
-  const { isAuthenticated, profile } = auth;
   return {
-    isAuthenticated,
-    profile,
+    isAuthenticated: state.auth.isAuthenticated,
+    profile: state.auth.profile,
   };
 }
 
