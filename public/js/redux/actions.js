@@ -1,37 +1,43 @@
 import fetch from 'isomorphic-fetch';
-import Auth0Lock from 'auth0-lock';
-import { CALL_API } from '../../middleware/api'
 import actionTypes from './constants';
-import { Router, Route, hashHistory, IndexRoute } from 'react-router';
-// import AuthService from '../../utils/AuthService';
 
 // URL for heroku: https://shrouded-journey-65738.herokuapp.com/
 // URL for localhost: https://localhost:5000
 
-/* Auth Lock Actions */
+/* Fetch Helper Function */
 
-/*
-eric's acct:
-id: 6ElpyE9EazmBox2b9PAWytCnFJQTxBCa
-domain: ericsnell.auth0.com
-*/
+function fetchHelp(url, init = {}) {
+  return new Promise((resolve, reject) => {
+    fetch(url, init).then((res) => {
+      if (res.status < 200 || res.status >= 300) {
+        const error = new Error(res.statusText);
+        error.response = res;
+        reject(error);
+      }
+
+      resolve(res.json());
+    });
+  });
+}
+
+/* Auth Lock Actions */
 
 function loginSuccess(token, profile) {
   return {
-    type: actionTypes.LOGIN_SUCCESS,
     profile,
     token,
+    type: actionTypes.LOGIN_SUCCESS,
   };
 }
 
 function loginError(error) {
   return {
-    type: actionTypes.LOGIN_ERROR,
     error,
+    type: actionTypes.LOGIN_ERROR,
   };
 }
 
-function logoutSuccess(profile) {
+function logoutSuccess() {
   return {
     type: actionTypes.LOGOUT_SUCCESS,
   };
@@ -44,6 +50,7 @@ function logout() {
     return dispatch(logoutSuccess());
   };
 }
+
 /* Redux Action Creators */
 
 function searchTextChange(text) {
@@ -76,15 +83,9 @@ function getBookmarks(token) {
     };
 
     const url = 'http://localhost:5000/bookmarks';
-    return fetch(url, init).then((res) => {
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        throw error;
-      }
+    const newFetch = fetchHelp(url, init);
 
-      return res.json();
-    }).then((bookmarks) => {
+    newFetch.then((bookmarks) => {
       return dispatch(
         getBookmarksSuccess(bookmarks)
       );
@@ -122,15 +123,9 @@ function addBookmark(newBookmark) {
     };
 
     const url = 'http://localhost:5000/bookmarks';
-    fetch(url, init).then((res) => {
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.reponse = res;
-        throw error;
-      }
+    const newFetch = fetchHelp(url, init);
 
-      return res.json();
-    }).then((bookmark) => {
+    newFetch.then((bookmark) => {
       return dispatch(addBookmarkSuccess(bookmark));
     }).catch((error) => {
       return dispatch(addBookmarkError(error));
@@ -165,15 +160,9 @@ function editBookmark(editedBookmark) {
     };
 
     const url = `http://localhost:5000/bookmarks/${editedBookmark.bookmarkid}`;
-    fetch(url, init).then((res) => {
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        throw error;
-      }
+    const newFetch = fetchHelp(url, init);
 
-      return res.json();
-    }).then((bookmark) => {
+    newFetch.then((bookmark) => {
       return dispatch(editBookmarkSuccess(bookmark));
     }).catch((err) => {
       return dispatch(editBookmarkError(err));
@@ -207,15 +196,9 @@ function deleteBookmark(bookmarkid) {
     };
 
     const url = `http://localhost:5000/bookmarks/${bookmarkid}`;
-    fetch(url, init).then((res) => {
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        throw error;
-      }
+    const newFetch = fetchHelp(url, init);
 
-      return res.json();
-    }).then((bookmark) => {
+    newFetch.then((bookmark) => {
       return dispatch(deleteBookmarkSuccess(bookmark));
     }).catch((error) => {
       return dispatch(deleteBookmarkError(error));
@@ -246,15 +229,9 @@ function getFolders(token) {
     };
 
     const url = 'http://localhost:5000/folders';
-    return fetch(url, init).then((res) => {
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        throw error;
-      }
+    const newFetch = fetchHelp(url, init);
 
-      return res.json();
-    }).then((folders) => {
+    newFetch.then((folders) => {
       return dispatch(
         getFoldersSuccess(folders)
       );
@@ -293,15 +270,11 @@ function addFolder(newFolder) {
         foldername: newFolder,
       }),
     };
+
     const url = 'http://localhost:5000/folders';
-    fetch(url, init).then((res) => {
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        throw error;
-      }
-      return res.json();
-    }).then((folder) => {
+    const newFetch = fetchHelp(url, init);
+
+    newFetch.then((folder) => {
       return dispatch(addFolderSuccess(folder));
     }).catch((error) => {
       return dispatch(addFolderError(error));
@@ -340,15 +313,9 @@ function editFolder(folderId, folderName) {
       body: JSON.stringify(folder),
     };
     const url = `http://localhost:5000/folders/${folderId}`;
-    fetch(url, init).then((res) => {
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        throw error;
-      }
+    const newFetch = fetchHelp(url, init);
 
-      return res.json();
-    }).then((editedFolder) => {
+    newFetch.then((editedFolder) => {
       dispatch(editFolderSuccess(editedFolder));
     }).catch((error) => {
       dispatch(editFolderError(error));
@@ -382,15 +349,9 @@ function deleteFolder(folderid) {
     };
 
     const url = `http://localhost:5000/folders/${folderid}`;
-    fetch(url, init).then((res) => {
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        throw error;
-      }
+    const newFetch = fetchHelp(url, init);
 
-      return res.json();
-    }).then((folder) => {
+    newFetch.then((folder) => {
       return dispatch(deleteFolderSuccess(folder));
     }).catch((error) => {
       return dispatch(deleteFolderError(error));
