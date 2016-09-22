@@ -1,8 +1,15 @@
 import fetch from 'isomorphic-fetch';
 import Auth0Lock from 'auth0-lock';
-import { CALL_API } from '../../middleware/api'
+import {
+  CALL_API
+} from '../../middleware/api'
 import actionTypes from './constants';
-import { Router, Route, hashHistory, IndexRoute } from 'react-router';
+import {
+  Router,
+  Route,
+  hashHistory,
+  IndexRoute
+} from 'react-router';
 // import AuthService from '../../utils/AuthService';
 
 // URL for heroku: https://shrouded-journey-65738.herokuapp.com/
@@ -70,10 +77,15 @@ function getBookmarksError(error) {
 }
 
 function getBookmarks(token) {
+  console.log('token -> ', token)
   return (dispatch) => {
     const init = {
-      Authorization: `Bearer ${token}`,
-    };
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      } };
 
     const url = 'http://localhost:5000/bookmarks';
     return fetch(url, init).then((res) => {
@@ -240,10 +252,15 @@ function getFoldersError(error) {
 }
 
 function getFolders(token) {
+  console.log('token -> ', token)
   return (dispatch) => {
     const init = {
-      Authorization: `Bearer ${token}`,
-    };
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      } };
 
     const url = 'http://localhost:5000/folders';
     return fetch(url, init).then((res) => {
@@ -417,7 +434,7 @@ function getTagsError(error) {
 
 function getTags() {
   // return function(dispatch) {
-    // return dispatch(getTagsSuccess(storage.tags));
+  // return dispatch(getTagsSuccess(storage.tags));
   // };
 }
 

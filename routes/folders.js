@@ -10,10 +10,10 @@ const router = express.Router();
  * folders stored in the database.
  */
 router.get('/', (request, response) => {
-  // const userid = request.params.userid;
+  const userIdentity = request.user.identities.user_id;
 
   // Paramitarize query to protect against SQL injection
-  dbConnect(queries.SELECT_FOLDER, [1]).then((result) => {
+  dbConnect(queries.SELECT_FOLDER, [userIdentity]).then((result) => {
     // Convert the array of folder objects returned from database
     // into an array of Strings.
     const resultsToReturn = result.rows.map((value) => {

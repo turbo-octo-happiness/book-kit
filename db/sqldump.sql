@@ -44,7 +44,7 @@ CREATE TABLE bookmark (
     folderid integer,
     screenshot character varying(100) DEFAULT 'http://placekitten.com/200/300'::character varying,
     bookmarkid integer NOT NULL,
-    userid integer
+    customerid integer
 );
 
 
@@ -74,6 +74,16 @@ ALTER SEQUENCE bookmark_bookmarkid_seq OWNED BY bookmark.bookmarkid;
 CREATE TABLE bookmark_tags (
     bookmarkid integer NOT NULL,
     tagid integer NOT NULL
+);
+
+
+--
+-- Name: customer; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE customer (
+    customerid integer NOT NULL,
+    customeridentity integer
 );
 
 
@@ -136,18 +146,6 @@ ALTER SEQUENCE tag_tagid_seq OWNED BY tag.tagid;
 
 
 --
--- Name: user; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE "user" (
-    userid integer NOT NULL,
-    username character varying(12) DEFAULT ''::character varying NOT NULL,
-    password character varying(40) NOT NULL,
-    salt character varying(100) DEFAULT ''::character varying NOT NULL
-);
-
-
---
 -- Name: user_userid_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -163,7 +161,7 @@ CREATE SEQUENCE user_userid_seq
 -- Name: user_userid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE user_userid_seq OWNED BY "user".userid;
+ALTER SEQUENCE user_userid_seq OWNED BY customer.customerid;
 
 
 --
@@ -171,6 +169,13 @@ ALTER SEQUENCE user_userid_seq OWNED BY "user".userid;
 --
 
 ALTER TABLE ONLY bookmark ALTER COLUMN bookmarkid SET DEFAULT nextval('bookmark_bookmarkid_seq'::regclass);
+
+
+--
+-- Name: customerid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY customer ALTER COLUMN customerid SET DEFAULT nextval('user_userid_seq'::regclass);
 
 
 --
@@ -188,19 +193,15 @@ ALTER TABLE ONLY tag ALTER COLUMN tagid SET DEFAULT nextval('tag_tagid_seq'::reg
 
 
 --
--- Name: userid; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY "user" ALTER COLUMN userid SET DEFAULT nextval('user_userid_seq'::regclass);
-
-
---
 -- Data for Name: bookmark; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY bookmark (url, title, description, folderid, screenshot, bookmarkid, userid) FROM stdin;
+COPY bookmark (url, title, description, folderid, screenshot, bookmarkid, customerid) FROM stdin;
 http://www.makeuseof.com/tag/7-unique-ways-practice-coding-skills/	7 Unique Ways To Practice Your Coding Skills	Tips on improving your coding ability	1	https://makeuseof.com/wp-content/uploads/2014/11/coding-practice-644x250.jpg	5	1
 https://developers.google.com/edu/python/	Google's Python Class	Learn Python from the ground up	2	https://developers.google.com/edu/python/	6	1
+http://redux.js.org/docs/basics/Actions.html	Redux Actions	How to create an action in Redux.	2	https://image.slidesharecdn.com	7	1
+http://redux.js.org/docs/basics/Actions.html	Redux Actions	How to create an action in Redux.	2	https://image.slidesharecdn.com	8	1
+http://redux.js.org/docs/basics/Actions.html	Redux Actions	How to create an action in Redux.	2	https://image.slidesharecdn.com	9	1
 \.
 
 
@@ -208,7 +209,7 @@ https://developers.google.com/edu/python/	Google's Python Class	Learn Python fro
 -- Name: bookmark_bookmarkid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('bookmark_bookmarkid_seq', 6, true);
+SELECT pg_catalog.setval('bookmark_bookmarkid_seq', 10, true);
 
 
 --
@@ -220,13 +221,22 @@ COPY bookmark_tags (bookmarkid, tagid) FROM stdin;
 
 
 --
+-- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY customer (customerid, customeridentity) FROM stdin;
+1	\N
+\.
+
+
+--
 -- Data for Name: folder; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY folder (folderid, foldername) FROM stdin;
 1	Personal
 2	Work
-11	Test
+11	I am new
 \.
 
 
@@ -253,19 +263,10 @@ SELECT pg_catalog.setval('tag_tagid_seq', 1, false);
 
 
 --
--- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY "user" (userid, username, password, salt) FROM stdin;
-1	Bob	kdkdkd	kdkdkdkdkd
-\.
-
-
---
 -- Name: user_userid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('user_userid_seq', 1, false);
+SELECT pg_catalog.setval('user_userid_seq', 5, true);
 
 
 --
@@ -304,16 +305,16 @@ ALTER TABLE ONLY tag
 -- Name: user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY "user"
-    ADD CONSTRAINT user_pkey PRIMARY KEY (userid);
+ALTER TABLE ONLY customer
+    ADD CONSTRAINT user_pkey PRIMARY KEY (customerid);
 
 
 --
--- Name: user_username_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: bookmark_customerid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY "user"
-    ADD CONSTRAINT user_username_key UNIQUE (username);
+ALTER TABLE ONLY bookmark
+    ADD CONSTRAINT bookmark_customerid_fkey FOREIGN KEY (customerid) REFERENCES customer(customerid);
 
 
 --
@@ -338,14 +339,6 @@ ALTER TABLE ONLY bookmark_tags
 
 ALTER TABLE ONLY bookmark_tags
     ADD CONSTRAINT bookmark_tags_tagid_fkey FOREIGN KEY (tagid) REFERENCES tag(tagid);
-
-
---
--- Name: bookmark_userid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY bookmark
-    ADD CONSTRAINT bookmark_userid_fkey FOREIGN KEY (userid) REFERENCES "user"(userid);
 
 
 --

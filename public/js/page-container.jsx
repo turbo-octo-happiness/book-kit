@@ -6,6 +6,7 @@ import actions from './redux/actions';
 class PageContainer extends React.Component {
   componentDidMount() {
     console.log(actions)
+    console.log('PageContainer this.props.token: ', this.props.token)
     this.props.dispatch(actions.getBookmarks(this.props.token));
     this.props.dispatch(actions.getFolders(this.props.token));
   }
@@ -24,7 +25,7 @@ class PageContainer extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    token: state.token,
+    token: state.auth.token,
   };
 }
 

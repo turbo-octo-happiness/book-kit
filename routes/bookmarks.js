@@ -10,8 +10,9 @@ const router = express.Router();
  * bookmarks associated with a given user. If the user doesn't exit in the database,
  * they are added.
  */
-router.get('/:userIdentity', (request, response) => {
-  const userIdentity = request.params.userIdentity;
+router.get('/', (request, response) => {
+  console.log('request.user', request.user);
+  const userIdentity = request.user.identities.user_id;
   console.log('userIdentity -> ', userIdentity);
   dbConnect(queries.SELECT_BOOKMARK, [userIdentity]).then((result) => {
     console.log('result.rows -> ', result);

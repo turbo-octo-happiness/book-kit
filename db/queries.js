@@ -4,11 +4,11 @@ exports.CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/boo
 /* ---- Postgres Queries Used by the API ---- */
 exports.SELECT_TAG = `SELECT tag
                       FROM tag NATURAL JOIN bookmark_tags NATURAL JOIN bookmark NATURAL JOIN user
-                      WHERE customerid = $1;`;
+                      WHERE customeridentity = $1;`;
 
 exports.SELECT_FOLDER = `SELECT DISTINCT folderid, foldername
                         FROM folder NATURAL JOIN bookmark NATURAL JOIN customer
-                        WHERE customerid = $1;`;
+                        WHERE customeridentity = $1;`;
 
 exports.SELECT_BOOKMARK = `SELECT bookmarkid, url, title, description, foldername, folderid,
                             screenshot
