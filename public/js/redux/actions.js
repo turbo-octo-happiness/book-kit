@@ -85,7 +85,8 @@ function getBookmarks(token) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-      } };
+      },
+    };
 
     const url = 'http://localhost:5000/bookmarks';
     const newFetch = fetchHelp(url, init);
@@ -116,14 +117,16 @@ function addBookmarkError(error) {
   };
 }
 
-function addBookmark(newBookmark) {
+function addBookmark(newBookmark, token) {
   return (dispatch) => {
     const init = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
+
       body: JSON.stringify(newBookmark),
     };
 
@@ -153,13 +156,14 @@ function editBookmarkError(error) {
   };
 }
 
-function editBookmark(editedBookmark) {
+function editBookmark(editedBookmark, token) {
   return (dispatch) => {
     const init = {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(editedBookmark),
     };
@@ -190,13 +194,14 @@ function deleteBookmarkError(error) {
   };
 }
 
-function deleteBookmark(bookmarkid) {
+function deleteBookmark(bookmarkid, token) {
   return (dispatch) => {
     const init = {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     };
 
@@ -236,7 +241,8 @@ function getFolders(token) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-      } };
+      },
+    };
 
     const url = 'http://localhost:5000/folders';
     const newFetch = fetchHelp(url, init);
@@ -268,13 +274,14 @@ function addFolderError(error) {
   };
 }
 
-function addFolder(newFolder) {
+function addFolder(newFolder, token) {
   return (dispatch) => {
     const init = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         foldername: newFolder,
@@ -307,7 +314,7 @@ function editFolderError(error) {
   };
 }
 
-function editFolder(folderId, folderName) {
+function editFolder(folderId, folderName, token) {
   return (dispatch) => {
     const folder = {
       folderid: folderId,
@@ -319,6 +326,7 @@ function editFolder(folderId, folderName) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(folder),
     };
@@ -348,13 +356,14 @@ function deleteFolderError(error) {
   };
 }
 
-function deleteFolder(folderid) {
+function deleteFolder(folderid, token) {
   return (dispatch) => {
     const init = {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     };
 
