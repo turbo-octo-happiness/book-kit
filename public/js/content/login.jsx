@@ -1,17 +1,46 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import Auth0Lock from 'auth0-lock';
+import { hashHistory } from 'react-router';
+import actions from '../redux/actions';
 
-export default class Auth extends Component {
+class Auth extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+  }
+
+  getProfile(lock, authResult) {
+    lock.getProfile(authResult.idToken, (err, profile) => {
+      if (err) {
+        this.props.dispatch(actions.loginError(err));
+      }
+
+      this.props.dispatch(actions.loginSuccess(authResult.idToken, profile));
+      hashHistory.push('/main');
+    });
   }
 
   render() {
+    const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
+      auth: {
+        redirectUrl: 'http://localhost:5000/#/main',
+        responseType: 'token',
+        params: {
+          scope: 'openid name identities picture',
+        },
+      },
+    });
+
+    lock.on('authenticated', (authResult) => {
+      this.getProfile(lock, authResult);
+    });
+
     const { onLoginClick, onLogoutClick, isAuthenticated, profile } = this.props
     return (
       <div style={{ marginTop: '10px' }}>
         { !isAuthenticated ? (
           <ul className="list-inline">
-            <li><button className="btn btn-primary" onClick={onLoginClick}>Login</button></li>
+            <li><button className="btn btn-primary" onClick={() => { lock.show(); }}>Login</button></li>
           </ul>
         ) : (
           <ul className="list-inline">
@@ -21,6 +50,8 @@ export default class Auth extends Component {
           </ul>
         )}
       </div>
-    )
+    );
   }
 }
+
+module.exports = connect()(Auth);

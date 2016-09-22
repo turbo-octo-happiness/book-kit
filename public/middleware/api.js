@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-fetch';
 
-
 export const API_ROOT = 'http://localhost:7000/api/';
 
 function callApi(endpoint, authenticatedRequest) {

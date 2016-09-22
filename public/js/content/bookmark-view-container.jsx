@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import BookmarkView from './bookmark-view';
 import Folder from './bookmark-form-folder';
 import actions from '../redux/actions';
+
+const propTypes = {
+  dispatch: PropTypes.func,
+  bookmarks: PropTypes.array,
+  params: PropTypes.object,
+  folders: PropTypes.array,
+};
 
 class BookmarkViewContainer extends React.Component {
   constructor() {
@@ -49,7 +56,7 @@ class BookmarkViewContainer extends React.Component {
       return id === bkmark.bookmarkid.toString();
     });
 
-    let folderArr = [];
+    const folderArr = [];
     this.props.folders.forEach((folder, index) => {
       folderArr.push(<Folder key={index} folder={folder} />);
     });
@@ -75,6 +82,8 @@ const mapStateToProps = state => {
     folders: state.folders,
   };
 };
+
+BookmarkViewContainer.propTypes = propTypes;
 
 const Container = connect(mapStateToProps)(BookmarkViewContainer);
 

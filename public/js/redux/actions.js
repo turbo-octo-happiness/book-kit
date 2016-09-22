@@ -1,66 +1,40 @@
 import fetch from 'isomorphic-fetch';
+import Auth0Lock from 'auth0-lock';
 import { CALL_API } from '../../middleware/api'
 import actionTypes from './constants';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 // import AuthService from '../../utils/AuthService';
-// import Auth0Lock from 'auth0-lock'
 
 // URL for heroku: https://shrouded-journey-65738.herokuapp.com/
 // URL for localhost: https://localhost:5000
 
 /* Auth Lock Actions */
 
-function loginSuccess(profile, token) {
+/*
+eric's acct:
+id: 6ElpyE9EazmBox2b9PAWytCnFJQTxBCa
+domain: ericsnell.auth0.com
+*/
+
+function loginSuccess(token, profile) {
   return {
     type: actionTypes.LOGIN_SUCCESS,
     profile,
-    token
-  }
+    token,
+  };
 }
 
 function loginError(error) {
   return {
     type: actionTypes.LOGIN_ERROR,
-    error
-  }
-}
-
-function login() {
-  var options = {
-        auth: {
-          responseType: 'token',
-          params: {
-            scope: 'openid name email'
-          }
-        }
-      }
-  const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
-    auth: {
-      params: {
-        scope: 'openid email'
-      }
-    }
-  });
-  return (dispatch) => {
-    console.log('inside dispatch')
-    lock.show((error, profile, token) => {
-      console.log('lock.show() ->')
-      if(error) {
-        return dispatch(loginError(error))
-      }
-      localStorage.setItem('profile', JSON.stringify(profile))
-      localStorage.setItem('id_token', token)
-      console.log(token)
-      hashHistory.push('/main')
-      return dispatch(loginSuccess(profile, token))
-    })
-  }
+    error,
+  };
 }
 
 function logoutSuccess(profile) {
   return {
-    type: actionTypes.LOGOUT_SUCCESS
-  }
+    type: actionTypes.LOGOUT_SUCCESS,
+  };
 }
 
 function logout() {
@@ -68,7 +42,7 @@ function logout() {
     localStorage.removeItem('id_token');
     localStorage.removeItem('profile');
     return dispatch(logoutSuccess());
-  }
+  };
 }
 /* Redux Action Creators */
 
@@ -95,10 +69,14 @@ function getBookmarksError(error) {
   };
 }
 
-function getBookmarks() {
+function getBookmarks(token) {
   return (dispatch) => {
+    const init = {
+      Authorization: `Bearer ${token}`,
+    };
+
     const url = 'http://localhost:5000/bookmarks';
-    return fetch(url).then((res) => {
+    return fetch(url, init).then((res) => {
       if (res.status < 200 || res.status >= 300) {
         const error = new Error(res.statusText);
         error.response = res;
@@ -261,10 +239,14 @@ function getFoldersError(error) {
   };
 }
 
-function getFolders() {
+function getFolders(token) {
   return (dispatch) => {
+    const init = {
+      Authorization: `Bearer ${token}`,
+    };
+
     const url = 'http://localhost:5000/folders';
-    return fetch(url).then((res) => {
+    return fetch(url, init).then((res) => {
       if (res.status < 200 || res.status >= 300) {
         const error = new Error(res.statusText);
         error.response = res;
@@ -440,7 +422,8 @@ function getTags() {
 }
 
 exports.logout = logout;
-exports.login = login;
+exports.loginSuccess = loginSuccess;
+exports.loginError = loginError;
 exports.searchTextChange = searchTextChange;
 exports.addBookmark = addBookmark;
 exports.addFolder = addFolder;

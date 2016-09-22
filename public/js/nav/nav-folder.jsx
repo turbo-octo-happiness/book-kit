@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+
+const propTypes = {
+  show: PropTypes.bool,
+  folder: PropTypes.object,
+  onEdit: PropTypes.func,
+  onShowEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+};
 
 class Folder extends React.Component {
   render() {
-    let textStyle = this.props.show ? { display: 'none' } : {};
-    let inputStyle = this.props.show ? {} : { display: 'none' };
+    const textStyle = this.props.show ? { display: 'none' } : {};
+    const inputStyle = this.props.show ? {} : { display: 'none' };
     return (
       <li>
         <Link to={`/folders/${this.props.folder.foldername}`} style={textStyle}>
@@ -40,5 +48,7 @@ class Folder extends React.Component {
     );
   }
 }
+
+Folder.propTypes = propTypes;
 
 module.exports = Folder;

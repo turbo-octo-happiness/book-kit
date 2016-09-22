@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+
+const propTypes = {
+  folder: PropTypes.object,
+};
 
 function SelectFolder(props) {
   return (
@@ -7,5 +11,7 @@ function SelectFolder(props) {
     </option>
   );
 }
+
+SelectFolder.propTypes = propTypes;
 
 module.exports = SelectFolder;
