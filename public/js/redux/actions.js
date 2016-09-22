@@ -69,10 +69,14 @@ function getBookmarksError(error) {
   };
 }
 
-function getBookmarks() {
+function getBookmarks(token) {
   return (dispatch) => {
+    const init = {
+      Authorization: `Bearer ${token}`,
+    };
+
     const url = 'http://localhost:5000/bookmarks';
-    return fetch(url).then((res) => {
+    return fetch(url, init).then((res) => {
       if (res.status < 200 || res.status >= 300) {
         const error = new Error(res.statusText);
         error.response = res;
@@ -235,10 +239,14 @@ function getFoldersError(error) {
   };
 }
 
-function getFolders() {
+function getFolders(token) {
   return (dispatch) => {
+    const init = {
+      Authorization: `Bearer ${token}`,
+    };
+
     const url = 'http://localhost:5000/folders';
-    return fetch(url).then((res) => {
+    return fetch(url, init).then((res) => {
       if (res.status < 200 || res.status >= 300) {
         const error = new Error(res.statusText);
         error.response = res;
