@@ -12,7 +12,7 @@ exports.SELECT_FOLDER = `SELECT DISTINCT folderid, foldername
 
 exports.SELECT_BOOKMARK = `SELECT bookmarkid, url, title, description, foldername, folderid,
                             screenshot
-                          FROM bookmark NATURAL JOIN folder NATURAL JOIN "customer"
+                          FROM bookmark NATURAL JOIN folder NATURAL JOIN customer
                           WHERE customeridentity = $1;`;
 
 exports.SELECT_BOOKMARK_BY_FOLDER = `SELECT bookmarkid, url, title, description, foldername,
@@ -37,6 +37,9 @@ exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                             VALUES ($1, $2, $3, $4, $5, $6)
                             RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
+/**
+* @TODO: Associate folders with users. Many-to-many?
+*/
 exports.INSERT_FOLDER = `INSERT INTO folder(foldername) VALUES ($1)
                         RETURNING folderid, foldername;`;
 
@@ -53,6 +56,8 @@ exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderi
 exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($2)
                         RETURNING folderid, foldername;`;
 
-
+/**
+* NOTE: 'on conflict' is specific to Postgres and will not work with other SQL databases.
+*/
 exports.INSERT_USER = `INSERT INTO customer(customeridentity)
                         values ($1) on conflict (customeridentity) do nothing;`;

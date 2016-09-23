@@ -6,22 +6,16 @@ const dbConnect = require('../dbConnect');
 const router = express.Router();
 
 /**
- * @description `GET /bookmarks/:userIdentity` enpoint; returns an array of all the
+ * @description `GET /bookmarks` endpoint; returns an array of all the
  * bookmarks associated with a given user. If the user doesn't exit in the database,
  * they are added.
  */
 router.get('/', (request, response) => {
-  console.log('request.user', request.user);
   const userIdentity = request.user.identities.user_id;
-  console.log('userIdentity -> ', userIdentity);
   dbConnect(queries.SELECT_BOOKMARK, [userIdentity]).then((result) => {
-    console.log('result.rows -> ', result);
     const resultsToReturn = result.rows;
-    console.log(typeof result + ' === ' + "'undefined' should equal" + typeof result === 'undefined')
     if (typeof result === 'undefined') {
-      console.lgo('!resultsToReturn');
       dbConnect(queries.INSERT_USER, [userIdentity]).then(() => {
-        console.log('user');
         response.json(resultsToReturn);
       }).catch((userErrorCode) => {
         response.status(userErrorCode);
@@ -36,10 +30,12 @@ router.get('/', (request, response) => {
 /**
  * @description `POST /bookmarks` endpoint. Takes an object with the following
  * fields: url, title, description (optional), foldername,
- * screenshot (optional), and userid. If insertion into database
+ * screenshot (optional). If insertion into database
  * is successful, then the new bookmark is returned to the caller.
  */
 router.post('/', jsonParser, (request, response) => {
+  const userIdentity = request.user.identities.user_id;
+
   if (!request.body.url) {
     response.status(422).json({
       message: 'Missing field: URL',
@@ -52,10 +48,6 @@ router.post('/', jsonParser, (request, response) => {
     response.status(422).json({
       message: 'Incorrect field type: folderid',
     });
-  } else if (!request.body.userid) {
-    response.status(422).json({
-      message: 'Incorrect field type: userid',
-    });
   } else {
     // Handle the two optional bookmark fields. If user did not provide a
     // value use defaults.
@@ -64,7 +56,7 @@ router.post('/', jsonParser, (request, response) => {
       request.body.screenshot : 'http://placekitten.com/200/300';
 
     dbConnect(queries.INSERT_BOOKMARK, [request.body.url, request.body.title, bdescription,
-      request.body.folderid, bscreenshot, request.body.userid,
+      request.body.folderid, bscreenshot, userIdentity,
     ]).then((result) => {
       response.json(result.rows[0]);
     }).catch((errorCode) => {
@@ -76,12 +68,13 @@ router.post('/', jsonParser, (request, response) => {
 /**
  * @description `PUT /bookmarks/:bookmarkid` endpoint. Takes an object with the following
  * fields: url, title, description (optional), folderid,
- * screenshot (optional), and userid. If update in the database is successful, then the
+ * screenshot (optional). If update in the database is successful, then the
  * edited bookmark is returned to the caller.
  */
 
 router.put('/:bookmarkid', jsonParser, (request, response) => {
   const bookmarkid = request.params.bookmarkid;
+  const userIdentity = request.user.identities.user_id;
 
   if (!request.body.url) {
     response.status(422).json({
@@ -93,10 +86,6 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
     });
   } else if (!request.body.folderid) {
     response.status(422).json();
-  } else if (!request.body.userid) {
-    response.status(422).json({
-      message: 'Incorrect field type: userid',
-    });
   } else {
     // Handle the two optional bookmark fields. If user did not provide a
     // value use defaults.
@@ -106,7 +95,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
 
     // Paramitarize query to protect against SQL injection
     dbConnect(queries.UPDATE_BOOKMARK, [request.body.url, request.body.title, bdescription,
-      request.body.folderid, bscreenshot, request.body.userid, bookmarkid,
+      request.body.folderid, bscreenshot, userIdentity, bookmarkid,
     ]).then((result) => {
       response.json(result.rows[0]);
     }).catch((errorCode) => {
