@@ -28,8 +28,8 @@ function auth(state = {
 }, action) {
   switch (action.type) {
     case actionTypes.LOGIN_SUCCESS: {
-      localStorage.setItem("idToken", action.token);
-      localStorage.setItem("profile", JSON.stringify(action.profile));
+      localStorage.setItem('idToken', action.token);
+      localStorage.setItem('profile', JSON.stringify(action.profile));
 
       return Object.assign({}, state, {
         isAuthenticated: true,

@@ -4,8 +4,9 @@ import BookmarkForm from './bookmark-form';
 import actions from '../redux/actions';
 
 const propTypes = {
-  folders: PropTypes.object,
+  folders: PropTypes.array,
   dispatch: PropTypes.func,
+  token: PropTypes.string,
 };
 
 class BookmarkFormContainer extends React.Component {
@@ -15,7 +16,7 @@ class BookmarkFormContainer extends React.Component {
   }
 
   onAdd(bookmark) {
-    this.props.dispatch(actions.addBookmark(bookmark));
+    this.props.dispatch(actions.addBookmark(bookmark, this.props.token));
   }
 
   render() {
@@ -32,6 +33,7 @@ class BookmarkFormContainer extends React.Component {
 const mapStateToProps = state => {
   return {
     folders: state.folders,
+    token: state.auth.token,
   };
 };
 
