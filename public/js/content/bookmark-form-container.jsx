@@ -4,7 +4,7 @@ import BookmarkForm from './bookmark-form';
 import actions from '../redux/actions';
 
 const propTypes = {
-  folders: PropTypes.object,
+  folders: PropTypes.array,
   dispatch: PropTypes.func,
   token: PropTypes.string,
 };

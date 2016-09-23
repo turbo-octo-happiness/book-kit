@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import Auth0Lock from 'auth0-lock';
 import { Link } from 'react-router';
-import BookmarkFormContainer from '../content/bookmark-form-container';
 
 // TODO: PASS GETPROFILE() IN AS PROPS FROM NAV-HEADER-CONTAINER
 
@@ -40,14 +39,6 @@ function Navbar(props) {
                 <Link className="navbar-brand" to={'/main'}>
                   <img src="logo.png" alt="Book Kit!" />
                 </Link>
-              </li>
-              <li>
-                <a data-toggle="modal" data-target="#add-form">
-                  <span className="glyphicon glyphicon-plus" aria-hidden="true" />
-                </a>
-                <div className="modal fade" id="add-form">
-                  <BookmarkFormContainer />
-                </div>
               </li>
             </ul>
             <div className="navbar-form navbar-right">

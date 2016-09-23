@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import Folder from './sidebar-folder-container';
 
 const propTypes = {
@@ -35,6 +36,11 @@ class Sidebar extends React.Component {
             placeholder="Search..."
             className="search-bar"
           />
+        </div>
+        <div>
+          <Link to="/bookmarks">
+            <button>Add Bookmark</button>
+          </Link>
         </div>
         <div>
           <h3>Folders:</h3>

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import Folder from './bookmark-form-folder';
 
 const propTypes = {
@@ -12,7 +13,8 @@ class BookmarkForm extends React.Component {
     this.addBookmark = this.addBookmark.bind(this);
   }
 
-  addBookmark() {
+  addBookmark(event) {
+    event.preventDefault();
     this.props.onAdd({
       url: this.url.value,
       title: this.title.value,
@@ -35,103 +37,102 @@ class BookmarkForm extends React.Component {
     });
 
     return (
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h2>Enter a New Bookmark</h2>
-          </div>
-          <div className="modal-body">
-            <form onSubmit={this.addBookmark} className="form-horizontal">
-              <div className="form-group">
-                <label htmlFor="form-title" className="col-sm-2 control-label">Title *</label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    ref={title => { this.title = title; }}
-                    className="form-control"
-                    id="form-title"
-                    required
-                  />
-                </div>
+      <div>
+        <div className="modal-header">
+          <h2>Enter a New Bookmark</h2>
+        </div>
+        <div className="modal-body">
+          <form onSubmit={this.addBookmark} className="form-horizontal">
+            <div className="form-group">
+              <label htmlFor="form-title" className="col-sm-2 control-label">Title *</label>
+              <div className="col-sm-10">
+                <input
+                  type="text"
+                  ref={title => { this.title = title; }}
+                  className="form-control"
+                  id="form-title"
+                  required
+                />
               </div>
-              <div className="form-group">
-                <label htmlFor="form-url" className="col-sm-2 control-label">URL *</label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    ref={url => { this.url = url; }}
-                    className="form-control"
-                    id="form-url"
-                    required
-                  />
-                </div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="form-url" className="col-sm-2 control-label">URL *</label>
+              <div className="col-sm-10">
+                <input
+                  type="text"
+                  ref={url => { this.url = url; }}
+                  className="form-control"
+                  id="form-url"
+                  required
+                />
               </div>
-              <div className="form-group">
-                <label
-                  htmlFor="form-description"
-                  className="col-sm-2 control-label"
-                >Description
-                </label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    ref={description => { this.description = description; }}
-                    className="form-control"
-                    id="form-description"
-                  />
-                </div>
+            </div>
+            <div className="form-group">
+              <label
+                htmlFor="form-description"
+                className="col-sm-2 control-label"
+              >Description
+              </label>
+              <div className="col-sm-10">
+                <input
+                  type="text"
+                  ref={description => { this.description = description; }}
+                  className="form-control"
+                  id="form-description"
+                />
               </div>
-              <div className="form-group">
-                <label
-                  htmlFor="form-screenshot"
-                  className="col-sm-2 control-label"
-                >Screenshot URL
-                </label>
-                <div className="col-sm-10">
-                  <input
-                    type="text"
-                    ref={screenshot => { this.screenshot = screenshot; }}
-                    className="form-control"
-                    id="form-screenshot"
-                  />
-                </div>
+            </div>
+            <div className="form-group">
+              <label
+                htmlFor="form-screenshot"
+                className="col-sm-2 control-label"
+              >Screenshot URL
+              </label>
+              <div className="col-sm-10">
+                <input
+                  type="text"
+                  ref={screenshot => { this.screenshot = screenshot; }}
+                  className="form-control"
+                  id="form-screenshot"
+                />
               </div>
-              <div className="form-group">
-                <label
-                  htmlFor="form-folder"
-                  className="col-sm-2 control-label"
-                >Folder *
-                </label>
-                <div className="col-sm-10">
-                  <select
-                    ref={folder => { this.folder = folder; }}
-                    className="selectpicker form-control"
-                    id="form-folder"
-                    required
-                  >{folderArr}
-                  </select>
-                </div>
+            </div>
+            <div className="form-group">
+              <label
+                htmlFor="form-folder"
+                className="col-sm-2 control-label"
+              >Folder *
+              </label>
+              <div className="col-sm-10">
+                <select
+                  ref={folder => { this.folder = folder; }}
+                  className="selectpicker form-control"
+                  id="form-folder"
+                  required
+                >{folderArr}
+                </select>
               </div>
-              <div className="form-group">
-                <div className="col-sm-10 col-sm-push-2">
-                  <input
-                    type="submit"
-                    className="btn btn-default"
-                    id="form-submit"
-                    value="Submit"
-                  />
-                </div>
+            </div>
+            <div className="form-group">
+              <div className="col-sm-10 col-sm-push-2">
+                <input
+                  type="submit"
+                  className="btn btn-default"
+                  id="form-submit"
+                  value="Submit"
+                />
               </div>
-            </form>
-          </div>
-          <div className="modal-footer">
+            </div>
+          </form>
+        </div>
+        <div className="modal-footer">
+          <Link to="/main">
             <button
               type="button"
               className="btn btn-default"
-              data-dismiss="modal"
             >Close
             </button>
-          </div>
+          </Link>
         </div>
       </div>
     );

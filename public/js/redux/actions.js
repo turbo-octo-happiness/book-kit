@@ -9,6 +9,7 @@ import actionTypes from './constants';
 function fetchHelp(url, init = {}) {
   return new Promise((resolve, reject) => {
     fetch(url, init).then((res) => {
+      console.log(res.status);
       if (res.status < 200 || res.status >= 300) {
         const error = new Error(res.statusText);
         error.response = res;
@@ -121,6 +122,8 @@ function addBookmarkError(error) {
 }
 
 function addBookmark(newBookmark, token) {
+  console.log('inside addBookmark', newBookmark);
+  console.log(token);
   return (dispatch) => {
     const init = {
       method: 'POST',
@@ -137,8 +140,10 @@ function addBookmark(newBookmark, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
+      console.log(bookmark);
       return dispatch(addBookmarkSuccess(bookmark));
     }).catch((error) => {
+      console.log(error);
       return dispatch(addBookmarkError(error));
     });
   };
