@@ -117,6 +117,7 @@ Searching
 
 - uploading and storing screenshots in the database
 
+-
 - Chrome extension?
 
   - Pull info from page
@@ -126,4 +127,5 @@ Searching
 - Update design to match Thinkful's style guide.
 
 - Use embed links from YouTube/other video sites
+
 - Grab info from website, i.e. metadata
