@@ -5,7 +5,7 @@ import SidebarFolder from './sidebar-folder';
 
 const propTypes = {
   dispatch: PropTypes.func,
-  folder: PropTypes.string,
+  folder: PropTypes.object,
 };
 
 class FolderContainer extends React.Component {

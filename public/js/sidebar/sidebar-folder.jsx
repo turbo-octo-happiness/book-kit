@@ -11,6 +11,7 @@ const propTypes = {
 
 class Folder extends React.Component {
   render() {
+    console.log(this.props.folder, 'folders');
     const textStyle = this.props.show ? { display: 'none' } : {};
     const inputStyle = this.props.show ? {} : { display: 'none' };
     return (
