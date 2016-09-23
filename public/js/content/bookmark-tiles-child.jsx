@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 const propTypes = {
   screenshot: PropTypes.string,
   title: PropTypes.string,
-  id: PropTypes.string,
+  id: PropTypes.number,
 };
 
 function Tile(props) {

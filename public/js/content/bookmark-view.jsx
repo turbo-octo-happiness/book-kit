@@ -18,7 +18,8 @@ class BookmarkView extends React.Component {
     this.onSubmitEdit = this.onSubmitEdit.bind(this);
   }
 
-  onSubmitEdit() {
+  onSubmitEdit(event) {
+    event.preventDefault();
     this.props.onEdit({
       url: this.url.value,
       title: this.title.value,
@@ -35,6 +36,10 @@ class BookmarkView extends React.Component {
     const textDeleteStyle = this.props.delete ? { display: 'none' } : {};
     const deleteStyle = this.props.delete ? {} : { display: 'none' };
 
+    const folder = this.props.folders.filter((folderObj) => {
+      return this.props.bookmark[0].folderid === folderObj.folderid;
+    });
+
     return (
       <section className="bookmark-section">
         <div className="col-md-6" style={textStyle}>
@@ -46,7 +51,7 @@ class BookmarkView extends React.Component {
           </h4>
           <p>{this.props.bookmark[0].description}</p>
           <h4>Folder:</h4>
-          <p>{this.props.bookmark[0].foldername}</p>
+          <p>{folder[0].foldername}</p>
         </div>
         <div className="col-md-6" style={textStyle}>
           <img

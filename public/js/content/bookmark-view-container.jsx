@@ -72,6 +72,7 @@ class BookmarkViewContainer extends React.Component {
         show={this.state.show}
         bookmark={bookmark}
         folderArr={folderArr}
+        folders={this.props.folders}
       />
     );
   }
