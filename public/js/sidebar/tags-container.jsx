@@ -1,22 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import actions from '../redux/actions';
 import Tag from './tags';
 
 
 class TagContainer extends React.Component {
   constructor() {
     super();
-    this.getBookmarks = this.getBookmarks.bind(this);
+    this.findBookmarks = this.findBookmarks.bind(this);
   }
 
   componentDidMount() {
-    // TODO: Dispatch action to retrieve all tags from database
-
+    // Dispatch action to retrieve ALL tags from database
+    this.props.dispatch(actions.getTags());
   }
 
-  getBookmarks(tagId) {
-    // TODO: Dispatch action asking database for all bookmarks with associated with tagId
-    
+  findBookmarks(tag) {
+    // Dispatch action asking for bookmarks associated with tagId
+    this.props.dispatch(actions.findBookmarks(tag));
   }
 
   render() {
@@ -27,7 +28,7 @@ class TagContainer extends React.Component {
         key={tag.id}
         name={tag.name}
         id={tag.id}
-        getBookmarks={this.getBookmarks}
+        findBookmarks={this.findBookmarks}
       />);
     });
 
