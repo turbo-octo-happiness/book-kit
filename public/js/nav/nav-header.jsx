@@ -6,7 +6,8 @@ import { Link } from 'react-router';
 import actions from '../redux/actions';
 import BookmarkFormContainer from '../content/bookmark-form-container';
 
-// TODO: WHEN NOT AUTHENTICATED, DON'T SHOW 'ADD BOOKMARK' BUTTON OR HAVE IMAGE LINK TO HOME
+// TODO: WHEN NOT AUTHENTICATED, DON'T HAVE NAVBAR IMAGE LINK TO SPLASH
+//       PASS GETPROFILE() IN AS PROPS FROM NAV-HEADER-CONTAINER
 
 class Navbar extends React.Component {
 
