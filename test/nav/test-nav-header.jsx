@@ -69,10 +69,10 @@ describe('NavHeader - nav-header.jsx', () => {
     logoLink.props.to.should.equal('/');
     logoLink.props.children.should.be.a('object');
 
-    // <img src="logo.png" alt="Book Kit!" />
+    // <img src="img/logo.png" alt="Book Kit!" />
     const logoImg = logoLink.props.children;
     logoImg.type.should.equal('img');
-    logoImg.props.src.should.equal('logo.png');
+    logoImg.props.src.should.equal('img/logo.png');
     logoImg.props.alt.should.equal('Book Kit!');
 
     // <li>
