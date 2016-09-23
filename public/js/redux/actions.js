@@ -38,13 +38,16 @@ function loginError(error) {
 }
 
 function logoutSuccess() {
+  console.log('inside logoutsuccess');
   return {
     type: actionTypes.LOGOUT_SUCCESS,
   };
 }
 
 function logout() {
+  console.log('inside actions');
   return dispatch => {
+    console.log('inside dispatch');
     localStorage.removeItem('id_token');
     localStorage.removeItem('profile');
     return dispatch(logoutSuccess());
