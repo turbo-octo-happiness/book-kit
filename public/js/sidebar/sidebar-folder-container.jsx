@@ -6,6 +6,7 @@ import SidebarFolder from './sidebar-folder';
 const propTypes = {
   dispatch: PropTypes.func,
   folder: PropTypes.object,
+  token: PropTypes.string,
 };
 
 class FolderContainer extends React.Component {
@@ -25,9 +26,9 @@ class FolderContainer extends React.Component {
     this.props.dispatch(actions.deleteFolder(id));
   }
 
-  onEdit(id, folderName, event) {
-    event.preventDefault();
-    this.props.dispatch(actions.editFolder(id, folderName));
+  onEdit(id, folderName) {
+    console.log('in on edit');
+    this.props.dispatch(actions.editFolder(id, folderName, this.props.token));
     this.onShowEdit();
   }
 
@@ -52,6 +53,12 @@ class FolderContainer extends React.Component {
 
 FolderContainer.propTypes = propTypes;
 
-const Container = connect()(FolderContainer);
+function mapStateToProps(state) {
+  return {
+    token: state.auth.token,
+  };
+}
+
+const Container = connect(mapStateToProps)(FolderContainer);
 
 module.exports = Container;

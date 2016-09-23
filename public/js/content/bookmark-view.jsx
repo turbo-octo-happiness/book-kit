@@ -35,13 +35,10 @@ class BookmarkView extends React.Component {
     const inputStyle = this.props.show ? {} : { display: 'none' };
     const textDeleteStyle = this.props.delete ? { display: 'none' } : {};
     const deleteStyle = this.props.delete ? {} : { display: 'none' };
-    console.log(this.props.bookmark[0], '<<<< BOOKMARK');
-    console.log(this.props.folders, '<<<< FOLDERS');
-    const folder = this.props.folders.filter((folder) => {
-      return this.props.bookmark[0].folderid === folder.folderid;
-    });
 
-    console.log(folder, '<<<< FOLDER');
+    const folder = this.props.folders.filter((folderObj) => {
+      return this.props.bookmark[0].folderid === folderObj.folderid;
+    });
 
     return (
       <section className="bookmark-section">

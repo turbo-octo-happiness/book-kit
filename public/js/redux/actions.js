@@ -323,6 +323,7 @@ function editFolderError(error) {
 }
 
 function editFolder(folderId, folderName, token) {
+  console.log('in actions.editFolder');
   return (dispatch) => {
     const folder = {
       folderid: folderId,
@@ -342,6 +343,7 @@ function editFolder(folderId, folderName, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((editedFolder) => {
+      console.log(editedFolder);
       dispatch(editFolderSuccess(editedFolder));
     }).catch((error) => {
       dispatch(editFolderError(error));

@@ -10,6 +10,16 @@ const propTypes = {
 };
 
 class Folder extends React.Component {
+  constructor() {
+    super();
+    this.editFolder = this.editFolder.bind(this);
+  }
+
+  editFolder(event) {
+    event.preventDefault();
+    this.props.onEdit(this.props.folder.folderid, this.editedFolder.value);
+  }
+
   render() {
     console.log(this.props.folder, 'folders');
     const textStyle = this.props.show ? { display: 'none' } : {};
@@ -20,13 +30,7 @@ class Folder extends React.Component {
           {this.props.folder.foldername}
         </Link>
         <form
-          onSubmit={() => {
-            this.props.onEdit(
-              this.props.folder.folderid,
-              this.editedFolder.value,
-              event
-            );
-          }}
+          onSubmit={this.editFolder}
           style={inputStyle}
         >
           <input
