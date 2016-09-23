@@ -183,6 +183,12 @@ function tagReducer(state = [], action) {
     case actionTypes.GET_TAGS_ERROR: {
       return state;
     }
+    case actionTypes.FIND_BOOKMARKS_SUCCESS: {
+      return action.bookmarks;
+    }
+    case actionTypes.FIND_BOOKMARKS_ERROR: {
+      return state;
+    }
     default: {
       return state;
     }

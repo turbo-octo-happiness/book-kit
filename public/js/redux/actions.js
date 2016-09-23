@@ -407,11 +407,72 @@ function getTagsError(error) {
   };
 }
 
-function getTags() {
-  // return function(dispatch) {
-  // return dispatch(getTagsSuccess(storage.tags));
-  // };
+function getTags(token) {
+  return (dispatch) => {
+    const init = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const url = 'http://localhost:5000/';
+    const newFetch = fetchHelp(url, init);
+
+    newFetch.then((tags) => {
+      return dispatch(
+        getTagsSuccess(tags)
+      );
+    }).catch((error) => {
+      return dispatch(
+        getTagsError(error)
+      );
+    });
+  };
 }
+
+function findBookmarksSuccess(bookmarks) {
+  return {
+    bookmarks,
+    type: actionTypes.FIND_BOOKMARKS_SUCCESS,
+  };
+}
+
+function findBookmarksError(error) {
+  return {
+    error,
+    type: actionTypes.FIND_BOOKMARKS_ERROR,
+  };
+}
+
+function findBookmarks(tag, token) {
+  return (dispatch) => {
+    const init = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const url = `http://localhost:5000/bookmarks/${tag.id}`;
+    const newFetch = fetchHelp(url, init);
+
+    newFetch.then((bookmarks) => {
+      return dispatch(
+        findBookmarksSuccess(bookmarks)
+      );
+    }).catch((err) => {
+      return dispatch(
+        findBookmarksError(err)
+      );
+    });
+  };
+}
+
 
 exports.logout = logout;
 exports.loginSuccess = loginSuccess;
@@ -426,3 +487,5 @@ exports.editBookmark = editBookmark;
 exports.editFolder = editFolder;
 exports.deleteBookmark = deleteBookmark;
 exports.deleteFolder = deleteFolder;
+exports.getTags = getTags;
+exports.findBookmarks = findBookmarks;
