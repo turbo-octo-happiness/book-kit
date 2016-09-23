@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import Auth0Lock from 'auth0-lock';
 import { Link } from 'react-router';
-import BookmarkFormContainer from '../content/bookmark-form-container';
 
 // TODO: PASS GETPROFILE() IN AS PROPS FROM NAV-HEADER-CONTAINER
 
