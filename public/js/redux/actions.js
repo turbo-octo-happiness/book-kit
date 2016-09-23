@@ -213,13 +213,15 @@ function deleteBookmark(bookmarkid, token) {
         Authorization: `Bearer ${token}`,
       },
     };
-
+    console.log(bookmarkid);
     const url = `${SERVER_URL}/bookmarks/${bookmarkid}`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
+      console.log('works');
       return dispatch(deleteBookmarkSuccess(bookmark));
     }).catch((error) => {
+      console.log('error');
       return dispatch(deleteBookmarkError(error));
     });
   };
