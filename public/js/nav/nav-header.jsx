@@ -79,7 +79,9 @@ class Navbar extends React.Component {
                 </li>
               </ul>
               <div className="navbar-form navbar-right">
-                <button className="btn btn-primary" onClick={() => {lock.show();}}>Login</button>
+                <button className="btn btn-primary" onClick={() => {
+                  lock.show();
+                }}>Login</button>
               </div>
             </div>
           </nav>
