@@ -1,28 +1,24 @@
-import React, { PropTypes as T } from 'react';
-import { connect } from 'react-redux';
-import { logout } from '../redux/actions';
-import Auth from './login';
+import React from 'react';
+import { connect } from 'react-redux'
+import NavbarContainer from '../nav/nav-header-container';
+
+// Renders a splash page and the NavbarContainer component if not logged in,
+// otherwise renders children (PageContainer component)
 
 class Container extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleLogoutClick = this.handleLogoutClick.bind(this);
-  }
-
-  handleLogoutClick() {
-    this.props.logout();
-  }
-
   render() {
-    const { error, isAuthenticated, profile } = this.props
+    let display = !this.props.isAuthenticated ? (
+      <div>
+        <h1>Splash Page Stuff</h1>
+      </div>
+    ) : (
+      this.props.children
+    )
+
     return (
       <div>
-        <Auth
-          isAuthenticated={isAuthenticated}
-          profile={profile}
-          onLogoutClick={this.handleLogoutClick}
-        />
-        {this.props.children}
+        <NavbarContainer />
+        {display}
       </div>
     );
   }
@@ -31,10 +27,7 @@ class Container extends React.Component {
 function mapStateToProps(state) {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    profile: state.auth.profile,
   };
 }
 
-export default connect(mapStateToProps, {
-  logout,
-})(Container);
+module.exports = connect(mapStateToProps)(Container);

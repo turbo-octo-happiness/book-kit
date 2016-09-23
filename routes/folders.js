@@ -32,7 +32,6 @@ router.get('/', (request, response) => {
  * new folder name is returned to the caller.
  */
 router.post('/', jsonParser, (request, response) => {
-  console.log(request.body.foldername);
   if (!request.body.foldername) {
     response.status(422).json({
       message: 'Missing field: foldername',
