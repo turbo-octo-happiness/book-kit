@@ -8,7 +8,9 @@ import NavbarContainer from '../nav/nav-header-container';
 class Container extends React.Component {
   render() {
     let display = !this.props.isAuthenticated ? (
-      <h1>Splash Page Stuff</h1>
+      <div>
+        <h1>Splash Page Stuff</h1>
+      </div>
     ) : (
       this.props.children
     )
