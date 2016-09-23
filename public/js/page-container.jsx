@@ -14,7 +14,6 @@ class PageContainer extends React.Component {
   render() {
     return (
       <div>
-        <Nav />
         <section className="main-section container">
           {this.props.children}
         </section>

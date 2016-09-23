@@ -1,7 +1,7 @@
 import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../redux/actions';
-import Auth from './login';
+import NavbarContainer from '../nav/nav-header-container';
 
 class Container extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class Container extends React.Component {
     const { error, isAuthenticated, profile } = this.props
     return (
       <div>
-        <Auth
+        <NavbarContainer
           isAuthenticated={isAuthenticated}
           profile={profile}
           onLogoutClick={this.handleLogoutClick}
