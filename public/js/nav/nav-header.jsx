@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import actions from '../redux/actions';
 import BookmarkFormContainer from '../content/bookmark-form-container';
 
+// TODO: WHEN NOT AUTHENTICATED, DON'T SHOW 'ADD BOOKMARK' BUTTON OR HAVE IMAGE LINK TO HOME
 
 class Navbar extends React.Component {
 
@@ -74,7 +75,7 @@ class Navbar extends React.Component {
                 </div>
               </li>
             </ul>
-            {logButton}
+              {logButton}
           </div>
         </nav>
       </header>
