@@ -2,30 +2,7 @@ import { combineReducers } from 'redux';
 import jwtDecode from 'jwt-decode';
 import actionTypes from './constants';
 
-function checkTokenExpiry() {
-  const jwt = localStorage.getItem('id_token');
-  if (jwt) {
-    const jwtExp = jwtDecode(jwt).exp;
-    const expiryDate = new Date(0);
-    expiryDate.setUTCSeconds(jwtExp);
-
-    if (new Date() < expiryDate) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function getProfile() {
-  return JSON.parse(localStorage.getItem('profile'));
-}
-
-function auth(state = {
-  isAuthenticated: checkTokenExpiry(),
-  profile: getProfile(),
-  error: '',
-}, action) {
+function auth(state = {}, action) {
   switch (action.type) {
     case actionTypes.LOGIN_SUCCESS: {
       localStorage.setItem('idToken', action.token);
