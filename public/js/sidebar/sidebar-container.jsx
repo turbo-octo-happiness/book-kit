@@ -12,6 +12,7 @@ class SidebarContainer extends React.Component {
   constructor() {
     super();
     this.onAddInput = this.onAddInput.bind(this);
+    this.addFolder = this.addFolder.bind(this);
   }
 
   onAddInput(event) {
@@ -19,11 +20,16 @@ class SidebarContainer extends React.Component {
     this.props.dispatch(actions.searchTextChange(text));
   }
 
+  addFolder(folder) {
+    this.props.dispatch(actions.addFolder(folder));
+  }
+
   render() {
     return (
       <Sidebar
         folders={this.props.folders}
         onAddInput={this.onAddInput}
+        addFolder={this.addFolder}
       />
     );
   }
