@@ -14,6 +14,7 @@ class PageContainer extends React.Component {
     return (
       <div>
         <section className="main-section container">
+          <h1>Page Container Stuff</h1>
           {this.props.children}
         </section>
       </div>
@@ -27,6 +28,4 @@ function mapStateToProps(state) {
   };
 }
 
-const Container = connect(mapStateToProps)(PageContainer);
-
-module.exports = Container;
+module.exports = connect(mapStateToProps)(PageContainer);
