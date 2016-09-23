@@ -7,7 +7,6 @@ const propTypes = {
   dispatch: PropTypes.func,
 };
 
-
 class NavbarContainer extends React.Component {
   constructor() {
     super();
@@ -32,11 +31,9 @@ class NavbarContainer extends React.Component {
 NavbarContainer.propTypes = propTypes;
 
 function mapStateToProps(state) {
-  const { auth } = state;
-  const { isAuthenticated, profile } = auth;
   return {
-    isAuthenticated,
-    profile,
+    isAuthenticated: state.auth.isAuthenticated,
+    profile: state.auth.profile,
   };
 }
 

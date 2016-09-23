@@ -6,7 +6,6 @@ import actions from './redux/actions';
 class PageContainer extends React.Component {
   componentDidMount() {
     console.log(actions)
-    console.log('PageContainer this.props.token: ', this.props.token)
     this.props.dispatch(actions.getBookmarks(this.props.token));
     this.props.dispatch(actions.getFolders(this.props.token));
   }
@@ -14,8 +13,8 @@ class PageContainer extends React.Component {
   render() {
     return (
       <div>
-        <Nav />
         <section className="main-section container">
+          <h1>Page Container Stuff</h1>
           {this.props.children}
         </section>
       </div>
@@ -29,6 +28,4 @@ function mapStateToProps(state) {
   };
 }
 
-const Container = connect(mapStateToProps)(PageContainer);
-
-module.exports = Container;
+module.exports = connect(mapStateToProps)(PageContainer);
