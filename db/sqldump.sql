@@ -38,8 +38,8 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE bookmark (
-    url character varying(100) NOT NULL,
-    title character varying(100) NOT NULL,
+    url character varying(250) NOT NULL,
+    title character varying(250) NOT NULL,
     description text DEFAULT ''::text,
     folderid integer,
     screenshot character varying(100) DEFAULT 'http://placekitten.com/200/300'::character varying,
@@ -82,8 +82,7 @@ CREATE TABLE bookmark_tags (
 --
 
 CREATE TABLE customer (
-    customerid integer NOT NULL,
-    customeridentity integer
+    customerid integer NOT NULL
 );
 
 
@@ -93,7 +92,8 @@ CREATE TABLE customer (
 
 CREATE TABLE folder (
     folderid integer NOT NULL,
-    foldername character varying(20)
+    foldername character varying(20) NOT NULL,
+    customerid integer
 );
 
 
@@ -146,36 +146,10 @@ ALTER SEQUENCE tag_tagid_seq OWNED BY tag.tagid;
 
 
 --
--- Name: user_userid_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE user_userid_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: user_userid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE user_userid_seq OWNED BY customer.customerid;
-
-
---
 -- Name: bookmarkid; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY bookmark ALTER COLUMN bookmarkid SET DEFAULT nextval('bookmark_bookmarkid_seq'::regclass);
-
-
---
--- Name: customerid; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY customer ALTER COLUMN customerid SET DEFAULT nextval('user_userid_seq'::regclass);
 
 
 --
@@ -197,11 +171,6 @@ ALTER TABLE ONLY tag ALTER COLUMN tagid SET DEFAULT nextval('tag_tagid_seq'::reg
 --
 
 COPY bookmark (url, title, description, folderid, screenshot, bookmarkid, customerid) FROM stdin;
-http://www.makeuseof.com/tag/7-unique-ways-practice-coding-skills/	7 Unique Ways To Practice Your Coding Skills	Tips on improving your coding ability	1	https://makeuseof.com/wp-content/uploads/2014/11/coding-practice-644x250.jpg	5	1
-https://developers.google.com/edu/python/	Google's Python Class	Learn Python from the ground up	2	https://developers.google.com/edu/python/	6	1
-http://redux.js.org/docs/basics/Actions.html	Redux Actions	How to create an action in Redux.	2	https://image.slidesharecdn.com	7	1
-http://redux.js.org/docs/basics/Actions.html	Redux Actions	How to create an action in Redux.	2	https://image.slidesharecdn.com	8	1
-http://redux.js.org/docs/basics/Actions.html	Redux Actions	How to create an action in Redux.	2	https://image.slidesharecdn.com	9	1
 \.
 
 
@@ -209,7 +178,7 @@ http://redux.js.org/docs/basics/Actions.html	Redux Actions	How to create an acti
 -- Name: bookmark_bookmarkid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('bookmark_bookmarkid_seq', 10, true);
+SELECT pg_catalog.setval('bookmark_bookmarkid_seq', 1, false);
 
 
 --
@@ -224,8 +193,8 @@ COPY bookmark_tags (bookmarkid, tagid) FROM stdin;
 -- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY customer (customerid, customeridentity) FROM stdin;
-1	\N
+COPY customer (customerid) FROM stdin;
+12989626
 \.
 
 
@@ -233,10 +202,8 @@ COPY customer (customerid, customeridentity) FROM stdin;
 -- Data for Name: folder; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY folder (folderid, foldername) FROM stdin;
-1	Personal
-2	Work
-11	I am new
+COPY folder (folderid, foldername, customerid) FROM stdin;
+1	work	12989626
 \.
 
 
@@ -244,7 +211,7 @@ COPY folder (folderid, foldername) FROM stdin;
 -- Name: folder_folderid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('folder_folderid_seq', 11, true);
+SELECT pg_catalog.setval('folder_folderid_seq', 1, true);
 
 
 --
@@ -260,13 +227,6 @@ COPY tag (tagid, tag) FROM stdin;
 --
 
 SELECT pg_catalog.setval('tag_tagid_seq', 1, false);
-
-
---
--- Name: user_userid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('user_userid_seq', 5, true);
 
 
 --
@@ -286,6 +246,14 @@ ALTER TABLE ONLY bookmark_tags
 
 
 --
+-- Name: customer_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY customer
+    ADD CONSTRAINT customer_pkey PRIMARY KEY (customerid);
+
+
+--
 -- Name: folder_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -299,14 +267,6 @@ ALTER TABLE ONLY folder
 
 ALTER TABLE ONLY tag
     ADD CONSTRAINT tag_pkey PRIMARY KEY (tagid);
-
-
---
--- Name: user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY customer
-    ADD CONSTRAINT user_pkey PRIMARY KEY (customerid);
 
 
 --
@@ -339,6 +299,14 @@ ALTER TABLE ONLY bookmark_tags
 
 ALTER TABLE ONLY bookmark_tags
     ADD CONSTRAINT bookmark_tags_tagid_fkey FOREIGN KEY (tagid) REFERENCES tag(tagid);
+
+
+--
+-- Name: folder_customerid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY folder
+    ADD CONSTRAINT folder_customerid_fkey FOREIGN KEY (customerid) REFERENCES customer(customerid);
 
 
 --

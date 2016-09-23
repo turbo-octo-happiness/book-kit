@@ -3,17 +3,18 @@ exports.CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/boo
 
 /* ---- Postgres Queries Used by the API ---- */
 exports.SELECT_TAG = `SELECT tag
-                      FROM tag NATURAL JOIN bookmark_tags NATURAL JOIN bookmark NATURAL JOIN user
-                      WHERE customeridentity = $1;`;
+                      FROM tag NATURAL JOIN bookmark_tags
+                        NATURAL JOIN bookmark NATURAL JOIN customer
+                      WHERE customerid = $1;`;
 
 exports.SELECT_FOLDER = `SELECT DISTINCT folderid, foldername
-                        FROM folder NATURAL JOIN bookmark NATURAL JOIN customer
-                        WHERE customeridentity = $1;`;
+                        FROM folder NATURAL JOIN customer
+                        WHERE customerid = $1;`;
 
 exports.SELECT_BOOKMARK = `SELECT bookmarkid, url, title, description, foldername, folderid,
                             screenshot
                           FROM bookmark NATURAL JOIN folder NATURAL JOIN customer
-                          WHERE customeridentity = $1;`;
+                          WHERE customerid = $1;`;
 
 exports.SELECT_BOOKMARK_BY_FOLDER = `SELECT bookmarkid, url, title, description, foldername,
                                       screenshot
@@ -38,9 +39,9 @@ exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                             RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
 /**
-* @TODO: Associate folders with users. Many-to-many?
+* @TODO: Associate folders with customers. Many-to-many?
 */
-exports.INSERT_FOLDER = `INSERT INTO folder(foldername) VALUES ($1)
+exports.INSERT_FOLDER = `INSERT INTO folder(foldername, customerid) VALUES ($1, $2)
                         RETURNING folderid, foldername;`;
 
 exports.DELETE_BOOKMARK = 'DELETE FROM bookmark WHERE bookmarkid = $1 RETURNING *;';
@@ -59,5 +60,6 @@ exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($
 /**
 * NOTE: 'on conflict' is specific to Postgres and will not work with other SQL databases.
 */
-exports.INSERT_USER = `INSERT INTO customer(customeridentity)
-                        values ($1) on conflict (customeridentity) do nothing;`;
+exports.INSERT_USER = `INSERT INTO customer(customerid)
+                        values ($1) on conflict (customerid) do nothing
+                        RETURNING customerid;`;

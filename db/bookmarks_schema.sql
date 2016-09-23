@@ -1,30 +1,27 @@
 DROP TABLE IF EXISTS "bookmark_tags";
 DROP TABLE IF EXISTS "tag";
 DROP TABLE IF EXISTS "bookmark";
-DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS "folder";
+DROP TABLE IF EXISTS "customer";
+
+CREATE TABLE "customer"(
+  customerid INTEGER PRIMARY KEY
+);
 
 CREATE TABLE "folder"(
   folderid SERIAL PRIMARY KEY,
-  foldername VARCHAR(20) NOT NULL UNIQUE
-);
-
-CREATE TABLE "user"(
-  userid SERIAL PRIMARY KEY,
-  username VARCHAR(12) NOT NULL DEFAULT '',
-  password VARCHAR(40) NOT NULL,
-  salt VARCHAR(100) NOT NULL DEFAULT '',
-  UNIQUE(username)
+  foldername VARCHAR(20) NOT NULL,
+  customerid integer REFERENCES "customer" (customerid)
 );
 
 CREATE TABLE "bookmark"(
-  url VARCHAR(100) NOT NULL,
-  title VARCHAR(100) NOT NULL,
+  url VARCHAR(250) NOT NULL,
+  title VARCHAR(250) NOT NULL,
   description TEXT DEFAULT '',
   folderid INTEGER REFERENCES "folder" (folderid),
   screenshot VARCHAR(100) DEFAULT 'http://placekitten.com/200/300',
   bookmarkid SERIAL PRIMARY KEY,
-  userid INTEGER REFERENCES "user" (userid)
+  customerid INTEGER REFERENCES "customer" (customerid)
 );
 
 CREATE TABLE "tag"(

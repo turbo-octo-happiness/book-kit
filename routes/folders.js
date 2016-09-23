@@ -10,7 +10,7 @@ const router = express.Router();
  * folders stored in the database.
  */
 router.get('/', (request, response) => {
-  const userIdentity = request.user.identities.user_id;
+  const userIdentity = request.user.identities[0].user_id;
 
   // Paramitarize query to protect against SQL injection
   dbConnect(queries.SELECT_FOLDER, [userIdentity]).then((result) => {
@@ -32,17 +32,20 @@ router.get('/', (request, response) => {
  * new folder name is returned to the caller.
  */
 router.post('/', jsonParser, (request, response) => {
+  const userIdentity = request.user.identities[0].user_id;
+  console.log('userIdentity-->', userIdentity);
   if (!request.body.foldername) {
     response.status(422).json({
       message: 'Missing field: foldername',
     });
   } else {
     // Paramitarize query to protect against SQL injection
-    dbConnect(queries.INSERT_FOLDER, [request.body.foldername]).then((result) => {
-      response.json(result.rows[0]);
-    }).catch((errorcode) => {
-      response.status(errorcode);
-    });
+    dbConnect(queries.INSERT_FOLDER, [request.body.foldername,
+        userIdentity]).then((result) => {
+          response.json(result.rows[0]);
+        }).catch((errorcode) => {
+          response.status(errorcode);
+        });
   }
 });
 
@@ -64,11 +67,12 @@ router.put('/', jsonParser, (request, response) => {
   } else {
     // Paramitarize query to protect against SQL injection
     dbConnect(queries.UPDATE_FOLDER, [request.body.foldername,
-      request.body.folderid]).then((result) => {
-        response.json(result.rows[0]);
-      }).catch((errorcode) => {
-        response.status(errorcode);
-      });
+      request.body.folderid,
+    ]).then((result) => {
+      response.json(result.rows[0]);
+    }).catch((errorcode) => {
+      response.status(errorcode);
+    });
   }
 });
 
@@ -82,12 +86,11 @@ router.delete('/:folderid', (request, response) => {
   const folderid = request.params.folderid;
 
   // Paramitarize query to protect against SQL injection
-  dbConnect(queries.DELETE_FOLDER,
-    [folderid]).then((result) => {
-      response.json(result.rows);
-    }).catch((errorcode) => {
-      response.status(errorcode);
-    });
+  dbConnect(queries.DELETE_FOLDER, [folderid]).then((result) => {
+    response.json(result.rows);
+  }).catch((errorcode) => {
+    response.status(errorcode);
+  });
 });
 
 module.exports = router;

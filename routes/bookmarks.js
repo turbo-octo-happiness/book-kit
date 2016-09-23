@@ -11,11 +11,16 @@ const router = express.Router();
  * they are added.
  */
 router.get('/', (request, response) => {
-  const userIdentity = request.user.identities.user_id;
+  const userIdentity = request.user.identities[0].user_id;
   dbConnect(queries.SELECT_BOOKMARK, [userIdentity]).then((result) => {
+    console.log('SELECT_BOOKMARK result: ', result.rows)
     const resultsToReturn = result.rows;
-    if (typeof result === 'undefined') {
-      dbConnect(queries.INSERT_USER, [userIdentity]).then(() => {
+    console.log(!result.rows.length)
+    if (!result.rows.length) {
+      console.log(queries.INSERT_USER);
+      dbConnect(queries.INSERT_USER, [userIdentity]).then((results) => {
+        console.log('insert new user:', userIdentity)
+        console.log(results)
         response.json(resultsToReturn);
       }).catch((userErrorCode) => {
         response.status(userErrorCode);
@@ -34,7 +39,7 @@ router.get('/', (request, response) => {
  * is successful, then the new bookmark is returned to the caller.
  */
 router.post('/', jsonParser, (request, response) => {
-  const userIdentity = request.user.identities.user_id;
+  const userIdentity = request.user.identities[0].user_id;
 
   if (!request.body.url) {
     response.status(422).json({
@@ -74,7 +79,7 @@ router.post('/', jsonParser, (request, response) => {
 
 router.put('/:bookmarkid', jsonParser, (request, response) => {
   const bookmarkid = request.params.bookmarkid;
-  const userIdentity = request.user.identities.user_id;
+  const userIdentity = request.user.identities[0].user_id;
 
   if (!request.body.url) {
     response.status(422).json({
