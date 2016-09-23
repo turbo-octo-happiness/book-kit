@@ -3,6 +3,7 @@ import actionTypes from './constants';
 
 // URL for heroku: https://shrouded-journey-65738.herokuapp.com/
 // URL for localhost: https://localhost:5000
+const SERVER_URL = window.location.origin;
 
 /* Fetch Helper Function */
 
@@ -92,7 +93,7 @@ function getBookmarks(token) {
       },
     };
 
-    const url = 'http://localhost:5000/bookmarks';
+    const url = `${SERVER_URL}/bookmarks`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmarks) => {
@@ -136,7 +137,7 @@ function addBookmark(newBookmark, token) {
       body: JSON.stringify(newBookmark),
     };
 
-    const url = 'http://localhost:5000/bookmarks';
+    const url = `${SERVER_URL}/bookmarks`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
@@ -176,7 +177,7 @@ function editBookmark(editedBookmark, token) {
       body: JSON.stringify(editedBookmark),
     };
 
-    const url = `http://localhost:5000/bookmarks/${editedBookmark.bookmarkid}`;
+    const url = `${SERVER_URL}/bookmarks/${editedBookmark.bookmarkid}`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
@@ -213,7 +214,7 @@ function deleteBookmark(bookmarkid, token) {
       },
     };
 
-    const url = `http://localhost:5000/bookmarks/${bookmarkid}`;
+    const url = `${SERVER_URL}/bookmarks/${bookmarkid}`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
@@ -252,7 +253,7 @@ function getFolders(token) {
       },
     };
 
-    const url = 'http://localhost:5000/folders';
+    const url = `${SERVER_URL}/folders`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((folders) => {
@@ -296,7 +297,7 @@ function addFolder(newFolder, token) {
       }),
     };
 
-    const url = 'http://localhost:5000/folders';
+    const url = `${SERVER_URL}/folders`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((folder) => {
@@ -339,7 +340,7 @@ function editFolder(folderId, folderName, token) {
       },
       body: JSON.stringify(folder),
     };
-    const url = `http://localhost:5000/folders`;
+    const url = `${SERVER_URL}/folders`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((editedFolder) => {
@@ -378,7 +379,7 @@ function deleteFolder(folderid, token) {
       },
     };
 
-    const url = `http://localhost:5000/folders/${folderid}`;
+    const url = `${SERVER_URL}/folders/${folderid}`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((folder) => {
