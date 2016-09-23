@@ -7,7 +7,6 @@ const propTypes = {
   dispatch: PropTypes.func,
 };
 
-
 class NavbarContainer extends React.Component {
   constructor() {
     super();

@@ -8,6 +8,8 @@ import BookmarkFormContainer from '../content/bookmark-form-container';
 
 // TODO: PASS GETPROFILE() IN AS PROPS FROM NAV-HEADER-CONTAINER
 
+// Renders 1 of 2 different headers depending on state of authentication
+
 class Navbar extends React.Component {
 
   getProfile(lock, authResult) {

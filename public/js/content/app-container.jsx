@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import NavbarContainer from '../nav/nav-header-container';
 
-// TODO: SET AS SPLASH PAGE? CREATE NEW SPLASH PAGE COMPONENT?
-//       IF NOT LOGGED IN, RENDER SPLASH PAGE, OTHERWISE CHILDREN
+// Renders a splash page and the NavbarContainer component if not logged in,
+// otherwise renders children (PageContainer component)
 
 class Container extends React.Component {
   render() {
