@@ -339,13 +339,14 @@ function editFolder(folderId, folderName, token) {
       },
       body: JSON.stringify(folder),
     };
-    const url = `http://localhost:5000/folders/${folderId}`;
+    const url = `http://localhost:5000/folders`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((editedFolder) => {
       console.log(editedFolder);
       dispatch(editFolderSuccess(editedFolder));
     }).catch((error) => {
+      console.log(error, '<<<< ERROR');
       dispatch(editFolderError(error));
     });
   };
