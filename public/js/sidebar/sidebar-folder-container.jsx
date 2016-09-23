@@ -23,7 +23,7 @@ class FolderContainer extends React.Component {
   onDelete(id) {
     // FIXME: issue when deleting a folder that is being used by a bookmark
     // it doesn't fail gracefully. should warn the user
-    this.props.dispatch(actions.deleteFolder(id));
+    this.props.dispatch(actions.deleteFolder(id, this.props.token));
   }
 
   onEdit(id, folderName) {
