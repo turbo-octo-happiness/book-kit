@@ -6,8 +6,7 @@ import { Link } from 'react-router';
 import actions from '../redux/actions';
 import BookmarkFormContainer from '../content/bookmark-form-container';
 
-// TODO: WHEN NOT AUTHENTICATED, DON'T HAVE NAVBAR IMAGE LINK TO SPLASH
-//       PASS GETPROFILE() IN AS PROPS FROM NAV-HEADER-CONTAINER
+// TODO: PASS GETPROFILE() IN AS PROPS FROM NAV-HEADER-CONTAINER
 
 class Navbar extends React.Component {
 
@@ -38,54 +37,55 @@ class Navbar extends React.Component {
     });
 
     const { onLogoutClick, profile, isAuthenticated } = this.props
-    let logButton;
-    if (isAuthenticated) {
-      logButton = (
-        <div className="navbar-form navbar-right">
-          <img src={profile.picture} height="40px" />
-          <button className="btn btn-primary">My Account</button>
-          <Link to={'/'} >
-            <button className="btn btn-primary" onClick={onLogoutClick}>Logout</button>
-          </Link>
-        </div>
-      )
-    } else {
-      logButton = (
-        <div className="navbar-form navbar-right">
-          <button className="btn btn-primary" onClick={() => { lock.show(); }}>Login</button>
-        </div>
-      )
-    }
-
     return (
       <header>
-        <nav className="navbar navbar-default">
-          <div className="container">
-            <ul className="nav navbar-nav">
-
-              <li>
-                <Link className="navbar-brand" to={'/'}>
-                  <img src="logo.png" alt="Book Kit!" />
-                </Link>
-              </li>
-              {isAuthenticated ? (
+        {isAuthenticated ? (
+          <nav className="navbar navbar-default">
+            <div className="container">
+              <ul className="nav navbar-nav">
+                <li>
+                  <Link className="navbar-brand" to={'/main'}>
+                    <img src="logo.png" alt="Book Kit!"/>
+                  </Link>
+                </li>
                 <li>
                   <a data-toggle="modal" data-target="#add-form">
-                    <span className="glyphicon glyphicon-plus" aria-hidden="true" />
+                    <span className="glyphicon glyphicon-plus" aria-hidden="true"/>
                   </a>
                   <div className="modal fade" id="add-form">
-                    <BookmarkFormContainer />
+                    <BookmarkFormContainer/>
                   </div>
                 </li>
-              ) : (
-                <li></li>
-              )}
-            </ul>
-              {logButton}
-          </div>
-        </nav>
+              </ul>
+              <div className="navbar-form navbar-right">
+                <img src={profile.picture} height="40px"/>
+                <button className="btn btn-primary">My Account</button>
+                <Link to={'/'}>
+                  <button className="btn btn-primary" onClick={onLogoutClick}>Logout</button>
+                </Link>
+              </div>
+            </div>
+          </nav>
+
+        ) : (
+
+          <nav className="navbar navbar-default">
+            <div className="container">
+              <ul className="nav navbar-nav">
+                <li>
+                  <Link className="navbar-brand" to={'/'}>
+                    <img src="logo.png" alt="Book Kit!"/>
+                  </Link>
+                </li>
+              </ul>
+              <div className="navbar-form navbar-right">
+                <button className="btn btn-primary" onClick={() => {lock.show();}}>Login</button>
+              </div>
+            </div>
+          </nav>
+        )}
       </header>
-    );
+    )
   }
 }
 
