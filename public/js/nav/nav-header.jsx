@@ -41,14 +41,6 @@ function Navbar(props) {
                   <img src="logo.png" alt="Book Kit!" />
                 </Link>
               </li>
-              <li>
-                <a data-toggle="modal" data-target="#add-form">
-                  <span className="glyphicon glyphicon-plus" aria-hidden="true" />
-                </a>
-                <div className="modal fade" id="add-form">
-                  <BookmarkFormContainer />
-                </div>
-              </li>
             </ul>
             <div className="navbar-form navbar-right">
               <img src={profile.picture} height="40px" alt="profile" />
