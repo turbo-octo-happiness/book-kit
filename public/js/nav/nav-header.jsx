@@ -42,6 +42,7 @@ class Navbar extends React.Component {
       logButton = (
         <div className="navbar-form navbar-right">
           <img src={profile.picture} height="40px" />
+          <button className="btn btn-primary">My Account</button>
           <Link to={'/'} >
             <button className="btn btn-primary" onClick={onLogoutClick}>Logout</button>
           </Link>
@@ -60,20 +61,24 @@ class Navbar extends React.Component {
         <nav className="navbar navbar-default">
           <div className="container">
             <ul className="nav navbar-nav">
+
               <li>
                 <Link className="navbar-brand" to={'/'}>
                   <img src="logo.png" alt="Book Kit!" />
                 </Link>
               </li>
-              <li>
-                <a data-toggle="modal" data-target="#add-form">
-                  <span className="glyphicon glyphicon-plus" aria-hidden="true" />
-                </a>
-
-                <div className="modal fade" id="add-form">
-                  <BookmarkFormContainer />
-                </div>
-              </li>
+              {isAuthenticated ? (
+                <li>
+                  <a data-toggle="modal" data-target="#add-form">
+                    <span className="glyphicon glyphicon-plus" aria-hidden="true" />
+                  </a>
+                  <div className="modal fade" id="add-form">
+                    <BookmarkFormContainer />
+                  </div>
+                </li>
+              ) : (
+                <li></li>
+              )}
             </ul>
               {logButton}
           </div>
