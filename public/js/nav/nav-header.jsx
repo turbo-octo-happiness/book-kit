@@ -15,7 +15,7 @@ const propTypes = {
 function Navbar(props) {
   const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
     auth: {
-      redirectUrl: 'https://book-kit.herokuapp.com/#/main',
+      redirectUrl: 'http://book-kit.herokuapp.com/#/main',
       responseType: 'token',
       params: {
         scope: 'openid name identities picture',
