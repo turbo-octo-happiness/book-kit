@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Nav from './nav/nav-header-container';
 import actions from './redux/actions';
+import SidebarContainer from './sidebar/sidebar-container';
 
 class PageContainer extends React.Component {
   componentDidMount() {
@@ -16,6 +17,7 @@ class PageContainer extends React.Component {
       <div>
         <Nav />
         <section className="main-section container">
+          <SidebarContainer />
           {this.props.children}
         </section>
       </div>
