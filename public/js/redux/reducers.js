@@ -101,7 +101,7 @@ function bookmarkReducer(state = [], action) {
     case actionTypes.DELETE_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
-        if (value.bookmarkid === action.bookmark[0].bookmarkid) {
+        if (value.bookmarkid === action.bookmark.bookmarkid) {
           index = i;
         }
       });

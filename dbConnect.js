@@ -13,7 +13,6 @@ module.exports = (query, params) => {
       }
       console.log('connected for ', query)
       client.query(query, params, (queryErr, result) => {
-        console.log('results for ', query, ':', queryErr)
         if (queryErr) {
           reject('500');
         }
@@ -25,6 +24,7 @@ module.exports = (query, params) => {
           }
         });
 
+        console.log('results being returned -->', result.rows)
         resolve(result);
       });
     });
