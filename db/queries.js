@@ -60,6 +60,7 @@ exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($
 /**
 * NOTE: 'on conflict' is specific to Postgres and will not work with other SQL databases.
 */
-exports.INSERT_USER = `INSERT INTO customer(customerid)
-                        values ($1) on conflict (customerid) do nothing
-                        RETURNING customerid;`;
+// changed
+exports.INSERT_USER = `INSERT INTO customer(customerid, email)
+                        values ($1, $2) on conflict (customerid) do nothing
+                        RETURNING customerid, email;`;
