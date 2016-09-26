@@ -39,7 +39,7 @@ function Navbar(props) {
             <ul className="nav navbar-nav">
               <li>
                 <Link className="navbar-brand" to={'/main'}>
-                  <img src="img/img/logo.png" alt="Book Kit!" />
+                  <img src="logo.png" alt="Book Kit!" />
                 </Link>
               </li>
             </ul>
