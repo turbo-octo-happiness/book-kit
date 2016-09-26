@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Auth0Lock from 'auth0-lock';
 import { Link } from 'react-router';
+import { Navbar, Nav, Button } from 'react-bootstrap';
 
 // TODO: PASS GETPROFILE() IN AS PROPS FROM NAV-HEADER-CONTAINER
 
@@ -14,7 +15,7 @@ const propTypes = {
   isAuthenticated: PropTypes.bool,
 };
 
-function Navbar(props) {
+function NavbarComponent(props) {
   const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
     auth: {
       redirectUrl: `${SERVER_URL}/#/main`,
@@ -30,54 +31,39 @@ function Navbar(props) {
   });
 
   const { onLogoutClick, profile, isAuthenticated } = props;
+  const navContent = isAuthenticated ? (
+    <Nav pullRight="true">
+      <img src={profile.picture} height="40px" alt="profile" />
+      <Button>My Account</Button>
+      <Link to={'/'}>
+        <Button onClick={onLogoutClick}>Logout</Button>
+      </Link>
+    </Nav>
+  ) : (
+    <Nav pullRight="true">
+      <Button
+        onClick={() => { lock.show(); }}
+      >Login
+      </Button>
+    </Nav>
+  );
 
   return (
     <header>
-      {isAuthenticated ? (
-        <nav className="navbar navbar-default">
-          <div className="container">
-            <ul className="nav navbar-nav">
-              <li>
-                <Link className="navbar-brand" to={'/main'}>
-                  <img src="img/logo.png" alt="Book Kit!" />
-                </Link>
-              </li>
-            </ul>
-            <div className="navbar-form navbar-right">
-              <img src={profile.picture} height="40px" alt="profile" />
-              <button className="btn btn-primary">My Account</button>
-              <Link to={'/'}>
-                <button className="btn btn-primary" onClick={onLogoutClick}>Logout</button>
-              </Link>
-            </div>
-          </div>
-        </nav>
-
-      ) : (
-
-        <nav className="navbar navbar-default">
-          <div className="container">
-            <ul className="nav navbar-nav">
-              <li>
-                <Link className="navbar-brand" to={'/'}>
-                  <img src="img/logo.png" alt="Book Kit!" />
-                </Link>
-              </li>
-            </ul>
-            <div className="navbar-form navbar-right">
-              <button
-                className="btn btn-primary"
-                onClick={() => { lock.show(); }}
-              >Login
-              </button>
-            </div>
-          </div>
-        </nav>
-      )}
+      <Navbar>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <Link to="/main">
+              <img src="img/logo.png" alt="Book Kit!" />
+            </Link>
+          </Navbar.Brand>
+        </Navbar.Header>
+        {navContent}
+      </Navbar>
     </header>
   );
 }
 
-Navbar.propTypes = propTypes;
+NavbarComponent.propTypes = propTypes;
 
-module.exports = Navbar;
+module.exports = NavbarComponent;
