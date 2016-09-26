@@ -5,7 +5,7 @@ import PageContainer from '../content/page-container';
 import BookmarkViewContainer from '../content/bookmark-view-container';
 import BookmarkTilesContainer from '../content/bookmark-tiles-container';
 import BookmarkFormContainer from '../content/bookmark-form-container';
-import AppContainer from '../app-container';
+import ManageContainer from '../manage/manage-container';
 
 const routes = (
   <Router history={hashHistory}>
@@ -17,9 +17,11 @@ const routes = (
         <Route path="/bookmarks/:bookmarkId" component={BookmarkViewContainer} />
         <Route path="/folders/:folderName" component={BookmarkTilesContainer} />
         <Route path="/search/:input" component={BookmarkTilesContainer} />
-        <Route path="/manage/profile" />
-        <Route path="/manage/folders" />
-        <Route path="/manage/tags" />
+      </Route>
+      <Route path="/manage" component={ManageContainer}>
+        <Route path="/profile" />
+        <Route path="/folders" />
+        <Route path="/tags" />
       </Route>
     </Route>
   </Router>
