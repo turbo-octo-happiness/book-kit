@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS "folder" CASCADE;
 DROP TABLE IF EXISTS "customer" CASCADE;
 
 CREATE TABLE "customer"(
-  customerid INTEGER PRIMARY KEY,
+  customerid VARCHAR(50) PRIMARY KEY,
   email VARCHAR(100) NOT NULL
 );
 
@@ -16,7 +16,7 @@ CREATE TABLE "folder"(
 );
 
 CREATE TABLE "user_folder"(
-  customerid INTEGER REFERENCES "customer" (customerid),
+  customerid VARCHAR(50) REFERENCES "customer" (customerid),
   folderid INTEGER REFERENCES "folder" (folderid),
   PRIMARY KEY (customerid, folderid)
 );
@@ -28,7 +28,7 @@ CREATE TABLE "bookmark"(
   folderid INTEGER REFERENCES "folder" (folderid),
   screenshot VARCHAR(500) DEFAULT 'http://placekitten.com/200/300',
   bookmarkid SERIAL PRIMARY KEY,
-  customerid INTEGER REFERENCES "customer" (customerid)
+  customerid VARCHAR(50) REFERENCES "customer" (customerid)
 );
 
 CREATE TABLE "tag"(

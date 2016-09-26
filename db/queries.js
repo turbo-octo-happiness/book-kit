@@ -32,17 +32,21 @@ exports.SELECT_BOOKMARK_BY_TAG = `SELECT bookmark.bookmarkid, url, title, descri
                                       bookmark_tags.bookmarkid
                                     JOIN tag ON bookmark_tags.tagid = tag.tagid
                                     WHERE tag.tagid = $1);`;
-
+// updated
 exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                               folderid, screenshot, customerid)
                             VALUES ($1, $2, $3, $4, $5, $6)
                             RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
-/**
-* @TODO: Associate folders with customers. Many-to-many?
-*/
-exports.INSERT_FOLDER = `INSERT INTO folder(foldername, customerid) VALUES ($1, $2)
-                        RETURNING folderid, foldername;`;
+// updated
+// Test the RETURNING Clause
+exports.INSERT_FOLDER = `WITH folders AS (
+	                         INSERT INTO folder(foldername) VALUES ($1)
+                           RETURNING folderid, foldername
+                         )
+                         INSERT INTO user_folder(customerid, folderid)
+                         VALUES ($2, (SELECT folderid from folders))
+                         RETURNING (SELECT foldername from folders);`;
 
 exports.DELETE_BOOKMARK = 'DELETE FROM bookmark WHERE bookmarkid = $1 RETURNING *;';
 
@@ -62,5 +66,5 @@ exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($
 */
 // changed
 exports.INSERT_USER = `INSERT INTO customer(customerid, email)
-                        values ($1, $2) on conflict (customerid) do nothing
+                        VALUES ($1, $2) on conflict (customerid) do nothing
                         RETURNING customerid, email;`;
