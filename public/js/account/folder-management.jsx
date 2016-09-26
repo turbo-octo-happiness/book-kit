@@ -6,20 +6,35 @@ import Folder from './folder';
 class FolderManagement extends React.Component {
   constructor() {
     super();
-    this.renameFolder = this.renameFolder.bind(this);
-    this.deleteFolder = this.deleteFolder.bind(this);
-    this.shareFolder = this.shareFolder.bind(this);
+    this.onShowEdit = this.onShowEdit.bind(this);
+    this.onEdit = this.onEdit.bind(this);
+    this.onDelete = this.onDelete.bind(this);
+    this.onShare = this.onShare.bind(this);
+    this.state = {
+      show: false,
+    };
   }
 
-  renameFolder(folderId, folderName, token) {
+  onShowEdit() {
+    this.setState({
+      show: !this.state.show,
+    });
+  }
+
+  onEdit(folderId, folderName) {
     // TODO: dispatch action to rename folder
+    console.log("In onEdit")
+    this.props.dispatch(actions.editFolder(folderId, folderName, this.props.token));
+    this.onShowEdit();
   }
 
-  deleteFolder(folderId, token) {
+  onDelete(folderId, token) {
     // TODO: dispatch action to remove folder
+    console.log("in deleteFolder")
+    this.props.dispatch(actions.deleteFolder(folderId, this.props.token))
   }
 
-  shareFolder(folder, token) {
+  onShare(folderId) {
     // TODO: dispatch action to share folder
   }
 
@@ -31,9 +46,11 @@ class FolderManagement extends React.Component {
         <Folder
           key={index}
           folder={folder}
-          renameFolder={this.renameFolder}
-          deleteFolder={this.deleteFolder}
-          shareFolder={this.shareFolder}
+          onEdit={this.onEdit}
+          show={this.state.show}
+          onShowEdit={this.onShowEdit}
+          onDelete={this.onDelete}
+          onShare={this.onShare}
           />
       );
     });
