@@ -24,7 +24,7 @@
     "build:js": "npm run clean:js && webpack",
     "watch:js": "npm run build:js && webpack --watch",
     "clean:js": "rm -f public/build/$npm_package_name.$npm_package_version.js",
-    "build:img": "npm run clean:img && cp -r public/img/ public/build/",
+    "build:img": "npm run clean:img && cp -r public/img/ public/build/img/",
     "clean:img": "rm -rf public/build/img/",
     "watch:img": "npm run build:img && webpack --watch"
   },
