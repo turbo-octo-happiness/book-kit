@@ -17,9 +17,17 @@ const routes = (
         <Route path="/bookmarks/:bookmarkId" component={BookmarkViewContainer} />
         <Route path="/folders/:folderName" component={BookmarkTilesContainer} />
         <Route path="/search/:input" component={BookmarkTilesContainer} />
+        <Route path="/manage/profile" />
+        <Route path="/manage/folders" />
+        <Route path="/manage/tags" />
       </Route>
     </Route>
   </Router>
 );
 
+/*
+component={ManageProfile}
+component={ManageFolders}
+component={ManageTags}
+ */
 export default routes;

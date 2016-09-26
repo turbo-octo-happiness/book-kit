@@ -27,6 +27,8 @@ class Sidebar extends React.Component {
       );
     });
 
+    console.log(this.props.params);
+
     return (
       <section className="sidebar">
         <div>
