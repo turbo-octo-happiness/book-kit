@@ -14,6 +14,7 @@ class AccountDisplayContainer extends React.Component {
       <div>
         <h1>Account Display</h1>
 
+        if (props.params.)
         <Profile profile={this.props.profile} />
 
         <FolderManagement />

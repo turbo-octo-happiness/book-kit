@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import actions from '../redux/actions';
 
 class Profile extends React.Component {
-
 
   render() {
     console.log(this.props.profile, '<===== Profile')
@@ -18,4 +19,10 @@ class Profile extends React.Component {
   }
 }
 
-module.exports = Profile;
+function mapStateToProps(state) {
+  return {
+    profile: state.auth.profile,
+  };
+}
+
+module.exports = connect(mapStateToProps)(Profile);
