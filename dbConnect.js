@@ -32,7 +32,6 @@ module.exports = (query, params) => {
 
         // console.log('results being returned -->', result.rows)
         console.log(result, '<<<<< RESULT');
-
       });
     });
   });

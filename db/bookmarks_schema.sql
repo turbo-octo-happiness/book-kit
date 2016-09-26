@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS "folder" CASCADE;
 DROP TABLE IF EXISTS "customer" CASCADE;
 
 CREATE TABLE "customer"(
-  customerid INTEGER PRIMARY KEY
+  customerid VARCHAR(50) PRIMARY KEY
 );
 
 CREATE TABLE "folder"(
