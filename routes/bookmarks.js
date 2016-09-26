@@ -12,7 +12,9 @@ const router = express.Router();
  */
 router.get('/', (request, response) => {
   const userIdentity = request.user.identities[0].user_id;
+  console.log(userIdentity);
   dbConnect(queries.SELECT_BOOKMARK, [userIdentity]).then((result) => {
+    console.log('asdgjoaisjdgoasdjgijosdjg');
     console.log('SELECT_BOOKMARK result: ', result.rows)
     const resultsToReturn = result.rows;
     console.log(!result.rows.length)
@@ -28,6 +30,7 @@ router.get('/', (request, response) => {
     }
     response.json(resultsToReturn);
   }).catch((errorCode) => {
+    console.log(errorCode);
     response.status(errorCode);
   });
 });

@@ -303,8 +303,10 @@ function addFolder(newFolder, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((folder) => {
+      console.log(folder);
       return dispatch(addFolderSuccess(folder));
     }).catch((error) => {
+      console.log(error);
       return dispatch(addFolderError(error));
     });
   };
