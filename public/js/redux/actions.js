@@ -50,7 +50,7 @@ function logout() {
   console.log('inside actions');
   return dispatch => {
     console.log('inside dispatch');
-    localStorage.removeItem('id_token');
+    localStorage.removeItem('idToken');
     localStorage.removeItem('profile');
     return dispatch(logoutSuccess());
   };
