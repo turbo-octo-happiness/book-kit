@@ -11,7 +11,7 @@ CREATE TABLE "customer"(
 CREATE TABLE "folder"(
   folderid SERIAL PRIMARY KEY,
   foldername VARCHAR(20) NOT NULL,
-  customerid integer REFERENCES "customer" (customerid)
+  customerid VARCHAR(50) REFERENCES "customer" (customerid)
 );
 
 CREATE TABLE "bookmark"(
@@ -21,7 +21,7 @@ CREATE TABLE "bookmark"(
   folderid INTEGER REFERENCES "folder" (folderid),
   screenshot VARCHAR(100) DEFAULT 'http://placekitten.com/200/300',
   bookmarkid SERIAL PRIMARY KEY,
-  customerid INTEGER REFERENCES "customer" (customerid)
+  customerid VARCHAR(50) REFERENCES "customer" (customerid)
 );
 
 CREATE TABLE "tag"(
