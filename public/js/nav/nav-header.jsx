@@ -6,6 +6,8 @@ import { Link } from 'react-router';
 
 // Renders 1 of 2 different headers depending on state of authentication
 
+const SERVER_URL = window.location.origin;
+
 const propTypes = {
   onLogoutClick: PropTypes.func,
   profile: PropTypes.object,
@@ -15,7 +17,7 @@ const propTypes = {
 function Navbar(props) {
   const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
     auth: {
-      redirectUrl: 'http://book-kit.herokuapp.com/#/main',
+      redirectUrl: `${SERVER_URL}/#/main`,
       responseType: 'token',
       params: {
         scope: 'openid name identities picture',
@@ -37,7 +39,7 @@ function Navbar(props) {
             <ul className="nav navbar-nav">
               <li>
                 <Link className="navbar-brand" to={'/main'}>
-                  <img src="img/img/logo.png" alt="Book Kit!" />
+                  <img src="img/logo.png" alt="Book Kit!" />
                 </Link>
               </li>
             </ul>
