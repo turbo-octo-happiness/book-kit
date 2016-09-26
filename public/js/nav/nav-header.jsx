@@ -45,7 +45,9 @@ function Navbar(props) {
             </ul>
             <div className="navbar-form navbar-right">
               <img src={profile.picture} height="40px" alt="profile" />
-              <button className="btn btn-primary">My Account</button>
+              <Link to={'/manage/profile'}>
+                <button className="btn btn-primary">My Account</button>
+              </Link>
               <Link to={'/'}>
                 <button className="btn btn-primary" onClick={onLogoutClick}>Logout</button>
               </Link>
