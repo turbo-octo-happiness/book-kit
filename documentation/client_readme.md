@@ -75,57 +75,61 @@ Database is storing:
 
 ## version 1.0
 
-Enter the bookmark
+- [x] Enter the bookmark
 
-- url and title
+  - [x] url and title
 
-Annotations
+- [x] Annotations
 
-- descriptions and etc.
+  - [x] descriptions and etc.
 
-Folders
+- [x] Folders
 
-- for organization
+  - [x] for organization
 
-Tagging
+- [x] Tagging
 
-- creating your own tags
+  - [x] creating your own tags
 
-Screenshots
+- [x] Screenshots
 
-- uploading screenshots to represent the bookmark
+  - [x] uploading screenshots urls to represent the bookmark
 
-Searching
+- [x] Searching
 
-- Filtering --- View certain folders/tags by themselves
+  - [x] Filtering --- View certain folders/tags by themselves
 
 ## version 1.1 (MVP By Friday 9/26)
 
-- [] User accounts
+- [x] User accounts
 
   - separate set of data per account
   - authentication
-  - sharing
 
 - [x] Combine repos
 
-## Possible additional features
+## version 1.2 (MVP By Friday 9/31)
 
-- Group corporation on folder content (sharing a folder between multiple users)
+- [ ] Sharing folders between users
 
-  - Cannot edit other people's bookmarks
+  - [ ] Can add bookmarks to shared folder
+  - [ ] Cannot edit bookmarks they did not create
 
-- uploading and storing screenshots in the database
+- [ ] Add my Account page
 
--
-- Chrome extension?
+  - [ ] Basic Information about user (i.e. name, email, photo)
+  - [ ] List Folder with the ability to delete, update, and shared
+  - [ ] List of Tags with the ability to delete (i.e. remove tag from all bookmarks) and edit
+  - [ ] Change sidebar to be browsing only
+
+## Features we would like to complete by end of capstone
+
+- [ ] Styling
+
+- [ ] Chrome extension
 
   - Pull info from page
   - example: <http://bookit.thinkful.example/create?url=http%2a%2a%2fetc.etc.etc%2f&title=Example+Bookmark>
-  - Seperate window or popup window -
+  - Separate window or popup window
 
-- Update design to match Thinkful's style guide.
-
-- Use embed links from YouTube/other video sites
-
-- Grab info from website, i.e. metadata
+- [ ] uploading and storing screenshots in the database
