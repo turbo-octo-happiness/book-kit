@@ -9,6 +9,7 @@ import AppContainer from '../app-container';
 import ManageContainer from '../manage/manage-container';
 import Profile from '../account/profile';
 import FolderManagement from '../account/folder-management';
+import TagManagement from '../account/tag-management';
 
 const routes = (
   <Router history={hashHistory}>
@@ -24,7 +25,7 @@ const routes = (
       <Route path="/manage" component={ManageContainer}>
         <Route path="/manage/profile" component={Profile} />
         <Route path="/manage/folders" component={FolderManagement} />
-        <Route path="/manage/tags" />
+        <Route path="/manage/tags" component={TagManagement} />
       </Route>
     </Route>
   </Router>

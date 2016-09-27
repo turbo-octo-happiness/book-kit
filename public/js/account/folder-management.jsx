@@ -22,7 +22,7 @@ class FolderManagement extends React.Component {
   render() {
     console.log(this.props, '<==== FOLDER CONTAINER PROPS');
 
-    let folders = this.props.folders.map((folder, index) => {
+    const folders = this.props.folders.map((folder, index) => {
       return (
         <Folder
           key={index}
@@ -30,7 +30,7 @@ class FolderManagement extends React.Component {
           onDelete={this.onDelete}
           onShare={this.onShare}
           token={this.props.token}
-          />
+        />
       );
     });
 

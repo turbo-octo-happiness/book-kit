@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
 
-class Folder extends React.Component {
+class Tag extends React.Component {
   constructor() {
     super();
     this.onShowEdit = this.onShowEdit.bind(this);
-    this.editFolder = this.editFolder.bind(this);
-    this.deleteFolder = this.deleteFolder.bind(this);
+    this.editTag = this.editTag.bind(this);
+    this.deleteTag = this.deleteTag.bind(this);
     this.state = {
       show: false,
     };
@@ -19,17 +19,17 @@ class Folder extends React.Component {
     });
   }
 
-  editFolder(event, folderId, folderName) {
+  editTag(event, tagId, tagName) {
     event.preventDefault();
-    this.props.dispatch(actions.editFolder(
-      this.props.folder.folderid,
-      this.editedFolder.value,
+    this.props.dispatch(actions.editTag(
+      this.props.tag.tagid,
+      this.editedTag.value,
       this.props.token));
     this.onShowEdit();
   }
 
-  deleteFolder(folderId) {
-    this.props.onDelete(this.props.folder.folderid);
+  deleteTag(tagId) {
+    this.props.onDelete(this.props.tag.tagid);
   }
 
   render() {
@@ -38,15 +38,15 @@ class Folder extends React.Component {
     return (
       <div>
         <li>
-          <h3 style={textStyle}>{this.props.folder.foldername}</h3>
+          <h3 style={textStyle}>{this.props.tag.tagname}</h3>
           <form
-            onSubmit={this.editFolder}
+            onSubmit={this.editTag}
             style={inputStyle}
           >
             <input
               type="text"
-              ref={editedFolder => { this.editedFolder = editedFolder; }}
-              defaultValue={this.props.folder.foldername}
+              ref={editedTag => { this.editedTag = editedTag; }}
+              defaultValue={this.props.tag.tagname}
             />
           </form>
           <button
@@ -55,12 +55,8 @@ class Folder extends React.Component {
           >Edit
           </button>
           <button
-            onClick={this.deleteFolder}
+            onClick={this.deleteTag}
           >Delete
-          </button>
-          <button
-            onClick={this.props.onShare}
-          >Share
           </button>
         </li>
       </div>
@@ -72,4 +68,4 @@ function mapStateToProps(state) {
   return {};
 }
 
-module.exports = connect(mapStateToProps)(Folder);
+module.exports = connect(mapStateToProps)(Tag);
