@@ -3,12 +3,12 @@ import ManageSidebar from './manage-sidebar';
 
 function ManageContainer(props) {
   return (
-    <div>
-      <section className="main-section container">
+    <section className="main-section container">
+      <div className="main-container">
         <ManageSidebar />
         {props.children}
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }
 

@@ -6,7 +6,7 @@ const propTypes = {
 
 function BookmarkTiles(props) {
   return (
-    <section className="tile-section">
+    <section className="content-section">
       <ul>
         {props.tileArr}
       </ul>

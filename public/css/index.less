@@ -83,6 +83,10 @@ input {
   margin-bottom: 1rem;
 }
 
+.prof-pic {
+  border-radius: 50%;
+}
+
 // Section Styles
 
 header {
@@ -111,10 +115,6 @@ header {
 
       > * {
         margin-left: 1rem;
-      }
-
-      .prof-pic {
-        border-radius: 50%;
       }
     }
   }
@@ -163,7 +163,25 @@ header {
     }
   }
 
-  .tile-section {
+  .profile {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    .prof-text {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 2rem;
+      width: 20rem;
+
+      .prof-labels {
+        text-align: right;
+      }
+    }
+  }
+
+  .content-section {
     width: 80%;
 
     ul {
