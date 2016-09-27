@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS "bookmark_tags" CASCADE;
-DROP TABLE IF EXISTS "tag" CASCADE;
 DROP TABLE IF EXISTS "user_folder" CASCADE;
 DROP TABLE IF EXISTS "bookmark" CASCADE;
+DROP TABLE IF EXISTS "tag" CASCADE;
 DROP TABLE IF EXISTS "folder" CASCADE;
 DROP TABLE IF EXISTS "customer" CASCADE;
 
@@ -15,10 +15,9 @@ CREATE TABLE "folder"(
   foldername VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE "user_folder"(
-  customerid VARCHAR(50) REFERENCES "customer" (customerid),
-  folderid INTEGER REFERENCES "folder" (folderid),
-  PRIMARY KEY (customerid, folderid)
+CREATE TABLE "tag"(
+  tagid SERIAL PRIMARY KEY,
+  tagname VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE "bookmark"(
@@ -31,9 +30,10 @@ CREATE TABLE "bookmark"(
   customerid VARCHAR(50) REFERENCES "customer" (customerid)
 );
 
-CREATE TABLE "tag"(
-  tagid SERIAL PRIMARY KEY,
-  tagname VARCHAR(100) NOT NULL
+CREATE TABLE "user_folder"(
+  customerid VARCHAR(50) REFERENCES "customer" (customerid),
+  folderid INTEGER REFERENCES "folder" (folderid),
+  PRIMARY KEY (customerid, folderid)
 );
 
 CREATE TABLE "bookmark_tags"(

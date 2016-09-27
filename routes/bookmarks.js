@@ -17,8 +17,8 @@ router.get('/', (request, response) => {
     const resultsToReturn = result.rows;
     console.log(!result.rows.length)
     if (!result.rows.length) {
-      console.log(queries.INSERT_USER);
-      dbConnect(queries.INSERT_USER, [userIdentity]).then((results) => {
+      console.log(queries.INSERT_CUSTOMER);
+      dbConnect(queries.INSERT_CUSTOMER, [userIdentity]).then((results) => {
         console.log('insert new user:', userIdentity)
         console.log(results)
         response.json(resultsToReturn);
