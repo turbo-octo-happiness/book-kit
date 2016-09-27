@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import actions from '../redux/actions';
 import Folder from './folder';
 
+// TODO: Move editing methods to folder component
+
 class FolderManagement extends React.Component {
   constructor() {
     super();
