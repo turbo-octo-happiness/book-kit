@@ -32,7 +32,7 @@ function Navbar(props) {
   const { onLogoutClick, profile, isAuthenticated } = props;
   const navContent = isAuthenticated ? (
     <div className="logout">
-      <img src={profile.picture} height="40px" alt="profile" />
+      <img src={profile.picture} height="40px" alt="profile" className="prof-pic" />
       <Link to="/manage/profile">My Account</Link>
       <Link to="/" onClick={onLogoutClick}>
         Logout
@@ -49,7 +49,7 @@ function Navbar(props) {
   return (
     <header>
       <nav>
-        <Link to="/main">
+        <Link to="/main" className="main-logo">
           <img src="img/logo.png" alt="Book Kit!" />
         </Link>
         {navContent}

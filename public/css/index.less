@@ -1,12 +1,68 @@
+@black: #1E2835;
+@gray75: #404853;
+@gray50: #8E939A;
+@gray40: #d0d2d5;
+@gray25: #EEEEEF;
+@gray15: #F6F7F7;
+@gray5: #FAFBFB;
+@white: #F4F8FC;
+
+@blue: #85C7F2;
+@blue125: darken(@blue, 30%);
+@blue75: mix(@blue, @white, 75%);
+@blue50: mix(@blue, @white, 50%);
+@blue25: mix(@blue, @white, 25%);
+@blue5: mix(@blue, @white, 7%);
+
+@green: #23CE6B;
+@green125: darken(@green, 10%);
+@green75: mix(@green, @white, 75%);
+@green50: mix(@green, @white, 50%);
+@green25: mix(@green, @white, 25%);
+@green5: mix(@green, @white, 7%);
+
+// Globals
+
+body, html {
+  height: 100%;
+  color: @gray75;
+  background-color: @white;
+
+  font-size: 1rem;
+  line-height: 1.875;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 0.02rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+h1 {
+  font-family: 'Karla', sans-serif;
+  font-weight: bold;
+  font-size: 3rem;
+}
+
+a {
+  text-decoration: none;
+  color: @white;
+}
+
 #app {
   display: flex;
   flex-direction: column;
 }
 
+// Section Styles
+
 header {
   display: flex;
   justify-content: center;
-  background-color: beige;
+  background-color: @green;
+  font-family: 'Karla', sans-serif;
 
   nav {
     display: flex;
@@ -15,10 +71,23 @@ header {
     width: 80%;
     height: 3rem;
 
+    a.main-logo {
+      display: flex;
+      align-items: center;
+    }
+
     .logout {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      > * {
+        margin-left: 1rem;
+      }
+
+      .prof-pic {
+        border-radius: 50%;
+      }
     }
   }
 }
