@@ -83,6 +83,13 @@ input {
   margin-bottom: 1rem;
 }
 
+select {
+  border-radius: 0.5rem;
+  border: 0.5px solid @gray40;
+  height: 2rem;
+  margin-bottom: 1rem;
+}
+
 .prof-pic {
   border-radius: 50%;
 }
@@ -198,7 +205,7 @@ header {
 
     .manage-buttons button {
       margin-left: 0.3rem;
-      background-color: @green50;
+      background-color: @green75;
     }
 
     ul {
@@ -233,6 +240,23 @@ header {
         background-size: cover;
         border-radius: 0.8rem;
       }
+    }
+  }
+
+  .bookmark-form-container {
+    display: flex;
+    justify-content: center;
+
+    input {
+      width: 30rem;
+    }
+
+    button {
+      margin-right: 0.5rem;
+    }
+
+    .folder-dropdown {
+      width: 30rem;
     }
   }
 }
