@@ -13,16 +13,16 @@ function Tile(props) {
   };
 
   return (
-    <Link to={`/bookmarks/${props.id}`}>
-      <li className="bookmark-tile col-md-3">
+    <li className="bookmark-tile col-md-3">
+      <Link to={`/bookmarks/${props.id}`}>
         <h3>
           <div className="bg" style={style} />
           <span>
             {props.title}
           </span>
         </h3>
-      </li>
-    </Link>
+      </Link>
+    </li>
   );
 }
 

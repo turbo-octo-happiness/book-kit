@@ -13,13 +13,12 @@ class PageContainer extends React.Component {
 
   render() {
     return (
-      <div>
-        <section className="main-section container">
+      <section className="main-section">
+        <div className="main-container">
           <SidebarContainer />
-          <h1>Page Container Stuff</h1>
           {this.props.children}
-        </section>
-      </div>
+        </div>
+      </section>
     );
   }
 }

@@ -56,6 +56,33 @@ a {
   flex-direction: column;
 }
 
+li {
+  list-style: none;
+}
+
+ul {
+  padding-left: 0;
+}
+
+button {
+  padding: 0.5rem;
+  background-color: @green;
+  color: @white;
+  border-radius: 0.5rem;
+  border: none;
+  font-family: 'Karla', sans-serif;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+input {
+  border-radius: 0.5rem;
+  border: 0.5px solid @gray40;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 // Section Styles
 
 header {
@@ -63,6 +90,7 @@ header {
   justify-content: center;
   background-color: @green;
   font-family: 'Karla', sans-serif;
+  margin-bottom: 1rem;
 
   nav {
     display: flex;
@@ -102,26 +130,74 @@ header {
   align-items: center;
 }
 
-.bookmark-tile {
-  h3 {
-    height: 15rem;
-    position: relative;
-    z-index: 1;
-    margin: 0.5rem;
+.main-section {
+  .main-container {
     display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
   }
-  .bg {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    opacity: .4;
-    background-size: cover;
-    border-radius: 0.8rem;
+
+  .sidebar {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.55rem;
+
+    a {
+      color: @gray75;
+    }
+
+    .search-bar,
+    .add-folder,
+    .add-bookmark {
+      width: 80%;
+    }
+
+    .add-folder {
+      margin-bottom: 0.2rem;
+    }
+
+    .folder-name {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .tile-section {
+    width: 80%;
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+
+    .bookmark-tile {
+      width: 33%;
+      list-style: none;
+      margin-left: 0;
+
+      h3 {
+        height: 10rem;
+        position: relative;
+        z-index: 1;
+        margin: 0.5rem;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+      }
+      .bg {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: .4;
+        background-size: cover;
+        border-radius: 0.8rem;
+      }
+    }
   }
 }

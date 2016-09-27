@@ -21,33 +21,12 @@ class Folder extends React.Component {
   }
 
   render() {
-    const textStyle = this.props.show ? { display: 'none' } : {};
-    const inputStyle = this.props.show ? {} : { display: 'none' };
     return (
       <li>
-        <Link to={`/folders/${this.props.folder.foldername}`} style={textStyle}>
-          {this.props.folder.foldername}
+        <Link to={`/folders/${this.props.folder.foldername}`}>
+          <i className="fa fa-folder-o" aria-hidden="true" />
+          <span className="folder-name">{this.props.folder.foldername}</span>
         </Link>
-        <form
-          onSubmit={this.editFolder}
-          style={inputStyle}
-        >
-          <input
-            type="text"
-            ref={editedFolder => { this.editedFolder = editedFolder; }}
-            defaultValue={this.props.folder.foldername}
-          />
-        </form>
-        <span
-          onClick={this.props.onShowEdit}
-          className="glyphicon glyphicon-pencil"
-          aria-hidden="true"
-        />
-        <span
-          onClick={() => { this.props.onDelete(this.props.folder.folderid); }}
-          className="glyphicon glyphicon-trash"
-          aria-hidden="true"
-        />
       </li>
     );
   }
