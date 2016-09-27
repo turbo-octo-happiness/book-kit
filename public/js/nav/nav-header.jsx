@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import Auth0Lock from 'auth0-lock';
 import { Link } from 'react-router';
-import { Navbar, Nav, Button } from 'react-bootstrap';
 
 // TODO: PASS GETPROFILE() IN AS PROPS FROM NAV-HEADER-CONTAINER
 
@@ -15,7 +14,7 @@ const propTypes = {
   isAuthenticated: PropTypes.bool,
 };
 
-function NavbarComponent(props) {
+function Navbar(props) {
   const lock = new Auth0Lock('6ElpyE9EazmBox2b9PAWytCnFJQTxBCa', 'ericsnell.auth0.com', {
     auth: {
       redirectUrl: `${SERVER_URL}/#/main`,
@@ -32,38 +31,33 @@ function NavbarComponent(props) {
 
   const { onLogoutClick, profile, isAuthenticated } = props;
   const navContent = isAuthenticated ? (
-    <Nav pullRight="true">
+    <div className="logout">
       <img src={profile.picture} height="40px" alt="profile" />
-      <Button>My Account</Button>
-      <Link to={'/'}>
-        <Button onClick={onLogoutClick}>Logout</Button>
+      <Link to="/manage/profile">My Account</Link>
+      <Link to="/" onClick={onLogoutClick}>
+        Logout
       </Link>
-    </Nav>
+    </div>
   ) : (
-    <Nav pullRight="true">
-      <Button
-        onClick={() => { lock.show(); }}
-      >Login
-      </Button>
-    </Nav>
+    <div className="login">
+      <Link to="#" onClick={() => { lock.show(); }}>
+        Login
+      </Link>
+    </div>
   );
 
   return (
     <header>
-      <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <Link to="/main">
-              <img src="img/logo.png" alt="Book Kit!" />
-            </Link>
-          </Navbar.Brand>
-        </Navbar.Header>
+      <nav>
+        <Link to="/main">
+          <img src="img/logo.png" alt="Book Kit!" />
+        </Link>
         {navContent}
-      </Navbar>
+      </nav>
     </header>
   );
 }
 
-NavbarComponent.propTypes = propTypes;
+Navbar.propTypes = propTypes;
 
-module.exports = NavbarComponent;
+module.exports = Navbar;

@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Row } from 'react-bootstrap';
 
 const propTypes = {
   tileArr: PropTypes.array,
@@ -8,9 +7,9 @@ const propTypes = {
 function BookmarkTiles(props) {
   return (
     <section className="tile-section">
-      <Row>
+      <ul>
         {props.tileArr}
-      </Row>
+      </ul>
     </section>
   );
 }

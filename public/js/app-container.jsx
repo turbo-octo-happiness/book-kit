@@ -12,7 +12,7 @@ const propTypes = {
 
 function AppContainer(props) {
   const display = !props.isAuthenticated ? (
-    <div>
+    <div className="splash-page">
       <h1>Splash Page Stuff</h1>
     </div>
   ) : (
