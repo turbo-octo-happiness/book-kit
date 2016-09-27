@@ -28,6 +28,7 @@ class BookmarkForm extends React.Component {
     this.description.value = '';
     this.folder.value = '';
     this.screenshot.value = '';
+    window.location = '/#/main';
   }
 
   render() {
