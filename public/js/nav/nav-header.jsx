@@ -30,52 +30,32 @@ function Navbar(props) {
   });
 
   const { onLogoutClick, profile, isAuthenticated } = props;
+  const navContent = isAuthenticated ? (
+    <div className="logout">
+      <Link to="/manage/profile" className="prof-link">
+        <img src={profile.picture} height="40px" alt="profile" className="prof-pic" />
+      </Link>
+      <Link to="/manage/profile">My Account</Link>
+      <Link to="/" onClick={onLogoutClick}>
+        Logout
+      </Link>
+    </div>
+  ) : (
+    <div className="login">
+      <Link to="#" onClick={() => { lock.show(); }}>
+        Login
+      </Link>
+    </div>
+  );
 
   return (
     <header>
-      {isAuthenticated ? (
-        <nav className="navbar navbar-default">
-          <div className="container">
-            <ul className="nav navbar-nav">
-              <li>
-                <Link className="navbar-brand" to={'/main'}>
-                  <img src="img/logo.png" alt="Book Kit!" />
-                </Link>
-              </li>
-            </ul>
-            <div className="navbar-form navbar-right">
-              <img src={profile.picture} height="40px" alt="profile" />
-              <Link to={'/manage/profile'}>
-                <button className="btn btn-primary">My Account</button>
-              </Link>
-              <Link to={'/'}>
-                <button className="btn btn-primary" onClick={onLogoutClick}>Logout</button>
-              </Link>
-            </div>
-          </div>
-        </nav>
-
-      ) : (
-
-        <nav className="navbar navbar-default">
-          <div className="container">
-            <ul className="nav navbar-nav">
-              <li>
-                <Link className="navbar-brand" to={'/'}>
-                  <img src="img/logo.png" alt="Book Kit!" />
-                </Link>
-              </li>
-            </ul>
-            <div className="navbar-form navbar-right">
-              <button
-                className="btn btn-primary"
-                onClick={() => { lock.show(); }}
-              >Login
-              </button>
-            </div>
-          </div>
-        </nav>
-      )}
+      <nav>
+        <Link to="/main" className="main-logo">
+          <img src="img/logo.png" alt="Book Kit!" />
+        </Link>
+        {navContent}
+      </nav>
     </header>
   );
 }

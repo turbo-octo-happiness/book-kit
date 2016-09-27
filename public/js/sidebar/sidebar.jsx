@@ -27,63 +27,35 @@ class Sidebar extends React.Component {
       );
     });
 
-    const pageCheck = /manage/;
-    const urlRoute = window.location.hash;
-    let sidebarContent;
-
-    if (pageCheck.test(urlRoute)) {
-      sidebarContent = (
-        <div>
-          <ul>
-            <li>
-              <Link to="/manage/profile">Profile</Link>
-            </li>
-            <li>
-              <Link to="/manage/folders">Manage Folders</Link>
-            </li>
-            <li>
-              <Link to="/manage/tags">Manage Tags</Link>
-            </li>
-          </ul>
-        </div>
-      );
-    } else {
-      sidebarContent = (
-        <div>
-          <div>
-            <input
-              type="text"
-              onChange={this.props.onAddInput}
-              placeholder="Search..."
-              className="search-bar"
-            />
-          </div>
-          <div>
-            <Link to="/bookmarks">
-              <button>Add Bookmark</button>
-            </Link>
-          </div>
-          <div>
-            <h3>Folders:</h3>
-            <form onSubmit={this.onAddFolder}>
-              <input
-                type="text"
-                placeholder="Temp add folder"
-                className="add-folder"
-                ref={newFolder => { this.newFolder = newFolder; }}
-              />
-            </form>
-            <ul>
-              {foldersArr}
-            </ul>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <section className="sidebar">
-        {sidebarContent}
+        <div>
+          <input
+            type="text"
+            onChange={this.props.onAddInput}
+            placeholder="Search..."
+            className="search-bar"
+          />
+        </div>
+        <div>
+          <Link to="/bookmarks">
+            <button className="add-bookmark">Add Bookmark</button>
+          </Link>
+        </div>
+        <div>
+          <h3>Folders:</h3>
+          <form onSubmit={this.onAddFolder}>
+            <input
+              type="text"
+              placeholder="Add Folder..."
+              className="add-folder"
+              ref={newFolder => { this.newFolder = newFolder; }}
+            />
+          </form>
+          <ul>
+            {foldersArr}
+          </ul>
+        </div>
       </section>
     );
   }

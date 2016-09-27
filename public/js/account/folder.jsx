@@ -36,19 +36,19 @@ class Folder extends React.Component {
     const textStyle = this.state.show ? { display: 'none' } : {};
     const inputStyle = this.state.show ? {} : { display: 'none' };
     return (
-      <div>
-        <li>
-          <h3 style={textStyle}>{this.props.folder.foldername}</h3>
-          <form
-            onSubmit={this.editFolder}
-            style={inputStyle}
-          >
-            <input
-              type="text"
-              ref={editedFolder => { this.editedFolder = editedFolder; }}
-              defaultValue={this.props.folder.foldername}
-            />
-          </form>
+      <li className="manage-folder">
+        <h3 style={textStyle}>{this.props.folder.foldername}</h3>
+        <form
+          onSubmit={this.editFolder}
+          style={inputStyle}
+        >
+          <input
+            type="text"
+            ref={editedFolder => { this.editedFolder = editedFolder; }}
+            defaultValue={this.props.folder.foldername}
+          />
+        </form>
+        <div className="manage-buttons">
           <button
             onClick={this.onShowEdit}
             aria-hidden="true"
@@ -62,8 +62,8 @@ class Folder extends React.Component {
             onClick={this.props.onShare}
           >Share
           </button>
-        </li>
-      </div>
+        </div>
+      </li>
     )
   }
 }
