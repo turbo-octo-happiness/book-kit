@@ -1,20 +1,34 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import actions from '../redux/actions';
 
 class Folder extends React.Component {
   constructor() {
     super();
+    this.onShowEdit = this.onShowEdit.bind(this);
     this.editFolder = this.editFolder.bind(this);
+    this.state = {
+      show: false,
+    };
   }
 
-  editFolder(event) {
+  onShowEdit() {
+    this.setState({
+      show: !this.state.show,
+    });
+  }
+
+  editFolder(event, folderId, folderName) {
+    // TODO: dispatch action to rename folder
+    console.log("In onEdit")
     event.preventDefault();
-    console.log('in editFolder')
-    this.props.onEdit(this.props.folder.folderid, this.editedFolder.value);
+    this.props.dispatch(actions.editFolder(folderId, folderName, this.props.token));
+    this.onShowEdit();
   }
 
   render() {
-    const textStyle = this.props.show ? { display: 'none' } : {};
-    const inputStyle = this.props.show ? {} : { display: 'none' };
+    const textStyle = this.state.show ? { display: 'none' } : {};
+    const inputStyle = this.state.show ? {} : { display: 'none' };
     return(
       <div>
         <li>
@@ -30,7 +44,7 @@ class Folder extends React.Component {
             />
           </form>
           <button
-            onClick={this.props.onShowEdit}
+            onClick={this.onShowEdit}
             aria-hidden="true"
             >Edit
           </button>
@@ -48,4 +62,8 @@ class Folder extends React.Component {
   }
 }
 
-module.exports = Folder;
+function mapStateToProps(state) {
+  return {};
+}
+
+module.exports = connect(mapStateToProps)(Folder);

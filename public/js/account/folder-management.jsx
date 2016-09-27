@@ -8,30 +8,11 @@ import Folder from './folder';
 class FolderManagement extends React.Component {
   constructor() {
     super();
-    this.onShowEdit = this.onShowEdit.bind(this);
-    this.onEdit = this.onEdit.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onShare = this.onShare.bind(this);
-    this.state = {
-      show: false,
-    };
-  }
-
-  onShowEdit() {
-    this.setState({
-      show: !this.state.show,
-    });
-  }
-
-  onEdit(folderId, folderName) {
-    // TODO: dispatch action to rename folder
-    console.log("In onEdit")
-    this.props.dispatch(actions.editFolder(folderId, folderName, this.props.token));
-    this.onShowEdit();
   }
 
   onDelete(folderId, token) {
-    // TODO: dispatch action to remove folder
     console.log("in deleteFolder")
     this.props.dispatch(actions.deleteFolder(folderId, this.props.token))
   }
@@ -48,11 +29,9 @@ class FolderManagement extends React.Component {
         <Folder
           key={index}
           folder={folder}
-          onEdit={this.onEdit}
-          show={this.state.show}
-          onShowEdit={this.onShowEdit}
           onDelete={this.onDelete}
           onShare={this.onShare}
+          token={this.props.token}
           />
       );
     });
@@ -64,6 +43,7 @@ class FolderManagement extends React.Component {
     )
   }
 }
+
 function mapStateToProps(state) {
   return {
     token: state.auth.token,
