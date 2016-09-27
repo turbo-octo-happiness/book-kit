@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import actions from '../redux/actions';
 import Folder from './folder';
 
-// TODO: Move editing methods to folder component
-
 class FolderManagement extends React.Component {
   constructor() {
     super();
@@ -12,8 +10,8 @@ class FolderManagement extends React.Component {
     this.onShare = this.onShare.bind(this);
   }
 
-  onDelete(folderId, token) {
-    console.log("in deleteFolder")
+  onDelete(folderId) {
+    // TODO: Fix issue with folder not deleting in database
     this.props.dispatch(actions.deleteFolder(folderId, this.props.token))
   }
 

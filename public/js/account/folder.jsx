@@ -7,6 +7,7 @@ class Folder extends React.Component {
     super();
     this.onShowEdit = this.onShowEdit.bind(this);
     this.editFolder = this.editFolder.bind(this);
+    this.deleteFolder = this.deleteFolder.bind(this);
     this.state = {
       show: false,
     };
@@ -19,11 +20,13 @@ class Folder extends React.Component {
   }
 
   editFolder(event, folderId, folderName) {
-    // TODO: dispatch action to rename folder
-    console.log("In onEdit")
     event.preventDefault();
-    this.props.dispatch(actions.editFolder(folderId, folderName, this.props.token));
+    this.props.dispatch(actions.editFolder(this.props.folder.folderid, this.editedFolder.value, this.props.token));
     this.onShowEdit();
+  }
+
+  deleteFolder(folderId) {
+    this.props.onDelete(this.props.folder.folderid);
   }
 
   render() {
@@ -49,7 +52,7 @@ class Folder extends React.Component {
             >Edit
           </button>
           <button
-            onClick={this.props.onDelete}
+            onClick={this.deleteFolder}
             >Delete
           </button>
           <button
