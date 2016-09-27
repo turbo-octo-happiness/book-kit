@@ -28,7 +28,9 @@ class TagManagement extends React.Component {
     return (
       <div>
         <h1>Tags</h1>
-        {tags}
+        <ul>
+          {tags}
+        </ul>
       </div>
     )
   }
