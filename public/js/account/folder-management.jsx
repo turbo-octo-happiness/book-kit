@@ -34,11 +34,14 @@ class FolderManagement extends React.Component {
       );
     });
 
-    return(
-      <ul>
+    return (
+      <ul className="content-section">
+        <li>
+          <h2 className="folder-header">Manage Folders:</h2>
+        </li>
         {folders}
       </ul>
-    )
+    );
   }
 }
 
