@@ -22,6 +22,8 @@ class NavbarContainer extends React.Component {
       }
 
       this.props.dispatch(actions.loginSuccess(authResult.idToken, profile));
+      this.props.dispatch(actions.getBookmarks(authResult.idToken));
+      this.props.dispatch(actions.getFolders(authResult.idToken));
       hashHistory.push('/main');
     });
   }

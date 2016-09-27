@@ -133,7 +133,7 @@ class BookmarkView extends React.Component {
             >Confirm
             </button>
           </Link>
-          <Link to={'/'} style={textStyle}>
+          <Link to={'/main'} style={textStyle}>
             <button className="btn btn-default">Close</button>
           </Link>
         </div>
