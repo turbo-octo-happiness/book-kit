@@ -76,11 +76,13 @@ button {
   margin-bottom: 1rem;
 }
 
+textarea,
 input {
   border-radius: 0.5rem;
   border: 0.5px solid @gray40;
   padding: 0.5rem;
   margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 
 select {
@@ -88,6 +90,7 @@ select {
   border: 0.5px solid @gray40;
   height: 2rem;
   margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 
 .prof-pic {
@@ -191,8 +194,9 @@ header {
   }
 
   /**
-   * STYLING FOR MANAGE/PROFILE ACCOUNT PAGE
+   * Styling for manage/profile account page
    */
+
   .profile {
     display: flex;
     justify-content: center;
@@ -207,6 +211,61 @@ header {
 
       .prof-labels {
         text-align: right;
+      }
+    }
+  }
+
+  /**
+   * Styling for bookmark view page
+   */
+
+  .bookmark-section {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      color: @green;
+    }
+
+    button {
+      margin-right: 0.2rem;
+    }
+
+    .bookmark-view {
+      width: 100%;
+
+      p {
+        margin-bottom: 1rem;
+      }
+
+      .bookmark-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+
+        .bookmark-title {
+          width: 50%;
+        }
+
+        .bookmark-screenshot {
+          width: 24rem;
+          height: 16rem;
+          background-color: black;
+          background-size: cover;
+          border-radius: 0.5rem;
+        }
+      }
+
+      .edit-description {
+        height: 5rem;
+      }
+    }
+
+    .bookmark-edit {
+      input,
+      select,
+      textarea {
+        width: 30rem;
       }
     }
   }
