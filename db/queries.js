@@ -17,15 +17,20 @@ exports.SELECT_TAG = `SELECT tagid, tagname
                       WHERE customerid = $1;`;
 
 exports.INSERT_TAG = `WITH tags AS (
-	                       INSERT INTO tag(tagname) VALUES ($1)
-                         RETURNING tagid, tagname
-                       )
-                       INSERT INTO bookmark_tags(bookmarkid, tagid)
-                       VALUES ($2, (SELECT tagid from tags))
-                       RETURNING tagid, (SELECT tagname from tags);`;
+  	                     INSERT INTO tag(tagname) VALUES ($1)
+                         on conflict (tagname) do update set (tagname) = ($2)
+  	                     RETURNING tagid, tagname
+                      )
+                      INSERT INTO bookmark_tags(bookmarkid, tagid)
+                      VALUES (2, (SELECT tagid from tags))
+                      RETURNING tagid, (SELECT tagname from tags);`;
 
+// TODO: There is one tag pool for all users. If multiple users have the same tag
+// editing will have side effects.
 exports.UPDATE_TAG = `UPDATE tag SET tagname = ($1) WHERE tagid = ($2)
                         RETURNING tagid, tagname;`;
+
+exports.DELETE_TAG = 'DELETE FROM bookmark_tags WHERE bookmarkid = $1 AND  RETURNING *;';
 
 /*
  ==================================================================================================
@@ -36,12 +41,14 @@ exports.UPDATE_TAG = `UPDATE tag SET tagname = ($1) WHERE tagid = ($2)
  ==================================================================================================
 */
 
-exports.SELECT_FOLDER = `SELECT folderid, foldername
-                         FROM folder NATURAL JOIN user_folder NATURAL JOIN customer
-                         WHERE customerid = $1;`;
+exports.SELECT_FOLDERS = `SELECT folderid, foldername, count(customerid) AS count,
+                          array_agg(email) AS members
+                        FROM folder NATURAL JOIN user_folder NATURAL JOIN customer
+                        GROUP  BY folderid
+                        HAVING (
+                          SELECT email FROM customer WHERE customerid = $1
+                        ) = ANY(array_agg(email));`;
 
-// updated
-// Test the RETURNING Clause
 exports.INSERT_FOLDER = `WITH folders AS (
 	                         INSERT INTO folder(foldername) VALUES ($1)
                            RETURNING folderid, foldername
@@ -50,8 +57,20 @@ exports.INSERT_FOLDER = `WITH folders AS (
                          VALUES ($2, (SELECT folderid from folders))
                          RETURNING folderid, (SELECT foldername from folders);`;
 
+// Works given the customerid
+exports.ADD_USER_TO_FOLDER_BY_ID = `INSERT INTO user_folder(customerid, folderid)
+                                    VALUES ($1, $2) RETURNING customerid, folderid;`;
+
+exports.ADD_USER_TO_FOLDER_BY_EMAIL = `INSERT INTO user_folder(customerid, folderid)
+                                       SELECT customerid, 2 FROM customer
+                                       WHERE email = 'magelet13@Gmail.com'
+                                       RETURNING customerid, folderid;`;
+
+// Who has the right to delete a folder?
+// This query will delete the folder and all references to it in the customer_folder table
 exports.DELETE_FOLDER = 'DELETE FROM folder WHERE folderid = $1 RETURNING *;';
 
+// WHo has the right to update folders?
 exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($2)
                         RETURNING folderid, foldername;`;
 
@@ -64,27 +83,19 @@ exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($
  ==================================================================================================
 */
 
-exports.SELECT_BOOKMARK = `SELECT DISTINCT bookmarkid, url, title, description, foldername,
-                            folderid, screenshot, tagid, tagname
-                          FROM bookmark NATURAL JOIN folder NATURAL JOIN user_folder
-                            NATURAL JOIN customer NATURAL JOIN bookmark_tags NATURAL JOIN tag
-                          WHERE customerid = $1;`;
+exports.SELECT_BOOKMARK = `SELECT bookmarkid, url, title, description, foldername, folder.folderid,
+                            screenshot, bookmark.customerid AS owner,
+                            array_agg(DISTINCT user_folder.customerid) AS member,
+                            array_agg(DISTINCT tagid || ',' || tagname)
+                          FROM bookmark NATURAL JOIN folder RIGHT JOIN user_folder
+                            ON folder.folderid = user_folder.folderid JOIN customer
+                            ON user_folder.customerid = customer.customerid
+                            NATURAL JOIN bookmark_tags NATURAL JOIN tag
+                          GROUP BY bookmark.bookmarkid, folder.folderid
+                          HAVING (
+                            SELECT customerid FROM customer WHERE customerid = $1
+                          ) = ANY(array_agg(user_folder.customerid));`;
 
-exports.SELECT_BOOKMARK_BY_FOLDER = `SELECT bookmarkid, url, title, description, foldername,
-                                      screenshot
-                                    FROM bookmark NATURAL JOIN folder
-                                    WHERE foldername = $1 AND customerid = $2;`;
-
-exports.SELECT_BOOKMARK_BY_TAG = `SELECT bookmarkid, url, title, description,
-                                    screenshot, tagname
-                                  FROM bookmark NATURAL JOIN bookmark_tags
-                                  NATURAL JOIN tag
-                                  WHERE bookmarkid in (
-                                    SELECT bookmarkid
-                                    FROM bookmark NATURAL JOIN bookmark_tags
-                                    NATURAL JOIN tag
-                                    WHERE tagid = $1);`;
-// updated
 exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                               folderid, screenshot, customerid)
                             VALUES ($1, $2, $3, $4, $5, $6)
@@ -92,8 +103,10 @@ exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
 
 exports.DELETE_BOOKMARK = 'DELETE FROM bookmark WHERE bookmarkid = $1 RETURNING *;';
 
-exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot,
-                            customerid) = ($1, $2, $3, $4, $5, $6)
+// Removed customerid from update, to prevent user's from claiming ownership of other people's
+// bookmarks.
+exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot) =
+                            ($1, $2, $3, $4, $5)
                           WHERE bookmarkid = ($7)
                           RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 

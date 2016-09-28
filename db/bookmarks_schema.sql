@@ -17,7 +17,7 @@ CREATE TABLE "folder"(
 
 CREATE TABLE "tag"(
   tagid SERIAL PRIMARY KEY,
-  tagname VARCHAR(100) NOT NULL
+  tagname VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE "bookmark"(
@@ -32,12 +32,12 @@ CREATE TABLE "bookmark"(
 
 CREATE TABLE "user_folder"(
   customerid VARCHAR(50) REFERENCES "customer" (customerid),
-  folderid INTEGER REFERENCES "folder" (folderid),
+  folderid INTEGER REFERENCES "folder" (folderid) ON DELETE CASCADE,
   PRIMARY KEY (customerid, folderid)
 );
 
 CREATE TABLE "bookmark_tags"(
-  bookmarkid INTEGER REFERENCES "bookmark" (bookmarkid),
-  tagid INTEGER REFERENCES "tag" (tagid),
+  bookmarkid INTEGER REFERENCES "bookmark" (bookmarkid) ON DELETE CASCADE,
+  tagid INTEGER REFERENCES "tag" (tagid) ON DELETE CASCADE,
   PRIMARY KEY (bookmarkid, tagid)
 );
