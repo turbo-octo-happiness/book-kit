@@ -50,8 +50,8 @@ router.get('/', (request, response) => {
  * is successful, then the new bookmark is returned to the caller.
  */
 router.post('/', jsonParser, (request, response) => {
-  const userIdentity = request.user.identities[0].user_id;
-
+  // const userIdentity = request.user.identities[0].user_id;
+    const userIdentity = '12989626';
   if (!request.body.url) {
     response.status(422).json({
       message: 'Missing field: URL',
@@ -111,7 +111,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
 
     // Paramitarize query to protect against SQL injection
     dbConnect(queries.UPDATE_BOOKMARK, [request.body.url, request.body.title, bdescription,
-      request.body.folderid, bscreenshot, userIdentity, bookmarkid,
+      request.body.folderid, bscreenshot, bookmarkid,
     ]).then((result) => {
       response.json(result.rows[0]);
     }).catch((errorCode) => {
