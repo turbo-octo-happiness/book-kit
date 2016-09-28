@@ -11,26 +11,30 @@ exports.CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/boo
                                      (__)\_/\_/ \___/(____/
  ==================================================================================================
 */
-exports.SELECT_TAG = `SELECT tagid, tagname
-                      FROM tag NATURAL JOIN bookmark_tags
-                        NATURAL JOIN bookmark NATURAL JOIN customer
-                      WHERE customerid = $1;`;
 
-exports.INSERT_TAG = `WITH tags AS (
-  	                     INSERT INTO tag(tagname) VALUES ($1)
-                         on conflict (tagname) do update set (tagname) = ($2)
-  	                     RETURNING tagid, tagname
+// Retrieves both tags associated with bookmarks (i.e. shared bookmarks) and
+// tags not associated with a bookmark.
+exports.SELECT_TAG = `SELECT tag.tagid, tagname, bookmarkid
+                      FROM tag NATURAL JOIN customer
+                        LEFT JOIN bookmark_tag ON tag.tagid = bookmark_tag.tagid
+                      WHERE customerid = '123';`;
+
+// Inserts a new tag and adds it to the joining table between tag and bookmark.
+// Does not check that provided customerid matches the 'owner' of the bookmark
+exports.INSERT_TAG = `WITH t AS (
+  	                     INSERT INTO tag(tagname, customerid) VALUES ($1, $2)
+  	                     RETURNING tagid, tagname, customerid
                       )
-                      INSERT INTO bookmark_tags(bookmarkid, tagid)
-                      VALUES (2, (SELECT tagid from tags))
-                      RETURNING tagid, (SELECT tagname from tags);`;
+                      INSERT INTO bookmark_tag(bookmarkid, tagid)
+                      VALUES ($3, (SELECT tagid FROM t))
+                      RETURNING tagid, (SELECT tagname FROM t), (SELECT customerid FROM t);`;
 
-// TODO: There is one tag pool for all users. If multiple users have the same tag
-// editing will have side effects.
-exports.UPDATE_TAG = `UPDATE tag SET tagname = ($1) WHERE tagid = ($2)
-                        RETURNING tagid, tagname;`;
+exports.UPDATE_TAG = `UPDATE tag SET tagname = ($1)
+                      WHERE tagid = ($2) AND customerid = ($3)
+                      RETURNING tagid, tagname;`;
 
 exports.DELETE_TAG = 'DELETE FROM bookmark_tags WHERE bookmarkid = $1 AND  RETURNING *;';
+
 
 /*
  ==================================================================================================
