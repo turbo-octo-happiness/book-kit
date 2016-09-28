@@ -110,7 +110,7 @@ exports.DELETE_BOOKMARK = 'DELETE FROM bookmark WHERE bookmarkid = $1 RETURNING 
 // If the editor was not the creator, then we recieve a result of zero row effected.
 exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot) =
                             ($1, $2, $3, $4, $5)
-                          WHERE bookmarkid = ($7) AND customerid = ($8)
+                          WHERE bookmarkid = ($6) AND customerid = ($7)
                           RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
 /*

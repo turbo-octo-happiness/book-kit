@@ -22,8 +22,7 @@ module.exports = (query, params) => {
           if (exitErr) {
             reject('500');
           }
-
-          console.log('results being returned -->', result.rows)
+          console.log('results being returned -->', result)
           resolve(result);
         });
       });

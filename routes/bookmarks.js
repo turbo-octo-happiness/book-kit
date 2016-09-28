@@ -90,7 +90,8 @@ router.post('/', jsonParser, (request, response) => {
 
 router.put('/:bookmarkid', jsonParser, (request, response) => {
   const bookmarkid = request.params.bookmarkid;
-  const userIdentity = request.user.identities[0].user_id;
+  // const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = '12989626'
 
   if (!request.body.url) {
     response.status(422).json({
@@ -111,8 +112,11 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
 
     // Paramitarize query to protect against SQL injection
     dbConnect(queries.UPDATE_BOOKMARK, [request.body.url, request.body.title, bdescription,
-      request.body.folderid, bscreenshot, bookmarkid,
+      request.body.folderid, bscreenshot, bookmarkid, userIdentity,
     ]).then((result) => {
+      if (result.rows.length === 0) {
+        response.status('403').json('Only bookmark owners can edit.');
+      }
       response.json(result.rows[0]);
     }).catch((errorCode) => {
       response.status(errorCode);
