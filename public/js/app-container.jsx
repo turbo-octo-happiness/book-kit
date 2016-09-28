@@ -14,8 +14,8 @@ const propTypes = {
 class AppContainer extends React.Component {
   componentDidMount() {
     console.log(actions)
-    this.props.dispatch(actions.getBookmarks(this.props.token));
     this.props.dispatch(actions.getFolders(this.props.token));
+    this.props.dispatch(actions.getBookmarks(this.props.token));
   }
 
   render() {
