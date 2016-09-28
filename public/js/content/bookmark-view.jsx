@@ -24,6 +24,7 @@ class BookmarkView extends React.Component {
       url: this.url.value,
       title: this.title.value,
       description: this.description.value,
+      tags: this.tags.value.toLowerCase().split(', '),
       folderid: this.folder.value,
       screenshot: this.screenshot.value,
       bookmarkid: this.props.bookmark[0].bookmarkid,
