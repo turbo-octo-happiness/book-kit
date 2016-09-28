@@ -96,6 +96,9 @@ select {
 
 // Section Styles
 
+/**
+ * HEADER SECTION - nav
+ */
 header {
   display: flex;
   justify-content: center;
@@ -132,6 +135,13 @@ header {
   }
 }
 
+/**
+ * Main body section under nav
+ */
+
+/**
+ *  Pre-login Splash Page
+ */
 .splash-page {
   position: absolute;
   top: 3rem;
@@ -142,7 +152,11 @@ header {
   align-items: center;
 }
 
+/**
+ * Post-Login Styling
+ */
 .main-section {
+  // consistent across the board for all components
   .main-container {
     display: flex;
     justify-content: space-between;
@@ -150,6 +164,7 @@ header {
     margin: 0 auto;
   }
 
+  // same styling for main pages and manage page
   .sidebar {
     width: 20%;
     display: flex;
@@ -175,6 +190,9 @@ header {
     }
   }
 
+  /**
+   * STYLING FOR MANAGE/PROFILE ACCOUNT PAGE
+   */
   .profile {
     display: flex;
     justify-content: center;
@@ -193,8 +211,16 @@ header {
     }
   }
 
+  /**
+   * Styling for everything right of the sidebar
+   */
+
   .content-section {
     width: 80%;
+
+    /**
+     * MANAGE FOLDER PAGE
+     */
 
     .folder-header {
       border-bottom: 0.5px solid @gray40;
@@ -213,14 +239,19 @@ header {
       background-color: @green75;
     }
 
+    /**
+     * BOOKMARK TILES SECTION
+     */
+
     ul {
       display: flex;
       flex-wrap: wrap;
       align-items: flex-end;
+      justify-content: space-between;
     }
 
     .bookmark-tile {
-      width: 33%;
+      width: 16.86rem;
       list-style: none;
       margin-left: 0;
 
@@ -247,6 +278,10 @@ header {
       }
     }
   }
+
+  /**
+   * BOOKMARK FORM
+   */
 
   .bookmark-form-container {
     display: flex;
