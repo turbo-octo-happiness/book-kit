@@ -98,7 +98,7 @@ function getBookmarks(token) {
 
     newFetch.then((bookmarks) => {
       return dispatch(
-        getBookmarksSuccess(bookmarks)
+        getBookmarksSuccess(bookmarks.reverse())
       );
     }).catch((error) => {
       return dispatch(
