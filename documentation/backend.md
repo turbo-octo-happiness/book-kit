@@ -39,12 +39,28 @@ Note on compatibility: The API relies on NodeJS v6.3.1 and PostgreSQL v9.5.3 All
 Status: 200 OK
 [
   {
-    "bookmarkid": 3,
-    "url": "https://trello.com/b/3Uj9v7Oq/full-stack-bookmarks-unnamed",
-    "title": "Trello Board",
-    "description": "The bookmark board project managment tool.",
+    "bookmarkid": 1,
+    "url": "test.com",
+    "title": "test bookmark for sierra",
+    "description": "test des",
     "foldername": "Work",
-    "screenshot": "https://i.kinja-img.com/gawker-media/image/upload/s--mWjnesG_--/18ixcsrp44y9gjpg.jpg"
+    "folderid": 1,
+    "screenshot": "test.png",
+    "owner": "12989626",
+    "members": [
+      "12989626",
+      "ab242cd"
+    ],
+    "tags": [
+      {
+        "id": "1",
+        "tag": "test tag 1 for 1"
+      },
+      {
+        "id": "2",
+        "tag": "test tag 2 for 1"
+      }
+    ]
   }
 ]
 ```

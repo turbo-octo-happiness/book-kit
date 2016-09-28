@@ -11,21 +11,32 @@ const router = express.Router();
  * they are added.
  */
 router.get('/', (request, response) => {
-  const userIdentity = request.user.identities[0].user_id;
+  // const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = '12989626';
+  const email = 'sierragregg@Gmail.com';
   dbConnect(queries.SELECT_BOOKMARK, [userIdentity]).then((result) => {
-    console.log('SELECT_BOOKMARK result: ', result.rows)
     const resultsToReturn = result.rows;
-    console.log(!result.rows.length)
     if (!result.rows.length) {
-      console.log(queries.INSERT_CUSTOMER);
-      dbConnect(queries.INSERT_CUSTOMER, [userIdentity]).then((results) => {
-        console.log('insert new user:', userIdentity)
-        console.log(results)
+      dbConnect(queries.INSERT_CUSTOMER, [userIdentity, email]).then(() => {
         response.json(resultsToReturn);
       }).catch((userErrorCode) => {
         response.status(userErrorCode);
       });
     }
+    // Formate tags to be an array of objects instead an array of strings
+    for (let i = 0; i < resultsToReturn.length; i++) {
+      console.log(resultsToReturn[i].tags[0] !== null)
+      if (resultsToReturn[i].tags[0] !== null) {
+        resultsToReturn[i].tags = resultsToReturn[i].tags.map((current) => {
+          const temp = current.split(',');
+          return {
+            id: temp[0],
+            tag: temp[1],
+          };
+        });
+      }
+    }
+
     response.json(resultsToReturn);
   }).catch((errorCode) => {
     response.status(errorCode);

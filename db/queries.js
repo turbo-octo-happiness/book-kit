@@ -83,14 +83,16 @@ exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($
  ==================================================================================================
 */
 
-exports.SELECT_BOOKMARK = `SELECT bookmarkid, url, title, description, foldername, folder.folderid,
-                            screenshot, bookmark.customerid AS owner,
-                            array_agg(DISTINCT user_folder.customerid) AS member,
-                            array_agg(DISTINCT tagid || ',' || tagname)
+exports.SELECT_BOOKMARK = `SELECT bookmark.bookmarkid, url, title, description, foldername,
+                            folder.folderid, screenshot, bookmark.customerid AS owner,
+                            array_agg(DISTINCT user_folder.customerid) AS members,
+                            array_agg(DISTINCT tag.tagid || ',' || tagname) AS tags
                           FROM bookmark NATURAL JOIN folder RIGHT JOIN user_folder
-                            ON folder.folderid = user_folder.folderid JOIN customer
-                            ON user_folder.customerid = customer.customerid
-                            NATURAL JOIN bookmark_tags NATURAL JOIN tag
+                            ON folder.folderid = user_folder.folderid
+                            JOIN customer ON user_folder.customerid = customer.customerid
+                            LEFT JOIN bookmark_tags ON
+                            bookmark.bookmarkid = bookmark_tags.bookmarkid LEFT JOIN tag ON
+                            bookmark_tags.tagid = tag.tagid
                           GROUP BY bookmark.bookmarkid, folder.folderid
                           HAVING (
                             SELECT customerid FROM customer WHERE customerid = $1
@@ -105,9 +107,10 @@ exports.DELETE_BOOKMARK = 'DELETE FROM bookmark WHERE bookmarkid = $1 RETURNING 
 
 // Removed customerid from update, to prevent user's from claiming ownership of other people's
 // bookmarks.
+// If the editor was not the creator, then we recieve a result of zero row effected.
 exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot) =
                             ($1, $2, $3, $4, $5)
-                          WHERE bookmarkid = ($7)
+                          WHERE bookmarkid = ($7) AND customerid = ($8)
                           RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
 /*
