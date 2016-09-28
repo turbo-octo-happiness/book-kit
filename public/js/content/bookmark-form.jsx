@@ -21,7 +21,7 @@ class BookmarkForm extends React.Component {
       description: this.description.value,
       folderid: this.folder.value,
       screenshot: this.screenshot.value,
-      tags: this.tags.value.split(', '),
+      tags: this.tags.value.toLowerCase().split(', '),
     });
 
     this.url.value = '';

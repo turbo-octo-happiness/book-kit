@@ -96,6 +96,14 @@ class BookmarkView extends React.Component {
               defaultValue={this.props.bookmark[0].screenshot}
               placeholder="Screenshot URL"
             />
+          <h4>Tags</h4>
+            <input
+              type="text"
+              className="form-control"
+              ref={tags => { this.tags = tags; }}
+              defaultValue={this.props.bookmark[0].tags}
+              placeholder="separate with comma"
+            />
             <h4>Folder *</h4>
             <select
               className="selectpicker form-control"

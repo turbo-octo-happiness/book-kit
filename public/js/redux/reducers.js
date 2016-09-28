@@ -55,7 +55,9 @@ function bookmarkReducer(state = [], action) {
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
+      console.log(action.bookmark, '<==new bookmark')
       tempArr.unshift(action.bookmark);
+      console.log(tempArr, '<===new state w/ new bookmark')
       return tempArr;
     }
 
