@@ -103,7 +103,9 @@ exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                             VALUES ($1, $2, $3, $4, $5, $6)
                             RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
-exports.DELETE_BOOKMARK = 'DELETE FROM bookmark WHERE bookmarkid = $1 RETURNING *;';
+exports.DELETE_BOOKMARK = `DELETE FROM bookmark
+                           WHERE bookmarkid = $1 AND customerid = $2
+                           RETURNING *;`;
 
 // Removed customerid from update, to prevent user's from claiming ownership of other people's
 // bookmarks.

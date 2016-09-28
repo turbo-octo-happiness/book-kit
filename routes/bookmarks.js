@@ -42,7 +42,7 @@ router.get('/', (request, response) => {
     response.status(errorCode);
   });
 });
-
+// @TODO: insert tags when inserting bookmarks
 /**
  * @description `POST /bookmarks` endpoint. Takes an object with the following
  * fields: url, title, description (optional), foldername,
@@ -80,7 +80,7 @@ router.post('/', jsonParser, (request, response) => {
     });
   }
 });
-
+// @TODO: updating tags at the sametime.
 /**
  * @description `PUT /bookmarks/:bookmarkid` endpoint. Takes an object with the following
  * fields: url, title, description (optional), folderid,
@@ -132,8 +132,13 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
  */
 router.delete('/:bookmarkid', (request, response) => {
   const id = request.params.bookmarkid;
+  // const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = '12989626'
 
-  dbConnect(queries.DELETE_BOOKMARK, [id]).then((result) => {
+  dbConnect(queries.DELETE_BOOKMARK, [id, userIdentity]).then((result) => {
+    if (result.rows.length === 0) {
+      response.status('403').json('Only bookmark owners can delete.');
+    }
     response.json(result.rows[0]);
   }).catch((errorCode) => {
     response.status(errorCode);
