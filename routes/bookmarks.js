@@ -2,6 +2,17 @@ const express = require('express');
 const jsonParser = require('body-parser').json();
 const queries = require('../db/queries');
 const dbConnect = require('../dbConnect');
+// const db = require('../pgp')
+
+const CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/bookmarks';
+
+const pgp = require('pg-promise')();
+
+// Heroku's free Postgres database only supports 20 connections,
+// so we limit the pool size so we never go reach Heroku's limit.
+pgp.pg.defaults.poolSize = 20;
+console.log('database is connecting to', CONNECT_URL);
+const db = pgp(CONNECT_URL);
 
 const router = express.Router();
 
@@ -12,35 +23,39 @@ const router = express.Router();
  */
 router.get('/', (request, response) => {
   // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '12989626';
+  const userIdentity = '123';
   const email = 'sierragregg@Gmail.com';
-  dbConnect(queries.SELECT_BOOKMARK, [userIdentity]).then((result) => {
-    const resultsToReturn = result.rows;
-    if (!result.rows.length) {
-      dbConnect(queries.INSERT_CUSTOMER, [userIdentity, email]).then(() => {
-        response.json(resultsToReturn);
-      }).catch((userErrorCode) => {
-        response.status(userErrorCode);
-      });
-    }
-    // Formate tags to be an array of objects instead an array of strings
-    for (let i = 0; i < resultsToReturn.length; i++) {
-      console.log(resultsToReturn[i].tags[0] !== null)
-      if (resultsToReturn[i].tags[0] !== null) {
-        resultsToReturn[i].tags = resultsToReturn[i].tags.map((current) => {
-          const temp = current.split(',');
-          return {
-            id: temp[0],
-            tag: temp[1],
-          };
-        });
+  console.log('inside get');
+  db.any(queries.SELECT_BOOKMARK, [userIdentity])
+    .then((data) => {
+      if (!data.length) {
+        db.oneOrNone(queries.INSERT_CUSTOMER, [userIdentity, email])
+        .then(() => {
+          console.log('inserted new customer')
+          response.json(data)
+        })
+        .catch((error) => {
+          response.json(error);
+        })
+      } else {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].tags[0] !== null) {
+            data[i].tags = data[i].tags.map((current) => {
+              const temp = current.split(',');
+              return {
+                id: temp[0],
+                tag: temp[1],
+              };
+            });
+          }
+        }
+        response.json(data)
       }
-    }
-
-    response.json(resultsToReturn);
-  }).catch((errorCode) => {
-    response.status(errorCode);
-  });
+    })
+    .catch((error) => {
+      console.log(error)
+      response.json(error)
+    })
 });
 // @TODO: insert tags when inserting bookmarks
 /**

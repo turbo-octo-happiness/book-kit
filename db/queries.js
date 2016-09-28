@@ -33,7 +33,7 @@ exports.UPDATE_TAG = `UPDATE tag SET tagname = ($1)
                       WHERE tagid = ($2) AND customerid = ($3)
                       RETURNING tagid, tagname;`;
 
-exports.DELETE_TAG = 'DELETE FROM bookmark_tags WHERE bookmarkid = $1 AND  RETURNING *;';
+exports.DELETE_TAG = 'DELETE FROM bookmark_tag WHERE bookmarkid = $1 AND  RETURNING *;';
 
 
 /*
@@ -47,7 +47,7 @@ exports.DELETE_TAG = 'DELETE FROM bookmark_tags WHERE bookmarkid = $1 AND  RETUR
 
 exports.SELECT_FOLDERS = `SELECT folderid, foldername, count(customerid) AS count,
                           array_agg(email) AS members
-                        FROM folder NATURAL JOIN user_folder NATURAL JOIN customer
+                        FROM folder NATURAL JOIN customer_folder NATURAL JOIN customer
                         GROUP  BY folderid
                         HAVING (
                           SELECT email FROM customer WHERE customerid = $1
@@ -57,15 +57,15 @@ exports.INSERT_FOLDER = `WITH folders AS (
 	                         INSERT INTO folder(foldername) VALUES ($1)
                            RETURNING folderid, foldername
                          )
-                         INSERT INTO user_folder(customerid, folderid)
+                         INSERT INTO customer_folder(customerid, folderid)
                          VALUES ($2, (SELECT folderid from folders))
                          RETURNING folderid, (SELECT foldername from folders);`;
 
 // Works given the customerid
-exports.ADD_USER_TO_FOLDER_BY_ID = `INSERT INTO user_folder(customerid, folderid)
+exports.ADD_USER_TO_FOLDER_BY_ID = `INSERT INTO customer_folder(customerid, folderid)
                                     VALUES ($1, $2) RETURNING customerid, folderid;`;
 
-exports.ADD_USER_TO_FOLDER_BY_EMAIL = `INSERT INTO user_folder(customerid, folderid)
+exports.ADD_USER_TO_FOLDER_BY_EMAIL = `INSERT INTO customer_folder(customerid, folderid)
                                        SELECT customerid, 2 FROM customer
                                        WHERE email = 'magelet13@Gmail.com'
                                        RETURNING customerid, folderid;`;
@@ -89,18 +89,18 @@ exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($
 
 exports.SELECT_BOOKMARK = `SELECT bookmark.bookmarkid, url, title, description, foldername,
                             folder.folderid, screenshot, bookmark.customerid AS owner,
-                            array_agg(DISTINCT user_folder.customerid) AS members,
+                            array_agg(DISTINCT customer_folder.customerid) AS members,
                             array_agg(DISTINCT tag.tagid || ',' || tagname) AS tags
-                          FROM bookmark NATURAL JOIN folder RIGHT JOIN user_folder
-                            ON folder.folderid = user_folder.folderid
-                            JOIN customer ON user_folder.customerid = customer.customerid
-                            LEFT JOIN bookmark_tags ON
-                            bookmark.bookmarkid = bookmark_tags.bookmarkid LEFT JOIN tag ON
-                            bookmark_tags.tagid = tag.tagid
+                          FROM bookmark NATURAL JOIN folder RIGHT JOIN customer_folder
+                            ON folder.folderid = customer_folder.folderid
+                            JOIN customer ON customer_folder.customerid = customer.customerid
+                            LEFT JOIN bookmark_tag ON
+                            bookmark.bookmarkid = bookmark_tag.bookmarkid LEFT JOIN tag ON
+                            bookmark_tag.tagid = tag.tagid
                           GROUP BY bookmark.bookmarkid, folder.folderid
                           HAVING (
                             SELECT customerid FROM customer WHERE customerid = $1
-                          ) = ANY(array_agg(user_folder.customerid));`;
+                          ) = ANY(array_agg(customer_folder.customerid));`;
 
 exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                               folderid, screenshot, customerid)
