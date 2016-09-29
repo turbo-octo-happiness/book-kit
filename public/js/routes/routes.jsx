@@ -21,6 +21,7 @@ const routes = (
         <Route path="/bookmarks/:bookmarkId" component={BookmarkViewContainer} />
         <Route path="/folders/:folderName" component={BookmarkTilesContainer} />
         <Route path="/search/:input" component={BookmarkTilesContainer} />
+        <Route path="/:tagId" component={BookmarkTilesContainer} />
       </Route>
       <Route path="/manage" component={ManageContainer}>
         <Route path="/manage/profile" component={Profile} />

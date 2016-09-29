@@ -41,6 +41,10 @@ class BookmarkView extends React.Component {
       return this.props.bookmark[0].folderid === folderObj.folderid;
     });
 
+    const tags = this.props.bookmark[0].tags.map((tagObj) => {
+      return tagObj.tag;
+    });
+
     return (
       <section className="bookmark-section">
         <div className="col-md-6" style={textStyle}>
@@ -102,8 +106,7 @@ class BookmarkView extends React.Component {
               type="text"
               className="form-control"
               ref={tags => { this.tags = tags; }}
-              defaultValue={this.props.bookmark[0].tags}
-              placeholder="separate with comma"
+              defaultValue={tags}
             />
             <h4>Folder *</h4>
             <select

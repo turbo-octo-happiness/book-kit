@@ -28,6 +28,28 @@ function BookmarkTilesContainer(props) {
         screenshot={bookmark.screenshot}
       />);
     });
+  } else if (props.params.tagId) {
+    const tagId = props.params.tagId;
+    const arr = [];
+    // TODO: Fix tempArr so that it contains the bookmarks instead of arr
+    const tempArr = this.props.bookmarks.filter((bookmark) => {
+      return bookmark.tags.map((tag) => {
+        if (tagId === tag.id) {
+          arr.push(bookmark);
+        }
+        // TODO: Return proper value, did this to shut up eslint
+        return true;
+      });
+    });
+    // TODO: Once tempArr is fixed to have bookmarks array, replace arr
+    arr.forEach((bookmark) => {
+      tileArr.push(<Tile
+        key={bookmark.bookmarkid}
+        title={bookmark.title}
+        id={bookmark.id}
+        screenshot={bookmark.screenshot}
+      />);
+    });
   } else if (props.search) {
     const search = new RegExp(props.search);
     const tempArr = props.bookmarks.filter((bookmark) => {

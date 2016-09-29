@@ -21,7 +21,7 @@ class BookmarkForm extends React.Component {
       description: this.description.value,
       folderid: this.folder.value,
       screenshot: this.screenshot.value,
-      tags: this.tags.value.toLowerCase().split(', '),
+      tags: this.tags.value.split(', '),
     });
 
     this.url.value = '';
@@ -39,65 +39,51 @@ class BookmarkForm extends React.Component {
     });
 
     return (
-      <div>
-        <div className="modal-header">
+      <div className="content-section bookmark-form-container">
+        <div className="bookmark-form">
           <h2>Enter a New Bookmark</h2>
-        </div>
-        <div className="modal-body">
-          <form onSubmit={this.addBookmark} className="form-horizontal">
-            <div className="form-group">
-              <label htmlFor="form-title" className="col-sm-2 control-label">Title *</label>
-              <div className="col-sm-10">
-                <input
-                  type="text"
-                  ref={title => { this.title = title; }}
-                  className="form-control"
-                  id="form-title"
-                  required
-                />
-              </div>
+          <form onSubmit={this.addBookmark}>
+            <label htmlFor="form-title">Title *</label>
+            <div>
+              <input
+                type="text"
+                ref={title => { this.title = title; }}
+                className="form-control"
+                id="form-title"
+                required
+              />
             </div>
-            <div className="form-group">
-              <label htmlFor="form-url" className="col-sm-2 control-label">URL *</label>
-              <div className="col-sm-10">
-                <input
-                  type="text"
-                  ref={url => { this.url = url; }}
-                  className="form-control"
-                  id="form-url"
-                  required
-                />
-              </div>
+            <label htmlFor="form-url">URL *</label>
+            <div>
+              <input
+                type="text"
+                ref={url => { this.url = url; }}
+                className="form-control"
+                id="form-url"
+                required
+              />
             </div>
-            <div className="form-group">
-              <label
-                htmlFor="form-description"
-                className="col-sm-2 control-label"
-              >Description
-              </label>
-              <div className="col-sm-10">
-                <input
-                  type="text"
-                  ref={description => { this.description = description; }}
-                  className="form-control"
-                  id="form-description"
-                />
-              </div>
+            <label htmlFor="form-description">
+              Description
+            </label>
+            <div>
+              <input
+                type="text"
+                ref={description => { this.description = description; }}
+                className="form-control"
+                id="form-description"
+              />
             </div>
-            <div className="form-group">
-              <label
-                htmlFor="form-screenshot"
-                className="col-sm-2 control-label"
-              >Screenshot URL
-              </label>
-              <div className="col-sm-10">
-                <input
-                  type="text"
-                  ref={screenshot => { this.screenshot = screenshot; }}
-                  className="form-control"
-                  id="form-screenshot"
-                />
-              </div>
+            <label htmlFor="form-screenshot">
+              Screenshot URL
+            </label>
+            <div>
+              <input
+                type="text"
+                ref={screenshot => { this.screenshot = screenshot; }}
+                className="form-control"
+                id="form-screenshot"
+              />
             </div>
             <div className="form-group">
               <label
@@ -131,26 +117,13 @@ class BookmarkForm extends React.Component {
                 </select>
               </div>
             </div>
-            <div className="form-group">
-              <div className="col-sm-10 col-sm-push-2">
-                <input
-                  type="submit"
-                  className="btn btn-default"
-                  id="form-submit"
-                  value="Submit"
-                />
-              </div>
+            <div>
+              <button type="submit">Submit</button>
+              <Link to="/main">
+                <button type="button">Close</button>
+              </Link>
             </div>
           </form>
-        </div>
-        <div className="modal-footer">
-          <Link to="/main">
-            <button
-              type="button"
-              className="btn btn-default"
-            >Close
-            </button>
-          </Link>
         </div>
       </div>
     );

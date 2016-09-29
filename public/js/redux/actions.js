@@ -108,10 +108,11 @@ function getBookmarks(token) {
   };
 }
 // Post Requests
-function addBookmarkSuccess(newBookmark) {
+function addBookmarkSuccess(newBookmark, newTags) {
   return {
     type: actionTypes.ADD_BOOKMARK_SUCCESS,
     bookmark: newBookmark,
+    tags: newTags,
   };
 }
 
@@ -123,8 +124,8 @@ function addBookmarkError(error) {
 }
 
 function addBookmark(newBookmark, token) {
-  console.log('inside addBookmark', newBookmark);
-  console.log(token);
+  console.log('inside addBookmark, new bookmark ===>', newBookmark);
+  console.log('token ===>', token);
   return (dispatch) => {
     const init = {
       method: 'POST',
@@ -140,9 +141,9 @@ function addBookmark(newBookmark, token) {
     const url = `${SERVER_URL}/bookmarks`;
     const newFetch = fetchHelp(url, init);
 
-    newFetch.then((bookmark) => {
-      console.log(bookmark);
-      return dispatch(addBookmarkSuccess(bookmark));
+    newFetch.then((bookmark, tags) => {
+      console.log('returned bookmark and tags====>', bookmark, tags);
+      return dispatch(addBookmarkSuccess(bookmark, tags));
     }).catch((error) => {
       console.log(error);
       return dispatch(addBookmarkError(error));
