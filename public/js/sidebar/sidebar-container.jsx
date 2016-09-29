@@ -5,6 +5,7 @@ import actions from '../redux/actions';
 
 const propTypes = {
   folders: PropTypes.array,
+  tags: PropTypes.array,
   dispatch: PropTypes.func,
   token: PropTypes.string,
 };
@@ -29,6 +30,7 @@ class SidebarContainer extends React.Component {
     return (
       <Sidebar
         folders={this.props.folders}
+        tags={this.props.tags}
         onAddInput={this.onAddInput}
         addFolder={this.addFolder}
       />
@@ -41,8 +43,8 @@ SidebarContainer.propTypes = propTypes;
 function mapStateToProps(state) {
   return {
     folders: state.folders,
+    tags: state.tags,
     token: state.auth.token,
-    // tags: state.tags,
   };
 }
 

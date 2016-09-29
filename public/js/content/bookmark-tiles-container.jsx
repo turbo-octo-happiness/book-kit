@@ -28,6 +28,32 @@ function BookmarkTilesContainer(props) {
         screenshot={bookmark.screenshot}
       />);
     });
+  } else if (props.params.tagId) {
+    const tagId = props.params.tagId;
+    const arr = [];
+    // TODO: Fix tempArr so that it contains the bookmarks instead of arr
+    const tempArr = props.bookmarks.filter((bookmark) => {
+      if (bookmark.tags) {
+        bookmark.tags.map((tag) => {
+          // To shut up ESLint: Informing parseInt that it's parsing with base 10 radix
+          if (parseInt(tagId, 10) === tag.id) {
+            arr.push(bookmark);
+            return true;
+          }
+          return false;
+        });
+      }
+      return false;
+    });
+    // TODO: Once tempArr is fixed to have bookmarks array, replace arr
+    arr.forEach((bookmark) => {
+      tileArr.push(<Tile
+        key={bookmark.bookmarkid}
+        title={bookmark.title}
+        id={bookmark.bookmarkid}
+        screenshot={bookmark.screenshot}
+      />);
+    });
   } else if (props.search) {
     const search = new RegExp(props.search);
     const tempArr = props.bookmarks.filter((bookmark) => {
@@ -78,6 +104,7 @@ function BookmarkTilesContainer(props) {
       />);
     });
   }
+
   return (
     <BookmarkTiles
       tileArr={tileArr}

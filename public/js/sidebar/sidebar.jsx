@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import Folder from './sidebar-folder-container';
+import TagContainer from './tags-container';
 
 const propTypes = {
   folders: PropTypes.array,
@@ -55,6 +56,7 @@ class Sidebar extends React.Component {
           <ul>
             {foldersArr}
           </ul>
+
         </div>
       </section>
     );

@@ -21,6 +21,7 @@ class BookmarkForm extends React.Component {
       description: this.description.value,
       folderid: this.folder.value,
       screenshot: this.screenshot.value,
+      tags: this.tags.value.split(', '),
     });
 
     this.url.value = '';
@@ -28,7 +29,9 @@ class BookmarkForm extends React.Component {
     this.description.value = '';
     this.folder.value = '';
     this.screenshot.value = '';
+    this.tags.value = '';
     window.location = '/#/main';
+
   }
 
   render() {
@@ -83,6 +86,21 @@ class BookmarkForm extends React.Component {
                 className="form-control"
                 id="form-screenshot"
               />
+            <div className="form-group">
+              <label
+                htmlFor="form-tags"
+                className="col-sm-2 control-label"
+              >Tags
+              </label>
+              <div className="col-sm-10">
+                <input
+                  type="text"
+                  ref={tags => { this.tags = tags; }}
+                  className="form-control"
+                  id="form-tags"
+                  placeholder="separate with comma"
+                />
+              </div>
             </div>
             <label htmlFor="form-folder">
               Folder *

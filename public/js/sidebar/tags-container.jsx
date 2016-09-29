@@ -1,47 +1,35 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import actions from '../redux/actions';
 import Tag from './tags';
 
+const propTypes = {
+  tags: PropTypes.array,
+};
 
 class TagContainer extends React.Component {
-  constructor() {
-    super();
-    this.findBookmarks = this.findBookmarks.bind(this);
-  }
-
-  componentDidMount() {
-    // Dispatch action to retrieve ALL tags from database
-    this.props.dispatch(actions.getTags());
-  }
-
-  findBookmarks(tag) {
-    // Dispatch action asking for bookmarks associated with tagId
-    this.props.dispatch(actions.findBookmarks(tag));
-  }
-
   render() {
-    let tagArray = [];
+    console.log(this.props.tags, '<===tags state in tagcontainer');
+    const tagArray = [];
 
     this.props.tags.forEach((tag) => {
       tagArray.push(<Tag
         key={tag.id}
-        name={tag.name}
+        tag={tag.tag}
         id={tag.id}
-        findBookmarks={this.findBookmarks}
       />);
     });
 
     return (
       <div>
-        <h2>Tags</h2>
         <ul>
           {tagArray}
         </ul>
       </div>
-    )
+    );
   }
 }
+
+TagContainer.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return {

@@ -10,6 +10,7 @@ const propTypes = {
   onShowEdit: PropTypes.func,
   onShowDelete: PropTypes.func,
   onDelete: PropTypes.func,
+  folders: PropTypes.array,
 };
 
 class BookmarkView extends React.Component {
@@ -24,6 +25,7 @@ class BookmarkView extends React.Component {
       url: this.url.value,
       title: this.title.value,
       description: this.description.value,
+      tags: this.tags.value.toLowerCase().split(', '),
       folderid: this.folder.value,
       screenshot: this.screenshot.value,
       bookmarkid: this.props.bookmark[0].bookmarkid,
@@ -43,8 +45,17 @@ class BookmarkView extends React.Component {
     };
 
     const folder = this.props.folders.filter((folderObj) => {
+      console.log(this.props.bookmark, '<=== bookmark');
+      console.log(folderObj, '<=== folder');
       return this.props.bookmark[0].folderid === folderObj.folderid;
     });
+
+    let tags;
+    if (this.props.bookmark[0].tags) {
+      tags = this.props.bookmark[0].tags.map((tagObj) => {
+        return tagObj.tag;
+      });
+    }
 
     return (
       <section className="content-section bookmark-section">
@@ -129,6 +140,13 @@ class BookmarkView extends React.Component {
               ref={screenshot => { this.screenshot = screenshot; }}
               defaultValue={this.props.bookmark[0].screenshot}
               placeholder="Screenshot URL"
+            />
+          <h4>Tags</h4>
+            <input
+              type="text"
+              className="form-control"
+              ref={tags => { this.tags = tags; }}
+              defaultValue={tags}
             />
             <h4>Folder *</h4>
             <select

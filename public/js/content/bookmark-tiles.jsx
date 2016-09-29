@@ -3,7 +3,6 @@ import React, { PropTypes } from 'react';
 const propTypes = {
   tileArr: PropTypes.array,
 };
-
 function BookmarkTiles(props) {
   return (
     <section className="content-section">
