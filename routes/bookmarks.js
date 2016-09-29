@@ -32,8 +32,8 @@ router.get('/', (request, response) => {
             data[i].tags = data[i].tags.map((current) => {
               const temp = current.split(',');
               return {
-                id: temp[0],
-                tag: temp[1],
+                tagid: temp[0],
+                tagname: temp[1],
               };
             });
           }
