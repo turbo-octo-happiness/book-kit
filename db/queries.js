@@ -14,10 +14,21 @@ exports.CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/boo
 
 // Retrieves both tags associated with bookmarks (i.e. shared bookmarks) and
 // tags not associated with a bookmark.
-exports.SELECT_TAG = `SELECT tag.tagid, tagname, bookmarkid
+exports.SELECT_TAG = `SELECT tag.tagid, tagname, array_agg(bookmarkid) AS bookmarkid
                       FROM tag NATURAL JOIN customer
                         LEFT JOIN bookmark_tag ON tag.tagid = bookmark_tag.tagid
-                      WHERE customerid = '123';`;
+                      WHERE customerid = $1
+                      GROUP BY tag.tagid;`;
+
+exports.SELECT_TAG_FOR_BOOKMARK = `SELECT tagid, tagname
+                                   FROM tag NATURAL JOIN customer NATURAL JOIN bookmark_tag
+                                   WHERE customerid = $1 AND bookmarkid = $2;`;
+
+// Return an array of tagnames associated with a given customer and bookmark.
+exports.SELECT_TAGNAME = `SELECT array_agg(tagname) AS tagarray
+                          FROM tag NATURAL JOIN customer NATURAL JOIN bookmark_tag
+                          WHERE customerid = $1 AND bookmarkid = $2
+                          GROUP BY customerid;`;
 
 // If tag/customerid pair already exists returns id, else creates new record and
 // returns id.
@@ -39,19 +50,47 @@ exports.INSERT_TAG = `WITH s AS (
                       SELECT tagid, tagname
                       FROM s;`;
 
+exports.INSERT_FULL_TAG = `WITH sel AS (
+	                           SELECT tagid, customerid, tagname
+	                           FROM tag
+	                           WHERE customerid = $1 and tagname = $2
+                           ),
+                           ins AS (
+	                           INSERT INTO tag (customerid, tagname)
+	                           SELECT $3, $4
+	                           WHERE NOT EXISTS (SELECT 1 FROM sel)
+	                           RETURNING tagid, tagname
+                           ),
+                           joinInsert AS (
+	                           INSERT INTO bookmark_tag(bookmarkid, tagid)
+	                           SELECT $5, tagid FROM (
+                               SELECT tagid
+                               FROM ins
+                               UNION ALL
+                               SELECT tagid
+                               FROM sel
+                             ) AS si
+                           )
+                           SELECT tagid, tagname
+                           FROM ins
+                           UNION ALL
+                           SELECT tagid, tagname
+                           FROM sel;`;
+
 exports.INSERT_BOOKMARK_TAG = `INSERT INTO bookmark_tag(bookmarkid, tagid)
                                VALUES ($1, $2)
                                RETURNING tagid;`;
 
 // Only the tag creator can update a tag
+// This will only be used to update tag name from dashboard, not when bookmarks are updated.
 exports.UPDATE_TAG = `UPDATE tag SET tagname = ($1)
                       WHERE tagid = ($2) AND customerid = ($3)
-                      RETURNING tagid, tagname;`;
+                      RETURNING tag.tagid, tagname;`;
 
 // Remove a tag from a bookmark
-exports.DELETE_TAG_REFERENCE = `DELETE FROM bookmark_tag
-                                WHERE bookmarkid = $1 AND tagid = $2
-                                RETURNING *;`;
+exports.DELETE_TAG_REFERENCE = `DELETE FROM bookmark_tag USING tag
+                                WHERE bookmark_tag.tagid = tag.tagid
+                                  AND bookmarkid = $1 AND tagname = $2;`;
 
 // Only the tag creator can delete a tag
 exports.DELETE_TAG = `DELETE FROM tag
@@ -136,9 +175,9 @@ exports.DELETE_BOOKMARK = `DELETE FROM bookmark
 // bookmarks.
 // If the editor was not the creator, then we recieve a result of zero row effected.
 exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot) =
-                            ($1, $2, $3, $4, $5)
-                          WHERE bookmarkid = ($6) AND customerid = ($7)
-                          RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
+                            ($2, $3, $4, $5, $6)
+                           WHERE bookmarkid = ($7) AND customerid = ($8)
+                           RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
 /*
  ==================================================================================================
