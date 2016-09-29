@@ -10,6 +10,7 @@ const propTypes = {
   onShowEdit: PropTypes.func,
   onShowDelete: PropTypes.func,
   onDelete: PropTypes.func,
+  folders: PropTypes.array,
 };
 
 class BookmarkView extends React.Component {
@@ -41,9 +42,12 @@ class BookmarkView extends React.Component {
       return this.props.bookmark[0].folderid === folderObj.folderid;
     });
 
-    const tags = this.props.bookmark[0].tags.map((tagObj) => {
-      return tagObj.tag;
-    });
+    let tags;
+    if (this.props.bookmark[0].tags) {
+      tags = this.props.bookmark[0].tags.map((tagObj) => {
+        return tagObj.tag;
+      });
+    }
 
     return (
       <section className="bookmark-section">

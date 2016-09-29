@@ -63,6 +63,7 @@ router.post('/', jsonParser, (request, response) => {
     dbConnect(queries.INSERT_BOOKMARK, [request.body.url, request.body.title, bdescription,
       request.body.folderid, bscreenshot, userIdentity,
     ]).then((result) => {
+      console.log(result, '<==== ADD BOOKMARK RESPONSE');
       response.json(result.rows[0]);
     }).catch((errorCode) => {
       response.status(errorCode);

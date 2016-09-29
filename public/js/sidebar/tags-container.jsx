@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import Tag from './tags';
 
 const propTypes = {
-  tag: PropTypes.object,
   tags: PropTypes.array,
 };
 
 class TagContainer extends React.Component {
   render() {
+    console.log(this.props.tags, '<===tags state in tagcontainer');
     const tagArray = [];
 
     this.props.tags.forEach((tag) => {

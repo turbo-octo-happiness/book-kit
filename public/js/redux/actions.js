@@ -82,7 +82,6 @@ function getBookmarksError(error) {
 }
 
 function getBookmarks(token) {
-  console.log('token -> ', token)
   return (dispatch) => {
     const init = {
       method: 'GET',
@@ -245,7 +244,6 @@ function getFoldersError(error) {
 }
 
 function getFolders(token) {
-  console.log('token -> ', token)
   return (dispatch) => {
     const init = {
       method: 'GET',

@@ -6,7 +6,6 @@ import SidebarContainer from '../sidebar/sidebar-container';
 
 class PageContainer extends React.Component {
   componentDidMount() {
-    console.log(actions)
     this.props.dispatch(actions.getBookmarks(this.props.token));
     this.props.dispatch(actions.getFolders(this.props.token));
   }

@@ -153,7 +153,7 @@ function folderReducer(state = [], action) {
   }
 }
 
-function tagReducer(state = ['initial', 'tag', 'state'], action) {
+function tagReducer(state = [], action) {
   // This part of the state is an array
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
