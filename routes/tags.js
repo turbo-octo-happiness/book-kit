@@ -28,7 +28,7 @@ router.get('/', (request, response) => {
  * @description `PUT /tags/:tagid` endpoint; updates a user's tagname.
  * Only the tag's creator can edit it; if someone besides the owner of
  * the tag tries it will return 0 results.
-*/
+ */
 router.put('/:tagid', jsonParser, (request, response) => {
   const userIdentity = `${request.user.identities[0].user_id}`;
 
@@ -54,7 +54,7 @@ router.put('/:tagid', jsonParser, (request, response) => {
 /**
  * @description `POST /tags/:tagid` endpoint; creats a new tag for a
  * user. Does not associate it with any bookmarks.
-*/
+ */
 router.post('/', jsonParser, (request, response) => {
   const userIdentity = `${request.user.identities[0].user_id}`;
 
@@ -74,6 +74,24 @@ router.post('/', jsonParser, (request, response) => {
         response.status(500);
       });
   }
+});
+
+/**
+ * @description `DELETE /tags/:tagid`
+ */
+router.delete('/:tagid', jsonParser, (request, response) => {
+  const userIdentity = `${request.user.identities[0].user_id}`;
+
+  const tagid = request.params.tagid;
+
+  db.one(queries.DELETE_TAG, [tagid, userIdentity])
+    .then((result) => {
+      response.json(result);
+    })
+    .catch((error) => {
+      console.log('ERROR:', error.message || error);
+      response.status(500);
+    });
 });
 
 module.exports = router;
