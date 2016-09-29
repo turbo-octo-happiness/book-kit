@@ -20,7 +20,7 @@ function Navbar(props) {
       redirectUrl: `${SERVER_URL}/#/main`,
       responseType: 'token',
       params: {
-        scope: 'openid name identities picture',
+        scope: 'openid name email identities picture',
       },
     },
   });

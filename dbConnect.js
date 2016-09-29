@@ -12,6 +12,7 @@ module.exports = (query, params) => {
       if (err) {
         reject('500');
       }
+      // @TODO: Does a query represent one transaction?
       console.log('connected for ', query)
       client.query(query, params, (queryErr, result) => {
         if (queryErr) {
@@ -25,13 +26,9 @@ module.exports = (query, params) => {
             reject('500');
           }
 
-          console.log(result);
-
+          console.log('results being returned -->', result)
           resolve(result);
         });
-
-        // console.log('results being returned -->', result.rows)
-        console.log(result, '<<<<< RESULT');
       });
     });
   });
