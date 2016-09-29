@@ -1,7 +1,7 @@
 const express = require('express');
 const jsonParser = require('body-parser').json();
 const queries = require('../db/queries');
-const dbConnect = require('../dbConnect');
+
 const db = require('../pgp');
 
 const router = express.Router();
@@ -12,11 +12,10 @@ const router = express.Router();
  * they are added.
  */
 router.get('/', (request, response) => {
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123';
-  const email = 'sierragregg@Gmail.com';
+  const userIdentity = request.user.identities[0].user_id;
+  const email = request.user.email;
 
-  db.oneOrNone(queries.SELECT_BOOKMARK, [userIdentity])
+  db.manyOrNone(queries.SELECT_BOOKMARK, [userIdentity])
     .then((data) => {
       if (!data.length) {
         db.oneOrNone(queries.INSERT_CUSTOMER, [userIdentity, email])
@@ -27,6 +26,7 @@ router.get('/', (request, response) => {
             response.json(error);
           });
       } else {
+        console.log('GET SELECT_BOOKMARK', data)
         for (let i = 0; i < data.length; i++) {
           if (data[i].tags[0] !== null) {
             data[i].tags = data[i].tags.map((current) => {
@@ -38,6 +38,7 @@ router.get('/', (request, response) => {
             });
           }
         }
+        console.log('RESPOSE SELECT_BOOKMARK: ', data)
         response.json(data)
       }
     })
@@ -54,8 +55,7 @@ router.get('/', (request, response) => {
  * is successful, then the new bookmark plus tags are returned to the caller.
  */
 router.post('/', jsonParser, (request, response) => {
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123';
+  const userIdentity = request.user.identities[0].user_id;
 
   // Validate that the required fields were passed in the body of the request.
   if (!request.body.url) {
@@ -143,8 +143,7 @@ router.post('/', jsonParser, (request, response) => {
 
 router.put('/:bookmarkid', jsonParser, (request, response) => {
   const bookmarkid = request.params.bookmarkid;
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123'
+  const userIdentity = request.user.identities[0].user_id;
 
   if (!request.body.url) {
     response.status(422).json({
@@ -237,8 +236,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
  */
 router.delete('/:bookmarkid', (request, response) => {
   const bookmarkid = request.params.bookmarkid;
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123'
+  const userIdentity = request.user.identities[0].user_id;
 
   db.one(queries.DELETE_BOOKMARK, [bookmarkid, userIdentity])
     .then((delBookmark) => {

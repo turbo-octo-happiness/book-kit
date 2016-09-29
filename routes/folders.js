@@ -10,8 +10,7 @@ const router = express.Router();
  * folders either owned by or shared with a customer.
  */
 router.get('/', (request, response) => {
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123';
+  const userIdentity = request.user.identities[0].user_id;
 
   // Paramitarize query to protect against SQL injection
   db.manyOrNone(queries.SELECT_FOLDER, [userIdentity]).then((result) => {
@@ -82,8 +81,7 @@ router.post('/customers/:folderid', jsonParser, (request, response) => {
  */
 
 router.put('/:folderid', jsonParser, (request, response) => {
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123';
+  const userIdentity = request.user.identities[0].user_id;
 
   const folderid = request.params.folderid;
 
