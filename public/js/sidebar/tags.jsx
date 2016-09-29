@@ -8,7 +8,8 @@ class Tag extends React.Component {
       <li>
         <div>
           <Link to={`/${this.props.id}`} >
-            {this.props.tag}
+            <i className="fa fa-tag" aria-hidden="true" />
+            <span>{this.props.tag}</span>
           </Link>
         </div>
       </li>

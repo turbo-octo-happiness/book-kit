@@ -20,11 +20,9 @@ class TagContainer extends React.Component {
     });
 
     return (
-      <div>
-        <ul>
-          {tagArray}
-        </ul>
-      </div>
+      <ul>
+        {tagArray}
+      </ul>
     );
   }
 }
