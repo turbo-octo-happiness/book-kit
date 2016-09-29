@@ -23,7 +23,7 @@ class Folder extends React.Component {
   render() {
     return (
       <li>
-        <Link to={`/folders/${this.props.folder.foldername}`}>
+        <Link to={`/folders/${this.props.folder.folderid}`}>
           <i className="fa fa-folder-o" aria-hidden="true" />
           <span className="folder-name">{this.props.folder.foldername}</span>
         </Link>
