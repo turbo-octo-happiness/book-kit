@@ -36,7 +36,7 @@ function BookmarkTilesContainer(props) {
       if (bookmark.tags) {
         bookmark.tags.map((tag) => {
           // To shut up ESLint: Informing parseInt that it's parsing with base 10 radix
-          if (parseInt(tagId, 10) === tag.id) {
+          if (parseInt(tagId, 10) === tag.tagid) {
             arr.push(bookmark);
             return true;
           }
