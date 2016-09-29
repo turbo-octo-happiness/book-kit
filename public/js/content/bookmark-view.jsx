@@ -78,6 +78,9 @@ class BookmarkView extends React.Component {
           <h4>Folder:</h4>
           <p>{folder[0].foldername}</p>
 
+          <h4>Tags:</h4>
+          <p>{}</p>
+
           <button
             style={textStyle}
             onClick={this.props.onShowEdit}
