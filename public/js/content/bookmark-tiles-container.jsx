@@ -32,14 +32,14 @@ function BookmarkTilesContainer(props) {
     const tagId = props.params.tagId;
     const arr = [];
     // TODO: Fix tempArr so that it contains the bookmarks instead of arr
-    const tempArr = this.props.bookmarks.filter((bookmark) => {
-      return bookmark.tags.map((tag) => {
-        if (tagId === tag.id) {
-          arr.push(bookmark);
-        }
-        // TODO: Return proper value, did this to shut up eslint
-        return true;
-      });
+    const tempArr = props.bookmarks.filter((bookmark) => {
+      if (bookmark.tags) {
+        bookmark.tags.map((tag) => {
+          if (parseInt(tagId) === tag.id) {
+            arr.push(bookmark);
+          }
+        });
+      }
     });
     // TODO: Once tempArr is fixed to have bookmarks array, replace arr
     arr.forEach((bookmark) => {

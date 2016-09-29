@@ -124,7 +124,6 @@ function addBookmarkError(error) {
 
 function addBookmark(newBookmark, token) {
   console.log('inside addBookmark, new bookmark ===>', newBookmark);
-  console.log('token ===>', token);
   return (dispatch) => {
     const init = {
       method: 'POST',
@@ -140,8 +139,13 @@ function addBookmark(newBookmark, token) {
     const url = `${SERVER_URL}/bookmarks`;
     const newFetch = fetchHelp(url, init);
 
-    newFetch.then((bookmark, tags) => {
-      console.log('returned bookmark and tags====>', bookmark, tags);
+    newFetch.then((bookmark) => {
+      console.log('returned bookmark=====>', bookmark);
+      const tags = [
+        { id: 1, tag: 'movies' },
+        { id: 2, tag: 'reviews' },
+        { id: 3, tag: 'video games' },
+      ];
       return dispatch(addBookmarkSuccess(bookmark, tags));
     }).catch((error) => {
       console.log(error);

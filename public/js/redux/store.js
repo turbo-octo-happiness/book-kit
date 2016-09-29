@@ -38,7 +38,7 @@ const initialState = {
   },
   bookmarks: [],
   folders: [],
-  tags: [{ id: 1, tag: 'tag1' }, { id: 2, tag: 'tag2' }, { id: 3, tag: 'tag3' }],
+  //tags: [{ id: 1, tag: 'tag1' }, { id: 2, tag: 'tag2' }, { id: 3, tag: 'tag3' }],
   search: '',
 };
 
