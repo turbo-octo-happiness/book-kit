@@ -36,8 +36,7 @@ class Tag extends React.Component {
     const textStyle = this.state.show ? { display: 'none' } : {};
     const inputStyle = this.state.show ? {} : { display: 'none' };
     return (
-      <div>
-        <li>
+        <li className="manage-folder">
           <h3 style={textStyle}>{this.props.tag.tagname}</h3>
           <form
             onSubmit={this.editTag}
@@ -49,17 +48,18 @@ class Tag extends React.Component {
               defaultValue={this.props.tag.tagname}
             />
           </form>
-          <button
-            onClick={this.onShowEdit}
-            aria-hidden="true"
-          >Edit
-          </button>
-          <button
-            onClick={this.deleteTag}
-          >Delete
-          </button>
+          <div className="manage-buttons">
+            <button
+              onClick={this.onShowEdit}
+              aria-hidden="true"
+            >Edit
+            </button>
+            <button
+              onClick={this.deleteTag}
+            >Delete
+            </button>
+          </div>
         </li>
-      </div>
     )
   }
 }

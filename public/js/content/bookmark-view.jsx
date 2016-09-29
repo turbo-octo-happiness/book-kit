@@ -53,7 +53,7 @@ class BookmarkView extends React.Component {
     let tags;
     if (this.props.bookmark[0].tags) {
       tags = this.props.bookmark[0].tags.map((tagObj) => {
-        return tagObj.tag;
+        return tagObj.tagname;
       });
     }
 
