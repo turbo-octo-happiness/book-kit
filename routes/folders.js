@@ -51,6 +51,31 @@ router.post('/', jsonParser, (request, response) => {
 });
 
 /**
+ * @description `PUT /folders/customers`
+*/
+router.post('/customers/:folderid', jsonParser, (request, response) => {
+  // const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = '123';
+  const folderid = request.params.folderid;
+
+  if (!request.body.email) {
+    response.status(422).json({
+      message: 'Missing field: email',
+    });
+  } else {
+    const email = request.body.email;
+
+    db.one(queries.ADD_USER_TO_FOLDER_BY_EMAIL, [folderid, email])
+    .then((result) => {
+      response.json(result);
+    }).catch((error) => {
+      console.log('ERROR:', error.message || error);
+      response.status(500).send({ error: 'Database error' });
+    });
+  }
+});
+
+/**
  * @description `PUT /folders/:folderid` endpoint. Takes an object with the following
  * fields: foldername. If update in the database is successful, then the edited
  * folder is returned to the caller. Only non-shared folders can be edited.

@@ -126,8 +126,8 @@ exports.ADD_USER_TO_FOLDER_BY_ID = `INSERT INTO customer_folder(customerid, fold
                                     VALUES ($1, $2) RETURNING customerid, folderid;`;
 
 exports.ADD_USER_TO_FOLDER_BY_EMAIL = `INSERT INTO customer_folder(customerid, folderid)
-                                       SELECT customerid, 2 FROM customer
-                                       WHERE email = 'magelet13@Gmail.com'
+                                       SELECT customerid, $1 FROM customer
+                                       WHERE email = $2
                                        RETURNING customerid, folderid;`;
 
 // Who has the right to delete a folder?
