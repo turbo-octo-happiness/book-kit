@@ -16,7 +16,7 @@ router.get('/', (request, response) => {
   const userIdentity = '123';
   const email = 'sierragregg@Gmail.com';
 
-  db.any(queries.SELECT_BOOKMARK, [userIdentity])
+  db.oneOrNone(queries.SELECT_BOOKMARK, [userIdentity])
     .then((data) => {
       if (!data.length) {
         db.oneOrNone(queries.INSERT_CUSTOMER, [userIdentity, email])
@@ -42,8 +42,8 @@ router.get('/', (request, response) => {
       }
     })
     .catch((error) => {
-      console.log(error)
-      response.json(error)
+      console.log("ERROR:", error.message || error);
+      response.status(500);
     })
 });
 
@@ -236,18 +236,18 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
  * deleted bookmark is returned to the caller.
  */
 router.delete('/:bookmarkid', (request, response) => {
-  const id = request.params.bookmarkid;
+  const bookmarkid = request.params.bookmarkid;
   // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '12989626'
+  const userIdentity = '123'
 
-  dbConnect(queries.DELETE_BOOKMARK, [id, userIdentity]).then((result) => {
-    if (result.rows.length === 0) {
-      response.status('403').json('Only bookmark owners can delete.');
-    }
-    response.json(result.rows[0]);
-  }).catch((errorCode) => {
-    response.status(errorCode);
-  });
+  db.any(queries.DELETE_BOOKMARK, [bookmarkid, userIdentity])
+    .then((delBookmark) => {
+      response.json(delBookmark);
+    })
+    .catch((error) => {
+      console.log("ERROR:", error.message || error);
+      response.status(500);
+    });
 });
 
 module.exports = router;
