@@ -55,16 +55,8 @@ function bookmarkReducer(state = [], action) {
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
-      console.log(action.bookmark, '<==new bookmark');
-      action.bookmark.tags = [
-        { id: 1, tag: 'movies' },
-        { id: 2, tag: 'reviews' },
-        { id: 3, tag: 'video games' },
-      ]
-      console.log(action.bookmark, '<==newer bookmark after tags added');
-
+      console.log(action.bookmark, '<==new bookmark in reducer');
       tempArr.unshift(action.bookmark);
-      console.log(tempArr, '<===new bookmark state w/ new bookmark')
       return tempArr;
     }
 
@@ -173,6 +165,7 @@ function tagReducer(state = [], action) {
       return tempArr;
     }
     case actionTypes.GET_TAGS_SUCCESS: {
+      console.log(action.tags, '<=== action.tags');
       return action.tags;
     }
     case actionTypes.GET_TAGS_ERROR: {

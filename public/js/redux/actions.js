@@ -107,11 +107,11 @@ function getBookmarks(token) {
   };
 }
 // Post Requests
-function addBookmarkSuccess(newBookmark, newTags) {
+function addBookmarkSuccess(newBookmark) {
   return {
     type: actionTypes.ADD_BOOKMARK_SUCCESS,
     bookmark: newBookmark,
-    tags: newTags,
+    tags: newBookmark.tags,
   };
 }
 
@@ -141,12 +141,7 @@ function addBookmark(newBookmark, token) {
 
     newFetch.then((bookmark) => {
       console.log('returned bookmark=====>', bookmark);
-      const tags = [
-        { id: 1, tag: 'movies' },
-        { id: 2, tag: 'reviews' },
-        { id: 3, tag: 'video games' },
-      ];
-      return dispatch(addBookmarkSuccess(bookmark, tags));
+      return dispatch(addBookmarkSuccess(bookmark));
     }).catch((error) => {
       console.log(error);
       return dispatch(addBookmarkError(error));
@@ -425,7 +420,7 @@ function getTags(token) {
       },
     };
 
-    const url = 'http://localhost:5000/';
+    const url = `${SERVER_URL}/tags`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((tags) => {

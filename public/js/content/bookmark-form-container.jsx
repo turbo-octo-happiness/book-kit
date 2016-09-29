@@ -16,6 +16,7 @@ class BookmarkFormContainer extends React.Component {
   }
 
   onAdd(bookmark) {
+    console.log('in onAdd, bookmark==>', bookmark);
     this.props.dispatch(actions.addBookmark(bookmark, this.props.token));
   }
 
