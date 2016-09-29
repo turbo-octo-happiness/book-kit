@@ -17,10 +17,12 @@ router.get('/', (request, response) => {
 
   db.manyOrNone(queries.SELECT_BOOKMARK, [userIdentity])
     .then((data) => {
+      // Customer has either, just registered or has not created any bookmarks.
+      // Try to insert potential new customer.
       if (!data.length) {
         db.oneOrNone(queries.INSERT_CUSTOMER, [userIdentity, email])
           .then(() => {
-            response.json(data)
+            response.json(data);
           })
           .catch((error) => {
             response.json(error);
@@ -38,8 +40,8 @@ router.get('/', (request, response) => {
             });
           }
         }
-        console.log('RESPOSE SELECT_BOOKMARK: ', data)
-        response.json(data)
+        console.log('RESPOSE SELECT_BOOKMARK: ', data);
+        response.json(data);
       }
     })
     .catch((error) => {
@@ -97,37 +99,37 @@ router.post('/', jsonParser, (request, response) => {
             folderid, bscreenshot, userIdentity,
           ])
           .then((bookmark) => {
-            console.log('bookmark inserted: ', bookmark)
+            console.log('bookmark inserted: ', bookmark);
             resultsToReturn = Object.assign({}, resultsToReturn, bookmark);
             // Then insert the array of tags
-            let q = tags.map((tag) => {
+            const q = tags.map((tag) => {
               return t.one(queries.INSERT_TAG, [userIdentity, tag, userIdentity, tag]);
             });
             return t.batch(q)
-            .then((tagidArray) => {
-              console.log('tags inserted: ', tagidArray)
-              resultsToReturn = Object.assign({}, resultsToReturn, {
-                tags: tagidArray
+              .then((tagidArray) => {
+                console.log('tags inserted: ', tagidArray);
+                resultsToReturn = Object.assign({}, resultsToReturn, {
+                  tags: tagidArray,
+                });
+                // Then insert all tag references into the BOOKMARK_TAG table
+                const q2 = tagidArray.map((e) => {
+                  return t.one(queries.INSERT_BOOKMARK_TAG, [resultsToReturn.bookmarkid, e.tagid]);
+                });
+                return t.batch(q2)
+                  .then((result) => {
+                    console.log('book_tag inserted: ', result);
+                    console.log('final result', result);
+                    return resultsToReturn;
+                  });
               });
-              // Then insert all tag references into the BOOKMARK_TAG table
-              let q = tagidArray.map((e) => {
-                return t.one(queries.INSERT_BOOKMARK_TAG, [resultsToReturn.bookmarkid, e.tagid])
-              });
-              return t.batch(q)
-              .then((result) => {
-                console.log('book_tag inserted: ', result);
-                console.log('final result', result);
-                return resultsToReturn;
-              });
-            });
           });
       })
       .then((data) => {
         console.log('transaction then', data);
         response.json(data);
       })
-      .catch(function(error) {
-        console.log("ERROR:", error.message || error);
+      .catch((error) => {
+        console.log('ERROR:', error.message || error);
         response.status(500);
       });
   }
@@ -157,7 +159,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
     response.status(422).json();
   } else if (typeof request.body.tags === 'string' || !Array.isArray(request.body.tags)) {
     response.status(422).json({
-      message: 'Incorrect field type: tags'
+      message: 'Incorrect field type: tags',
     });
   } else {
     // Handle the two optional bookmark fields. If user did not provide a
@@ -173,56 +175,55 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
 
     let resultsToReturn = {};
     db.tx((t) => {
-        return t.one(queries.SELECT_TAGNAME, [userIdentity, bookmarkid]).then((oldTags) => {
-
-          oldTags = oldTags.tagarray;
-          console.log('SELECT_TAGNAME oldTags: ', oldTags);
-          let add = []; // Not in oldTags, add BOOKMARK_TAG reference.
-          let del = []; // In oldTags but not in tags, remove BOOKMARK_TAG reference.
-          for (let i = 0; i < tags.length; i++) {
-            if (oldTags.indexOf(tags[i]) < 0) {
-              add.push(tags[i]);
-            }
+      return t.one(queries.SELECT_TAGNAME, [userIdentity, bookmarkid]).then((oldTags) => {
+        oldTags = oldTags.tagarray;
+        console.log('SELECT_TAGNAME oldTags: ', oldTags);
+        const add = []; // Not in oldTags, add BOOKMARK_TAG reference.
+        const del = []; // In oldTags but not in tags, remove BOOKMARK_TAG reference.
+        for (let i = 0; i < tags.length; i++) {
+          if (oldTags.indexOf(tags[i]) < 0) {
+            add.push(tags[i]);
           }
-          for (let i = 0; i < oldTags.length; i++) {
-            if (tags.indexOf(oldTags[i]) < 0) {
-              del.push(oldTags[i]);
-            }
+        }
+        for (let i = 0; i < oldTags.length; i++) {
+          if (tags.indexOf(oldTags[i]) < 0) {
+            del.push(oldTags[i]);
           }
-          console.log(add, del);
-          let qa = add.map((tag) => {
-            return t.one(queries.INSERT_FULL_TAG, [userIdentity, tag, userIdentity, tag, bookmarkid]);
-          });
-          let qd = del.map((tag) => {
-            return t.none(queries.DELETE_TAG_REFERENCE, [bookmarkid, tag])
-          });
+        }
+        console.log(add, del);
+        const qa = add.map((tag) => {
+          return t.one(queries.INSERT_FULL_TAG, [userIdentity, tag, userIdentity, tag, bookmarkid]);
+        });
+        const qd = del.map((tag) => {
+          return t.none(queries.DELETE_TAG_REFERENCE, [bookmarkid, tag]);
+        });
 
-          let q = qa.concat(qd);
-          return t.batch(q).then((results) => {
-            console.log('inserted tag updates', results);
+        const q = qa.concat(qd);
+        return t.batch(q).then((results) => {
+          console.log('inserted tag updates', results);
 
-            return t.one(queries.UPDATE_BOOKMARK, [bookmarkid, url, title, bdescription,
-              folderid, bscreenshot, bookmarkid, userIdentity,
-            ]).then((newBookmark) => {
-              console.log('inserted bookmark ===>', newBookmark)
-              resultsToReturn = Object.assign({}, resultsToReturn, newBookmark);
+          return t.one(queries.UPDATE_BOOKMARK, [bookmarkid, url, title, bdescription,
+            folderid, bscreenshot, bookmarkid, userIdentity,
+          ]).then((newBookmark) => {
+            console.log('inserted bookmark ===>', newBookmark);
+            resultsToReturn = Object.assign({}, resultsToReturn, newBookmark);
 
-              return t.manyOrNone(queries.SELECT_TAG_FOR_BOOKMARK, [userIdentity, bookmarkid]).then((tags) => {
-                console.log('new Tags: ', tags);
+            return t.manyOrNone(queries.SELECT_TAG_FOR_BOOKMARK, [userIdentity, bookmarkid])
+              .then((bookmarkTags) => {
+                console.log('new Tags: ', bookmarkTags);
                 resultsToReturn = Object.assign({}, resultsToReturn, {
-                  tags: tags
+                  tags: bookmarkTags,
                 });
                 return resultsToReturn;
               });
-            });
           });
-
         });
+      });
     }).then((data) => {
       console.log('then for transaction ===>', data);
       response.json(data);
     }).catch((error) => {
-      console.log("ERROR:", error.message || error);
+      console.log('ERROR:', error.message || error);
       response.status(500);
     });
   }
@@ -243,7 +244,7 @@ router.delete('/:bookmarkid', (request, response) => {
       response.json(delBookmark);
     })
     .catch((error) => {
-      console.log("ERROR:", error.message || error);
+      console.log('ERROR:', error.message || error);
       response.status(500);
     });
 });
