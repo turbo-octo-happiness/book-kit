@@ -105,7 +105,7 @@ exports.DELETE_TAG = `DELETE FROM tag
  ==================================================================================================
 */
 
-exports.SELECT_FOLDERS = `SELECT folderid, foldername, count(customerid) AS count,
+exports.SELECT_FOLDER = `SELECT folderid, foldername, count(customerid) AS count,
                           array_agg(email) AS members
                         FROM folder NATURAL JOIN customer_folder NATURAL JOIN customer
                         GROUP  BY folderid

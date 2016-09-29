@@ -1,28 +1,24 @@
 const express = require('express');
 const jsonParser = require('body-parser').json();
 const queries = require('../db/queries');
-const dbConnect = require('../dbConnect');
+const db = require('../pgp');
 
 const router = express.Router();
 
 /**
  * @description `GET /folders` endpoint; returns an array of
- * folders stored in the database.
+ * folders either owned by or shared with a customer.
  */
 router.get('/', (request, response) => {
-  const userIdentity = request.user.identities[0].user_id;
+  // const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = '123';
 
   // Paramitarize query to protect against SQL injection
-  dbConnect(queries.SELECT_FOLDER, [userIdentity]).then((result) => {
-    // Convert the array of folder objects returned from database
-    // into an array of Strings.
-    const resultsToReturn = result.rows.map((value) => {
-      return value;
-    });
-
-    response.json(resultsToReturn);
-  }).catch((errorcode) => {
-    response.status(errorcode);
+  db.manyOrNone(queries.SELECT_FOLDER, [userIdentity]).then((result) => {
+    response.json(result);
+  }).catch((error) => {
+    console.log('ERROR:', error.message || error);
+    response.status(500);
   });
 });
 
@@ -32,20 +28,25 @@ router.get('/', (request, response) => {
  * new folder name is returned to the caller.
  */
 router.post('/', jsonParser, (request, response) => {
-  const userIdentity = request.user.identities[0].user_id;
-  console.log('userIdentity-->', userIdentity);
+  // const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = '123';
+
   if (!request.body.foldername) {
     response.status(422).json({
       message: 'Missing field: foldername',
     });
   } else {
+    const foldername = request.body.foldername;
+
     // Paramitarize query to protect against SQL injection
-    dbConnect(queries.INSERT_FOLDER, [request.body.foldername,
-        userIdentity]).then((result) => {
-          response.json(result.rows[0]);
-        }).catch((errorcode) => {
-          response.status(errorcode);
-        });
+    db.one(queries.INSERT_FOLDER, [foldername, userIdentity])
+      .then((result) => {
+        response.json(result);
+      })
+      .catch((error) => {
+        console.log('ERROR:', error.message || error);
+        response.status(500);
+      });
   }
 });
 

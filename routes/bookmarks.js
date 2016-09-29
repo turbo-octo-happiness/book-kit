@@ -240,7 +240,7 @@ router.delete('/:bookmarkid', (request, response) => {
   // const userIdentity = request.user.identities[0].user_id;
   const userIdentity = '123'
 
-  db.any(queries.DELETE_BOOKMARK, [bookmarkid, userIdentity])
+  db.one(queries.DELETE_BOOKMARK, [bookmarkid, userIdentity])
     .then((delBookmark) => {
       response.json(delBookmark);
     })
