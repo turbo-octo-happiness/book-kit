@@ -85,7 +85,7 @@ exports.INSERT_BOOKMARK_TAG = `INSERT INTO bookmark_tag(bookmarkid, tagid)
 // This will only be used to update tag name from dashboard, not when bookmarks are updated.
 exports.UPDATE_TAG = `UPDATE tag SET tagname = ($1)
                       WHERE tagid = ($2) AND customerid = ($3)
-                      RETURNING tag.tagid, tagname;`;
+                      RETURNING tagid, tagname;`;
 
 // Remove a tag from a bookmark
 exports.DELETE_TAG_REFERENCE = `DELETE FROM bookmark_tag USING tag
