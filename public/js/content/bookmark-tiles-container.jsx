@@ -35,11 +35,15 @@ function BookmarkTilesContainer(props) {
     const tempArr = props.bookmarks.filter((bookmark) => {
       if (bookmark.tags) {
         bookmark.tags.map((tag) => {
-          if (parseInt(tagId) === tag.id) {
+          // To shut up ESLint: Informing parseInt that it's parsing with base 10 radix
+          if (parseInt(tagId, 10) === tag.id) {
             arr.push(bookmark);
+            return true;
           }
+          return false;
         });
       }
+      return false;
     });
     // TODO: Once tempArr is fixed to have bookmarks array, replace arr
     arr.forEach((bookmark) => {
@@ -101,7 +105,6 @@ function BookmarkTilesContainer(props) {
     });
   }
 
-  console.log(tileArr, '<==== tileArr passed to bookmarktiles');
   return (
     <BookmarkTiles
       tileArr={tileArr}
