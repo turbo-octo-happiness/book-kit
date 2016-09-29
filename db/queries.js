@@ -19,22 +19,43 @@ exports.SELECT_TAG = `SELECT tag.tagid, tagname, bookmarkid
                         LEFT JOIN bookmark_tag ON tag.tagid = bookmark_tag.tagid
                       WHERE customerid = '123';`;
 
-// Inserts a new tag and adds it to the joining table between tag and bookmark.
-// Does not check that provided customerid matches the 'owner' of the bookmark
-exports.INSERT_TAG = `WITH t AS (
-  	                     INSERT INTO tag(tagname, customerid) VALUES ($1, $2)
-  	                     RETURNING tagid, tagname, customerid
+// If tag/customerid pair already exists returns id, else creates new record and
+// returns id.
+// Source: http://stackoverflow.com/questions/18192570/insert-if-not-exists-else-return-id-in-postgresql
+exports.INSERT_TAG = `WITH s AS (
+                        SELECT tagid, customerid, tagname
+                        FROM tag
+                        WHERE customerid = $1 and tagname = $2
+                      ),
+                      i AS (
+                        INSERT INTO tag (customerid, tagname)
+                        SELECT $3, $4
+                        WHERE NOT EXISTS (SELECT 1 FROM s)
+                        RETURNING tagid, customerid, tagname
                       )
-                      INSERT INTO bookmark_tag(bookmarkid, tagid)
-                      VALUES ($3, (SELECT tagid FROM t))
-                      RETURNING tagid, (SELECT tagname FROM t), (SELECT customerid FROM t);`;
+                      SELECT tagid, tagname
+                      FROM i
+                      UNION ALL
+                      SELECT tagid, tagname
+                      FROM s;`;
 
+exports.INSERT_BOOKMARK_TAG = `INSERT INTO bookmark_tag(bookmarkid, tagid)
+                               VALUES ($1, $2)
+                               RETURNING tagid;`;
+
+// Only the tag creator can update a tag
 exports.UPDATE_TAG = `UPDATE tag SET tagname = ($1)
                       WHERE tagid = ($2) AND customerid = ($3)
                       RETURNING tagid, tagname;`;
 
-exports.DELETE_TAG = 'DELETE FROM bookmark_tag WHERE bookmarkid = $1 AND  RETURNING *;';
+// Remove a tag from a bookmark
+exports.DELETE_TAG_REFERENCE = `DELETE FROM bookmark_tag
+                                WHERE bookmarkid = $1 AND tagid = $2
+                                RETURNING *;`;
 
+// Only the tag creator can delete a tag
+exports.DELETE_TAG = `DELETE FROM tag
+                      WHERE tagid = $1 AND customerid = $2;`;
 
 /*
  ==================================================================================================
