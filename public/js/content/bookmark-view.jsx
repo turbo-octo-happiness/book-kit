@@ -10,6 +10,7 @@ const propTypes = {
   onShowEdit: PropTypes.func,
   onShowDelete: PropTypes.func,
   onDelete: PropTypes.func,
+  folders: PropTypes.array,
 };
 
 class BookmarkView extends React.Component {
@@ -24,6 +25,7 @@ class BookmarkView extends React.Component {
       url: this.url.value,
       title: this.title.value,
       description: this.description.value,
+      tags: this.tags.value.toLowerCase().split(', '),
       folderid: this.folder.value,
       screenshot: this.screenshot.value,
       bookmarkid: this.props.bookmark[0].bookmarkid,
@@ -35,38 +37,83 @@ class BookmarkView extends React.Component {
     const inputStyle = this.props.show ? {} : { display: 'none' };
     const textDeleteStyle = this.props.delete ? { display: 'none' } : {};
     const deleteStyle = this.props.delete ? {} : { display: 'none' };
+    const imgStyle = this.props.show ? {
+      backgroundImage: `url(${this.props.bookmark[0].screenshot})`,
+      display: 'none'
+    } : {
+      backgroundImage: `url(${this.props.bookmark[0].screenshot})`,
+    };
 
     const folder = this.props.folders.filter((folderObj) => {
+      console.log(this.props.bookmark, '<=== bookmark');
+      console.log(folderObj, '<=== folder');
       return this.props.bookmark[0].folderid === folderObj.folderid;
     });
 
+    let tags;
+    if (this.props.bookmark[0].tags) {
+      tags = this.props.bookmark[0].tags.map((tagObj) => {
+        return tagObj.tag;
+      });
+    }
+
     return (
-      <section className="bookmark-section">
-        <div className="col-md-6" style={textStyle}>
-          <h2>{this.props.bookmark[0].title}</h2>
-          <h4>
-            <a href={this.props.bookmark[0].url}>
-              {this.props.bookmark[0].url}
-            </a>
-          </h4>
+      <section className="content-section bookmark-section">
+        <div className="bookmark-view" style={textStyle}>
+          <div className="bookmark-header">
+            <div className="bookmark-title">
+              <h2>{this.props.bookmark[0].title}</h2>
+              <h4>
+                <a href={this.props.bookmark[0].url}>
+                  {this.props.bookmark[0].url}
+                </a>
+              </h4>
+            </div>
+            <div className="bookmark-screenshot" style={imgStyle}>
+            </div>
+          </div>
+
+
           <p>{this.props.bookmark[0].description}</p>
           <h4>Folder:</h4>
           <p>{folder[0].foldername}</p>
+
+          <button
+            style={textStyle}
+            onClick={this.props.onShowEdit}
+          >Edit
+          </button>
+          <button
+            style={inputStyle}
+            onClick={this.props.onShowEdit}
+          >Cancel
+          </button>
+          <button
+            style={textDeleteStyle}
+            onClick={this.props.onShowDelete}
+          >Delete
+          </button>
+          <Link to={'/'} style={deleteStyle}>
+            <button
+              onClick={() => { this.props.onDelete(this.props.bookmark[0].bookmarkid); }}
+            >Confirm
+            </button>
+          </Link>
+          <button
+            style={deleteStyle}
+            onClick={this.props.onShowDelete}
+          >Cancel
+          </button>
+          <Link to={'/main'} style={textDeleteStyle}>
+            <button>Close</button>
+          </Link>
         </div>
-        <div className="col-md-6" style={textStyle}>
-          <img
-            src={this.props.bookmark[0].screenshot}
-            alt="placeholder"
-            className="img-rounded"
-            width="400"
-          />
-        </div>
-        <div className="col-md-12" style={inputStyle}>
+
+        <div className="bookmark-edit" style={inputStyle}>
           <form onSubmit={this.onSubmitEdit}>
             <h4>Title *</h4>
             <input
               type="text"
-              className="form-control"
               ref={title => { this.title = title; }}
               defaultValue={this.props.bookmark[0].title}
               placeholder="Title *" required
@@ -74,68 +121,42 @@ class BookmarkView extends React.Component {
             <h4>URL *</h4>
             <input
               type="text"
-              className="form-control"
               ref={url => { this.url = url; }}
               defaultValue={this.props.bookmark[0].url}
               placeholder="URL *"
               required
             />
             <h4>Description</h4>
-            <input
-              type="text"
-              className="form-control"
+            <textarea
+              className="edit-description"
               ref={description => { this.description = description; }}
               defaultValue={this.props.bookmark[0].description}
               placeholder="Description"
+              rows="7"
             />
             <h4>Screenshot URL</h4>
             <input
               type="text"
-              className="form-control"
               ref={screenshot => { this.screenshot = screenshot; }}
               defaultValue={this.props.bookmark[0].screenshot}
               placeholder="Screenshot URL"
             />
+          <h4>Tags</h4>
+            <input
+              type="text"
+              className="form-control"
+              ref={tags => { this.tags = tags; }}
+              defaultValue={tags}
+            />
             <h4>Folder *</h4>
             <select
-              className="selectpicker form-control"
               ref={folder => { this.folder = folder; }}
-              id="form-folder"
               required
             >{this.props.folderArr}
-            </select>
-            <button type="submit" className="btn btn-default">Submit</button>
+            </select><br />
+            <button type="submit">Submit</button>
+            <button onClick={() => this.props.onShowEdit}>Cancel</button>
           </form>
-        </div>
-        <div className="col-md-6">
-          <button
-            className="btn btn-default"
-            style={textStyle}
-            onClick={this.props.onShowEdit}
-          >Edit
-          </button>
-          <button
-            className="btn btn-default"
-            style={inputStyle}
-            onClick={this.props.onShowEdit}
-          >Cancel
-          </button>
-          <button
-            className="btn btn-default"
-            style={textDeleteStyle}
-            onClick={this.props.onShowDelete}
-          >Delete
-          </button>
-          <Link to={'/'} style={deleteStyle}>
-            <button
-              className="btn btn-default"
-              onClick={() => { this.props.onDelete(this.props.bookmark[0].bookmarkid); }}
-            >Confirm
-            </button>
-          </Link>
-          <Link to={'/'} style={textStyle}>
-            <button className="btn btn-default">Close</button>
-          </Link>
         </div>
       </section>
     );

@@ -82,7 +82,6 @@ function getBookmarksError(error) {
 }
 
 function getBookmarks(token) {
-  console.log('token -> ', token)
   return (dispatch) => {
     const init = {
       method: 'GET',
@@ -98,7 +97,7 @@ function getBookmarks(token) {
 
     newFetch.then((bookmarks) => {
       return dispatch(
-        getBookmarksSuccess(bookmarks)
+        getBookmarksSuccess(bookmarks.reverse())
       );
     }).catch((error) => {
       return dispatch(
@@ -108,10 +107,11 @@ function getBookmarks(token) {
   };
 }
 // Post Requests
-function addBookmarkSuccess(newBookmark) {
+function addBookmarkSuccess(newBookmark, newTags) {
   return {
     type: actionTypes.ADD_BOOKMARK_SUCCESS,
     bookmark: newBookmark,
+    tags: newTags,
   };
 }
 
@@ -123,8 +123,7 @@ function addBookmarkError(error) {
 }
 
 function addBookmark(newBookmark, token) {
-  console.log('inside addBookmark', newBookmark);
-  console.log(token);
+  console.log('inside addBookmark, new bookmark ===>', newBookmark);
   return (dispatch) => {
     const init = {
       method: 'POST',
@@ -141,8 +140,13 @@ function addBookmark(newBookmark, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
-      console.log(bookmark);
-      return dispatch(addBookmarkSuccess(bookmark));
+      console.log('returned bookmark=====>', bookmark);
+      const tags = [
+        { id: 1, tag: 'movies' },
+        { id: 2, tag: 'reviews' },
+        { id: 3, tag: 'video games' },
+      ];
+      return dispatch(addBookmarkSuccess(bookmark, tags));
     }).catch((error) => {
       console.log(error);
       return dispatch(addBookmarkError(error));
@@ -244,7 +248,6 @@ function getFoldersError(error) {
 }
 
 function getFolders(token) {
-  console.log('token -> ', token)
   return (dispatch) => {
     const init = {
       method: 'GET',
@@ -303,8 +306,10 @@ function addFolder(newFolder, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((folder) => {
+      console.log(folder);
       return dispatch(addFolderSuccess(folder));
     }).catch((error) => {
+      console.log(error);
       return dispatch(addFolderError(error));
     });
   };

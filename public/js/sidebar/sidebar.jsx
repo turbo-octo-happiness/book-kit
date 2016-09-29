@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import Folder from './sidebar-folder-container';
+import TagContainer from './tags-container';
 
 const propTypes = {
   folders: PropTypes.array,
@@ -39,7 +40,7 @@ class Sidebar extends React.Component {
         </div>
         <div>
           <Link to="/bookmarks">
-            <button>Add Bookmark</button>
+            <button className="add-bookmark">Add Bookmark</button>
           </Link>
         </div>
         <div>
@@ -47,7 +48,7 @@ class Sidebar extends React.Component {
           <form onSubmit={this.onAddFolder}>
             <input
               type="text"
-              placeholder="Temp add folder"
+              placeholder="Add Folder..."
               className="add-folder"
               ref={newFolder => { this.newFolder = newFolder; }}
             />
@@ -55,6 +56,7 @@ class Sidebar extends React.Component {
           <ul>
             {foldersArr}
           </ul>
+
         </div>
       </section>
     );

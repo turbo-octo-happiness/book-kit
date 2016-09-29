@@ -44,7 +44,7 @@ router.get('/', (request, response) => {
     .catch((error) => {
       console.log("ERROR:", error.message || error);
       response.status(500);
-    })
+    });
 });
 
 /**
@@ -70,9 +70,9 @@ router.post('/', jsonParser, (request, response) => {
     response.status(422).json({
       message: 'Incorrect field type: folderid',
     });
-  } else if(typeof request.body.tags === 'string' || !Array.isArray(request.body.tags)) {
+  } else if (typeof request.body.tags === 'string' || !Array.isArray(request.body.tags)) {
     response.status(422).json({
-      message: 'Incorrect field type: tags'
+      message: 'Incorrect field type: tags',
     });
   } else {
     // Handle the two optional bookmark fields and the optional tag array. If user did not

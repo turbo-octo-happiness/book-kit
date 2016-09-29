@@ -1,23 +1,373 @@
-.bookmark-tile {
-  h3 {
-    height: 15rem;
-    position: relative;
-    z-index: 1;
-    margin: 0.5rem;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+@black: #1E2835;
+@gray75: #404853;
+@gray50: #8E939A;
+@gray40: #d0d2d5;
+@gray25: #EEEEEF;
+@gray15: #F6F7F7;
+@gray5: #FAFBFB;
+@white: #F4F8FC;
+
+@blue: #85C7F2;
+@blue125: darken(@blue, 30%);
+@blue75: mix(@blue, @white, 75%);
+@blue50: mix(@blue, @white, 50%);
+@blue25: mix(@blue, @white, 25%);
+@blue5: mix(@blue, @white, 7%);
+
+@green: #23CE6B;
+@green125: darken(@green, 10%);
+@green75: mix(@green, @white, 75%);
+@green50: mix(@green, @white, 50%);
+@green25: mix(@green, @white, 25%);
+@green5: mix(@green, @white, 7%);
+
+// Globals
+
+body, html {
+  height: 100%;
+  color: @gray75;
+  background-color: @white;
+
+  font-size: 1rem;
+  line-height: 1.875;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 0.02rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+h1 {
+  font-family: 'Karla', sans-serif;
+  font-weight: bold;
+  font-size: 3rem;
+}
+
+a {
+  text-decoration: none;
+  color: @white;
+
+  :hover {
+    color: @green125;
   }
-  .bg {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    opacity: .4;
-    background-size: cover;
-    border-radius: 0.8rem;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+}
+
+li {
+  list-style: none;
+}
+
+ul {
+  padding-left: 0;
+}
+
+button {
+  padding: 0.5rem;
+  background-color: @green;
+  color: @white;
+  border-radius: 0.5rem;
+  border: none;
+  font-family: 'Karla', sans-serif;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+
+  :hover {
+    background-color: @green125
+  }
+}
+
+textarea,
+input {
+  border-radius: 0.5rem;
+  border: 0.5px solid @gray40;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+select {
+  border-radius: 0.5rem;
+  border: 0.5px solid @gray40;
+  height: 2rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.prof-pic {
+  border-radius: 50%;
+}
+
+// Section Styles
+
+/**
+ * HEADER SECTION - nav
+ */
+header {
+  display: flex;
+  justify-content: center;
+  background-color: @green;
+  font-family: 'Karla', sans-serif;
+  margin-bottom: 1rem;
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    height: 3rem;
+
+    a:hover {
+      color: @green125;
+    }
+
+    a.main-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    a.prof-link {
+      display: flex;
+      align-items: center;
+    }
+
+    .logout {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      > * {
+        margin-left: 1rem;
+      }
+    }
+  }
+}
+
+/**
+ * Main body section under nav
+ */
+
+/**
+ *  Pre-login Splash Page
+ */
+.splash-page {
+  position: absolute;
+  top: 3rem;
+  bottom: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/**
+ * Post-Login Styling
+ */
+.main-section {
+  // consistent across the board for all components
+  .main-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  // same styling for main pages and manage page
+  .sidebar {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.55rem;
+
+    a {
+      color: @gray75;
+    }
+
+    .search-bar,
+    .add-folder,
+    .add-bookmark {
+      width: 80%;
+    }
+
+    .add-folder {
+      margin-bottom: 0.2rem;
+    }
+
+    .folder-name {
+      margin-left: 0.5rem;
+    }
+  }
+
+  /**
+   * Styling for manage/profile account page
+   */
+
+  .profile {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    .prof-text {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 2rem;
+      width: 20rem;
+
+      .prof-labels {
+        text-align: right;
+      }
+    }
+  }
+
+  /**
+   * Styling for bookmark view page
+   */
+
+  .bookmark-section {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      color: @green;
+    }
+
+    button {
+      margin-right: 0.2rem;
+    }
+
+    .bookmark-view {
+      width: 100%;
+
+      p {
+        margin-bottom: 1rem;
+      }
+
+      .bookmark-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+
+        .bookmark-title {
+          width: 50%;
+        }
+
+        .bookmark-screenshot {
+          width: 24rem;
+          height: 16rem;
+          background-color: black;
+          background-size: cover;
+          border-radius: 0.5rem;
+        }
+      }
+
+      .edit-description {
+        height: 5rem;
+      }
+    }
+
+    .bookmark-edit {
+      input,
+      select,
+      textarea {
+        width: 30rem;
+      }
+    }
+  }
+
+  /**
+   * Styling for everything right of the sidebar
+   */
+
+  .content-section {
+    width: 80%;
+
+    /**
+     * MANAGE FOLDER PAGE
+     */
+
+    .folder-header {
+      border-bottom: 0.5px solid @gray40;
+      margin-bottom: 1rem;
+    }
+
+    .manage-folder {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 0.5px solid @gray40;
+      margin-bottom: 1rem;
+    }
+
+    .manage-buttons button {
+      margin-left: 0.3rem;
+      background-color: @green75;
+    }
+
+    /**
+     * BOOKMARK TILES SECTION
+     */
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .bookmark-tile {
+      width: 16.86rem;
+      list-style: none;
+      margin-left: 0;
+
+      h3 {
+        height: 10rem;
+        position: relative;
+        z-index: 1;
+        margin: 0.5rem;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+      }
+      .bg {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: .4;
+        background-size: cover;
+        border-radius: 0.8rem;
+      }
+    }
+  }
+
+  /**
+   * BOOKMARK FORM
+   */
+
+  .bookmark-form-container {
+    display: flex;
+    justify-content: center;
+
+    input {
+      width: 30rem;
+    }
+
+    button {
+      margin-right: 0.5rem;
+    }
+
+    .folder-dropdown {
+      width: 30rem;
+    }
   }
 }

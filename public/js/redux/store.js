@@ -23,6 +23,10 @@ function getProfile() {
   return JSON.parse(localStorage.getItem('profile'));
 }
 
+function getToken() {
+  return localStorage.getItem('idToken');
+}
+
 const logger = createLogger();
 
 const initialState = {
@@ -30,10 +34,11 @@ const initialState = {
     isAuthenticated: checkTokenExpiry(),
     profile: getProfile(),
     error: '',
+    token: getToken(),
   },
   bookmarks: [],
   folders: [],
-  tags: [],
+  tags: [{ id: 4, tag: 'cats' }, { id: 5, tag: 'things' }, { id: 6, tag: 'stuff' }],
   search: '',
 };
 

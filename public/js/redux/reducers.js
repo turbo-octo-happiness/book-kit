@@ -55,7 +55,16 @@ function bookmarkReducer(state = [], action) {
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
+      console.log(action.bookmark, '<==new bookmark');
+      action.bookmark.tags = [
+        { id: 1, tag: 'movies' },
+        { id: 2, tag: 'reviews' },
+        { id: 3, tag: 'video games' },
+      ]
+      console.log(action.bookmark, '<==newer bookmark after tags added');
+
       tempArr.unshift(action.bookmark);
+      console.log(tempArr, '<===new bookmark state w/ new bookmark')
       return tempArr;
     }
 
@@ -154,6 +163,15 @@ function folderReducer(state = [], action) {
 function tagReducer(state = [], action) {
   // This part of the state is an array
   switch (action.type) {
+    case actionTypes.ADD_BOOKMARK_SUCCESS: {
+      const tempArr = state.slice();
+      console.log('new tags====>', action.tags);
+      action.tags.forEach((tag) => {
+        tempArr.push(tag);
+      });
+      console.log('new tag state===>', tempArr);
+      return tempArr;
+    }
     case actionTypes.GET_TAGS_SUCCESS: {
       return action.tags;
     }
