@@ -31,7 +31,6 @@ class BookmarkForm extends React.Component {
     this.screenshot.value = '';
     this.tags.value = '';
     window.location = '/#/main';
-
   }
 
   render() {
@@ -86,6 +85,7 @@ class BookmarkForm extends React.Component {
                 className="form-control"
                 id="form-screenshot"
               />
+            </div>
             <div className="form-group">
               <label
                 htmlFor="form-tags"
