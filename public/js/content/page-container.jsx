@@ -5,6 +5,7 @@ import actions from '../redux/actions';
 import SidebarContainer from '../sidebar/sidebar-container';
 
 function PageContainer(props) {
+
   return (
     <section className="main-section">
       <div className="main-container">
