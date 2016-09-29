@@ -12,7 +12,7 @@ const router = express.Router();
  * user.
  */
 router.get('/', (request, response) => {
-  const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = `${request.user.identities[0].user_id}`;
 
   db.manyOrNone(queries.SELECT_TAG, [userIdentity])
     .then((result) => {
@@ -30,8 +30,8 @@ router.get('/', (request, response) => {
  * the tag tries it will return 0 results.
 */
 router.put('/:tagid', jsonParser, (request, response) => {
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123';
+  const userIdentity = `${request.user.identities[0].user_id}`;
+
   const tagid = request.params.tagid;
   if (!request.body.tagname) {
     response.status(422).json({
@@ -56,7 +56,7 @@ router.put('/:tagid', jsonParser, (request, response) => {
  * user. Does not associate it with any bookmarks.
 */
 router.post('/', jsonParser, (request, response) => {
-  const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = `${request.user.identities[0].user_id}`;
 
   if (!request.body.tagname) {
     response.status(422).json({

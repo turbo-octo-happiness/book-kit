@@ -30,9 +30,9 @@ const authenticate = jwt({
 // Serves the frontend code at the root
 app.use(express.static('./public/build/'));
 
-app.use('/bookmarks', bookmarksRoutes);
-app.use('/folders', foldersRoutes);
-app.use('/tags', tagsRoutes);
+app.use('/bookmarks', authenticate, bookmarksRoutes);
+app.use('/folders', authenticate, foldersRoutes);
+app.use('/tags', authenticate, tagsRoutes);
 
 /* ---- Set port and start server ---- */
 app.set('port', (process.env.PORT || 5000));

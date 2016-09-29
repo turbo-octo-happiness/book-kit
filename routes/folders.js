@@ -10,7 +10,7 @@ const router = express.Router();
  * folders either owned by or shared with a customer.
  */
 router.get('/', (request, response) => {
-  const userIdentity = request.user.identities[0].user_id;
+    const userIdentity = `${request.user.identities[0].user_id}`;
 
   // Paramitarize query to protect against SQL injection
   db.manyOrNone(queries.SELECT_FOLDER, [userIdentity]).then((result) => {
@@ -27,8 +27,7 @@ router.get('/', (request, response) => {
  * new folder name is returned to the caller.
  */
 router.post('/', jsonParser, (request, response) => {
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123';
+  const userIdentity = `${request.user.identities[0].user_id}`;
 
   if (!request.body.foldername) {
     response.status(422).json({
@@ -53,9 +52,7 @@ router.post('/', jsonParser, (request, response) => {
  * @description `PUT /folders/customers`
 */
 router.post('/customers/:folderid', jsonParser, (request, response) => {
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123';
-  const folderid = request.params.folderid;
+  const userIdentity = `${request.user.identities[0].user_id}`;
 
   if (!request.body.email) {
     response.status(422).json({
@@ -81,7 +78,7 @@ router.post('/customers/:folderid', jsonParser, (request, response) => {
  */
 
 router.put('/:folderid', jsonParser, (request, response) => {
-  const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = `${request.user.identities[0].user_id}`;
 
   const folderid = request.params.folderid;
 
@@ -113,8 +110,7 @@ router.put('/:folderid', jsonParser, (request, response) => {
  * deleted folder is returned to the caller.
  */
 router.delete('/:folderid', (request, response) => {
-  // const userIdentity = request.user.identities[0].user_id;
-  const userIdentity = '123';
+  const userIdentity = `${request.user.identities[0].user_id}`;
   const folderid = request.params.folderid;
 
   db.tx((t) => {

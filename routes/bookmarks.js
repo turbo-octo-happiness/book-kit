@@ -12,7 +12,7 @@ const router = express.Router();
  * they are added.
  */
 router.get('/', (request, response) => {
-  const userIdentity = request.user.identities[0].user_id;
+  const userIdentity = `${request.user.identities[0].user_id}`;
   const email = request.user.email;
 
   db.manyOrNone(queries.SELECT_BOOKMARK, [userIdentity])
