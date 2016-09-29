@@ -33,7 +33,7 @@ CREATE TABLE "bookmark"(
 
 CREATE TABLE "customer_folder"(
   customerid VARCHAR(50) REFERENCES "customer" (customerid),
-  folderid INTEGER REFERENCES "folder" (folderid) ON DELETE CASCADE,
+  folderid INTEGER REFERENCES "folder" (folderid),
   PRIMARY KEY (customerid, folderid)
 );
 

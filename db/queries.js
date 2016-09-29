@@ -132,11 +132,40 @@ exports.ADD_USER_TO_FOLDER_BY_EMAIL = `INSERT INTO customer_folder(customerid, f
 
 // Who has the right to delete a folder?
 // This query will delete the folder and all references to it in the customer_folder table
-exports.DELETE_FOLDER = 'DELETE FROM folder WHERE folderid = $1 RETURNING *;';
+exports.DELETE_FOLDER = `DELETE FROM folder
+                         WHERE folderid = $1 AND NOT EXISTS (
+                           SELECT folderid
+                           FROM customer_folder
+                           WHERE folderid = $2
+                         )
+                         RETURNING *;`;
+// Deleteing a folder requires multiple queries.
+// 1. Check that the user who is deleting the folder does not own any bookmarks in the folder.
+// params: [folderid, customerid]
+exports.CHECK_FOLDER_CONTENT = `SELECT bookmarkid
+                                FROM customer_folder NATURAL JOIN folder NATURAL JOIN bookmark
+                                WHERE folderid = $1 AND bookmark.customerid = $2;`;
 
-// WHo has the right to update folders?
-exports.UPDATE_FOLDER = `UPDATE folder SET foldername = ($1) WHERE folderid = ($2)
-                        RETURNING folderid, foldername;`;
+// 2. Remove entry in customer_folder, effectively removing folder from user's view.
+// params: [folderid, customerid]
+exports.DELETE_FOLDER_REFERENCE = `DELETE FROM customer_folder
+                                   WHERE folderid = $1 AND customerid = $2
+                                   RETURNING *;`;
+
+// Non-shared folders can be updated, but shared folders cannot be changed
+// param: [folderid, foldername, customerid, folderid]
+exports.UPDATE_FOLDER = `WITH count AS (
+	                         SELECT count(customerid)
+                           FROM customer_folder
+                           WHERE folderid = $1
+                        )
+                        UPDATE folder SET foldername = $2
+                        FROM customer_folder
+                        WHERE customer_folder.folderid = folder.folderid
+                         AND customer_folder.customerid = $3
+                         AND folder.folderid = $4
+                         AND (SELECT * FROM count) = 1
+                        RETURNING folder.folderid, foldername;`;
 
 /*
  ==================================================================================================
