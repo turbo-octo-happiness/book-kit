@@ -32,7 +32,7 @@ router.get('/', (request, response) => {
             data[i].tags = data[i].tags.map((current) => {
               const temp = current.split(',');
               return {
-                tagid: temp[0],
+                tagid: parseInt(temp[0], 10),
                 tagname: temp[1],
               };
             });
