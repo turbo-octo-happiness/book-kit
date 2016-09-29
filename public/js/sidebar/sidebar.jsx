@@ -56,7 +56,10 @@ class Sidebar extends React.Component {
           <ul>
             {foldersArr}
           </ul>
-
+        </div>
+        <div>
+          <h3>Tags:</h3>
+          <TagContainer />
         </div>
       </section>
     );
