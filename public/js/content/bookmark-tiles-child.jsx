@@ -6,7 +6,6 @@ const propTypes = {
   title: PropTypes.string,
   id: PropTypes.number,
 };
-
 function Tile(props) {
   const style = {
     backgroundImage: `url(${props.screenshot})`,

@@ -46,7 +46,7 @@ function BookmarkTilesContainer(props) {
       tileArr.push(<Tile
         key={bookmark.bookmarkid}
         title={bookmark.title}
-        id={bookmark.id}
+        id={bookmark.bookmarkid}
         screenshot={bookmark.screenshot}
       />);
     });
@@ -100,6 +100,8 @@ function BookmarkTilesContainer(props) {
       />);
     });
   }
+
+  console.log(tileArr, '<==== tileArr passed to bookmarktiles');
   return (
     <BookmarkTiles
       tileArr={tileArr}
