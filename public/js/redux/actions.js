@@ -165,6 +165,7 @@ function editBookmarkError(error) {
 }
 
 function editBookmark(editedBookmark, token) {
+  console.log(editedBookmark, '<<<< Actions/ edited bookmark');
   return (dispatch) => {
     const init = {
       method: 'PUT',
@@ -326,8 +327,7 @@ function editFolderError(error) {
 }
 
 function editFolder(folderId, folderName, token) {
-  console.log('in actions.editFolder');
-  console.log(folderId, folderName, '<<<Actions/ folderid and foldername')
+  console.log(folderId, folderName, '<<<< Actions/ folderId, folderName');
   return (dispatch) => {
     const folder = {
       folderid: folderId,
@@ -481,9 +481,9 @@ function editTag(tagId, tagName, token) {
   };
 }
 
-function deleteTagSuccess(deletedTagId) {
+function deleteTagSuccess(tag) {
   return {
-    tagid: deletedTagId,
+    tag,
     type: actionTypes.DELETE_TAG_SUCCESS,
   };
 }

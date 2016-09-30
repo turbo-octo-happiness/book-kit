@@ -65,9 +65,11 @@ function bookmarkReducer(state = [], action) {
     }
 
     case actionTypes.EDIT_BOOKMARK_SUCCESS: {
+      console.log(action.bookmark, '<<<< Reducers/ action.bookmark')
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.bookmarkid === action.bookmark.bookmarkid) {
+          console.log(value.bookmarkid, action.bookmark.bookmarkid, '<<<< compared bookmarkids in if');
           index = i;
         }
       });
@@ -120,6 +122,7 @@ function folderReducer(state = [], action) {
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.folderid === action.folder.folderid) {
+          console.log(value.folderid, action.folder.folderid, '<<< compared folderids in if');
           index = i;
         }
       });
@@ -168,20 +171,18 @@ function tagReducer(state = [], action) {
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
-      console.log('new tags====>', action.tags);
+      console.log('Reducers/ new tags====>', action.tags);
       action.tags.forEach((tag) => {
         tempArr.push(tag);
       });
-      console.log('new tag state===>', tempArr);
       return tempArr;
     }
     case actionTypes.GET_TAGS_SUCCESS: {
-      console.log(action.tags, '<=== action.tags');
+      console.log(action.tags, '<=== Reducers/ action.tags');
       return action.tags;
     }
     case actionTypes.EDIT_TAG_SUCCESS: {
       console.log(action.tag, '<<<< Reducer/ updated tag');
-      console.log(state, '<<<< tag state');
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.tagid === action.tag.tagid) {
@@ -193,8 +194,18 @@ function tagReducer(state = [], action) {
       return tempArr;
     }
     case actionTypes.DELETE_TAG_SUCCESS: {
-      console.log(action.tagid, '<<<< Reducers/ deleted tag id');
-      return state
+      console.log(action.tag.tagid, '<<<< Reducers/ deleted tag id');
+
+      const tempArr = state.slice();
+      tempArr.forEach((value, i) => {
+        if (value.tagid === action.tag.tagid) {
+          console.log(value.tagid, action.tag.tagid, '<<<< values compared in if');
+          index = i;
+        }
+      });
+
+      tempArr.splice(index, 1);
+      return tempArr;
     }
 
 

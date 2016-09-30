@@ -95,7 +95,7 @@ class BookmarkView extends React.Component {
             onClick={this.props.onShowDelete}
           >Delete
           </button>
-          <Link to={'/'} style={deleteStyle}>
+          <Link to={'/main'} style={deleteStyle}>
             <button
               onClick={() => { this.props.onDelete(this.props.bookmark[0].bookmarkid); }}
             >Confirm
