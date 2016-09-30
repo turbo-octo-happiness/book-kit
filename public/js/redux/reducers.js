@@ -116,6 +116,7 @@ function folderReducer(state = [], action) {
     }
 
     case actionTypes.EDIT_FOLDER_SUCCESS: {
+      console.log(action.folder, 'Reducer/ updated folder');
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.folderid === action.folder.folderid) {
@@ -129,7 +130,7 @@ function folderReducer(state = [], action) {
 
     case actionTypes.DELETE_FOLDER_SUCCESS: {
       console.log(action.folder, '<<<< Reducers/ deleted folder');
-      
+
       const tempArr = state.slice();
       console.log(tempArr, '<<<state')
       tempArr.forEach((value, i) => {
@@ -146,7 +147,10 @@ function folderReducer(state = [], action) {
 
     case actionTypes.ADD_FOLDER_ERROR:
     case actionTypes.GET_FOLDERS_ERROR:
-    case actionTypes.EDIT_FOLDER_ERROR:
+    case actionTypes.EDIT_FOLDER_ERROR: {
+      console.log(action.error, 'Reducer/ edit folder error');
+      return state;
+    }
     case actionTypes.DELETE_FOLDER_ERROR: {
       console.log(action.error,'<<<< Reducers/ delete folder error')
       return state;

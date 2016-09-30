@@ -327,6 +327,7 @@ function editFolderError(error) {
 
 function editFolder(folderId, folderName, token) {
   console.log('in actions.editFolder');
+  console.log(folderId, folderName, '<<<Actions/ folderid and foldername')
   return (dispatch) => {
     const folder = {
       folderid: folderId,
@@ -342,11 +343,11 @@ function editFolder(folderId, folderName, token) {
       },
       body: JSON.stringify(folder),
     };
-    const url = `${SERVER_URL}/folders`;
+    const url = `${SERVER_URL}/folders/${folderId}`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((editedFolder) => {
-      console.log(editedFolder);
+      console.log(editedFolder, '<<<< Actions/ returned edited folder');
       dispatch(editFolderSuccess(editedFolder));
     }).catch((error) => {
       console.log(error, '<<<< ERROR');
