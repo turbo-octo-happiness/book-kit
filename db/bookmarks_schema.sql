@@ -26,9 +26,9 @@ CREATE TABLE "bookmark"(
   title VARCHAR(500) NOT NULL,
   description TEXT DEFAULT '',
   folderid INTEGER REFERENCES "folder" (folderid),
-  screenshot VARCHAR(500) DEFAULT 'http://placekitten.com/200/300',
+  screenshot VARCHAR(500) DEFAULT 'placeholder.png',
   bookmarkid SERIAL PRIMARY KEY,
-  customerid VARCHAR(50) REFERENCES "customer" (customerid)
+  customerid VARCHAR(50) REFERENCES "customer" (customerid) NOT NULL
 );
 
 CREATE TABLE "customer_folder"(
