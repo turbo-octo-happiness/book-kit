@@ -166,7 +166,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
     // value use defaults.
     const bdescription = request.body.description ? request.body.description : '';
     const bscreenshot = request.body.screenshot ?
-      request.body.screenshot : 'http://placekitten.com/200/300';
+      request.body.screenshot : 'placeholder.png';
 
     const url = request.body.url;
     const title = request.body.title;
@@ -175,13 +175,13 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
 
     let resultsToReturn = {};
     db.tx((t) => {
-      return t.one(queries.SELECT_TAGNAME, [userIdentity, bookmarkid]).then((oldTags) => {
+      return t.manyOrNone(queries.SELECT_TAGNAME, [userIdentity, bookmarkid]).then((oldTags) => {
         oldTags = oldTags.tagarray;
         console.log('SELECT_TAGNAME oldTags: ', oldTags);
         const add = []; // Not in oldTags, add BOOKMARK_TAG reference.
         const del = []; // In oldTags but not in tags, remove BOOKMARK_TAG reference.
         for (let i = 0; i < tags.length; i++) {
-          if (oldTags.indexOf(tags[i]) < 0) {
+          if (oldTags.indexOf(tags[i]) < 0 && !tags[i]) {
             add.push(tags[i]);
           }
         }
