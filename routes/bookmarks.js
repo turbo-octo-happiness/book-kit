@@ -175,8 +175,8 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
 
     let resultsToReturn = {};
     db.tx((t) => {
-      return t.manyOrNone(queries.SELECT_TAGNAME, [userIdentity, bookmarkid]).then((oldTags) => {
-        oldTags = oldTags.tagarray;
+      return t.manyOrNone(queries.SELECT_TAGNAME, [userIdentity, bookmarkid]).then((results) => {
+        const oldTags = results.tagarray || [];
         console.log('SELECT_TAGNAME oldTags: ', oldTags);
         const add = []; // Not in oldTags, add BOOKMARK_TAG reference.
         const del = []; // In oldTags but not in tags, remove BOOKMARK_TAG reference.
