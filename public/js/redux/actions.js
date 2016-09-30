@@ -435,10 +435,6 @@ function getTags(token) {
   };
 }
 
-
-
-
-
 // TODO: add constant types to constants.js
 function editTagSuccess(tag) {
   return {
@@ -454,7 +450,8 @@ function editTagError(error) {
   };
 }
 
-function editTag(tagName, tagId, token) {
+function editTag(tagId, tagName, token) {
+  console.log(tagId, tagName, '<<<< actions/ new tagid and tagname');
   return (dispatch) => {
     const tag = {
       tagid: tagId,
@@ -474,7 +471,7 @@ function editTag(tagName, tagId, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((editedTag) => {
-      console.log(editedTag);
+      console.log(editedTag, '<<<< edited tag response');
       dispatch(editTagSuccess(editedTag));
     }).catch((error) => {
       console.log(error, '<<<< edit tag ERROR');
@@ -483,9 +480,9 @@ function editTag(tagName, tagId, token) {
   };
 }
 
-function deleteTagSuccess(deletedTag) {
+function deleteTagSuccess(deletedTagId) {
   return {
-    tag: deletedTag,
+    tagid: deletedTagId,
     type: actionTypes.DELETE_TAG_SUCCESS,
   };
 }

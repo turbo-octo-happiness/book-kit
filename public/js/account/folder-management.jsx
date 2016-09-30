@@ -18,6 +18,7 @@ class FolderManagement extends React.Component {
 
   onDelete(folderId) {
     // TODO: Fix issue with folder not deleting in database
+    console.log(folderId, '<<<< FolderMgmt/ deleted folder id passed in dispatch')
     this.props.dispatch(actions.deleteFolder(folderId, this.props.token));
   }
 

@@ -143,6 +143,7 @@ function folderReducer(state = [], action) {
     case actionTypes.GET_FOLDERS_ERROR:
     case actionTypes.EDIT_FOLDER_ERROR:
     case actionTypes.DELETE_FOLDER_ERROR: {
+      console.log(action.error,'<<<< Reducers/ delete folder error')
       return state;
     }
 
@@ -168,6 +169,16 @@ function tagReducer(state = [], action) {
       console.log(action.tags, '<=== action.tags');
       return action.tags;
     }
+    case actionTypes.EDIT_TAG_SUCCESS: {
+      console.log(action.tag, '<<<< Reducer/ updated tag');
+      return state;
+    }
+    case actionTypes.DELETE_TAG_SUCCESS: {
+      console.log(action.tagid, '<<<< Reducers/ deleted tag id');
+      return state
+    }
+
+
     case actionTypes.GET_TAGS_ERROR: {
       return state;
     }
