@@ -128,9 +128,14 @@ function folderReducer(state = [], action) {
     }
 
     case actionTypes.DELETE_FOLDER_SUCCESS: {
+      console.log(action.folder, '<<<< Reducers/ deleted folder');
+      
       const tempArr = state.slice();
+      console.log(tempArr, '<<<state')
       tempArr.forEach((value, i) => {
-        if (value.folderid === action.folder[0].folderid) {
+        console.log(value, '<<< forEach value');
+        if (value.folderid === action.folder.folderid) {
+          console.log('in if>>>', value, action.folder);
           index = i;
         }
       });
