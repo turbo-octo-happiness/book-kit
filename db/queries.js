@@ -90,10 +90,11 @@ exports.UPDATE_TAG = `UPDATE tag SET tagname = ($1)
 // Remove a tag from a bookmark
 exports.DELETE_TAG_REFERENCE = `DELETE FROM bookmark_tag USING tag
                                 WHERE bookmark_tag.tagid = tag.tagid
-                                  AND bookmarkid = $1 AND tagname = $2;`;
+                                  AND bookmarkid = $1 AND tagname = $2
+                                RETURNING *;`;
 
 // Only the tag creator can delete a tag
-exports.DELETE_TAG = `DELETE FROM tag,
+exports.DELETE_TAG = `DELETE FROM tag
                       WHERE tagid = $1 AND customerid = $2
                       RETURNING *;`;
 
