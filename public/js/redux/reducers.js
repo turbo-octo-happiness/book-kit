@@ -155,6 +155,7 @@ function folderReducer(state = [], action) {
 
 function tagReducer(state = [], action) {
   // This part of the state is an array
+  let index;
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
@@ -171,7 +172,16 @@ function tagReducer(state = [], action) {
     }
     case actionTypes.EDIT_TAG_SUCCESS: {
       console.log(action.tag, '<<<< Reducer/ updated tag');
-      return state;
+      console.log(state, '<<<< tag state');
+      const tempArr = state.slice();
+      tempArr.forEach((value, i) => {
+        if (value.tagid === action.tag.tagid) {
+          index = i;
+        }
+      });
+
+      tempArr[index] = action.tag;
+      return tempArr;
     }
     case actionTypes.DELETE_TAG_SUCCESS: {
       console.log(action.tagid, '<<<< Reducers/ deleted tag id');
