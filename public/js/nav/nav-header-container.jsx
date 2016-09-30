@@ -6,6 +6,8 @@ import actions from '../redux/actions';
 
 const propTypes = {
   dispatch: PropTypes.func,
+  isAuthenticated: PropTypes.bool,
+  token: PropTypes.string,
 };
 
 class NavbarContainer extends React.Component {
@@ -13,6 +15,14 @@ class NavbarContainer extends React.Component {
     super();
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
     this.getProfile = this.getProfile.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.dispatch(actions.getFolders(this.props.token));
+      this.props.dispatch(actions.getBookmarks(this.props.token));
+      this.props.dispatch(actions.getTags(this.props.token));
+    }
   }
 
   getProfile(lock, authResult) {
@@ -24,6 +34,7 @@ class NavbarContainer extends React.Component {
       this.props.dispatch(actions.loginSuccess(authResult.idToken, profile));
       this.props.dispatch(actions.getFolders(authResult.idToken));
       this.props.dispatch(actions.getBookmarks(authResult.idToken));
+      this.props.dispatch(actions.getTags(authResult.idToken));
 
       hashHistory.push('/main');
     });
@@ -51,6 +62,7 @@ function mapStateToProps(state) {
   return {
     isAuthenticated: state.auth.isAuthenticated,
     profile: state.auth.profile,
+    token: state.auth.token,
   };
 }
 

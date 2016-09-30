@@ -2,8 +2,6 @@ import React, { PropTypes } from 'react';
 import Auth0Lock from 'auth0-lock';
 import { Link } from 'react-router';
 
-// TODO: PASS GETPROFILE() IN AS PROPS FROM NAV-HEADER-CONTAINER
-
 // Renders 1 of 2 different headers depending on state of authentication
 
 const SERVER_URL = window.location.origin;
