@@ -181,7 +181,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
         const add = []; // Not in oldTags, add BOOKMARK_TAG reference.
         const del = []; // In oldTags but not in tags, remove BOOKMARK_TAG reference.
         for (let i = 0; i < tags.length; i++) {
-          if (oldTags.indexOf(tags[i]) < 0 && tags[i] !== '') {
+          if (oldTags.indexOf(tags[i]) < 0 && !tags[i]) {
             add.push(tags[i]);
           }
         }
