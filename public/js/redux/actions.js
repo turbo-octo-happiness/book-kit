@@ -178,6 +178,7 @@ function editBookmark(editedBookmark, token) {
     };
 
     const url = `${SERVER_URL}/bookmarks/${editedBookmark.bookmarkid}`;
+    console.log(url, '<<< url')
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {

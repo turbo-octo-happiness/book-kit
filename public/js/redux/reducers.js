@@ -148,6 +148,12 @@ function folderReducer(state = [], action) {
       return tempArr;
     }
 
+    case actionTypes.ADD_BOOKMARK_SUCCESS: {
+      console.log(action.bookmark.folderid, '<<< FolderReducer/ bookmark')
+
+      return state;
+    }
+
     case actionTypes.ADD_FOLDER_ERROR:
     case actionTypes.GET_FOLDERS_ERROR:
     case actionTypes.EDIT_FOLDER_ERROR: {
@@ -173,6 +179,14 @@ function tagReducer(state = [], action) {
       const tempArr = state.slice();
       console.log('Reducers/ new tags====>', action.tags);
       action.tags.forEach((tag) => {
+        tempArr.push(tag);
+      });
+      return tempArr;
+    }
+    case actionTypes.EDIT_BOOKMARK_SUCCESS: {
+      const tempArr = state.slice();
+      console.log('Reducers/ new tags====>', action.bookmark.tags);
+      action.bookmark.tags.forEach((tag) => {
         tempArr.push(tag);
       });
       return tempArr;
