@@ -93,8 +93,9 @@ exports.DELETE_TAG_REFERENCE = `DELETE FROM bookmark_tag USING tag
                                   AND bookmarkid = $1 AND tagname = $2;`;
 
 // Only the tag creator can delete a tag
-exports.DELETE_TAG = `DELETE FROM tag
-                      WHERE tagid = $1 AND customerid = $2;`;
+exports.DELETE_TAG = `DELETE FROM tag,
+                      WHERE tagid = $1 AND customerid = $2
+                      RETURNING *;`;
 
 /*
  ==================================================================================================
