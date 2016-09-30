@@ -116,6 +116,7 @@ function folderReducer(state = [], action) {
     }
 
     case actionTypes.EDIT_FOLDER_SUCCESS: {
+      console.log(action.folder, 'Reducer/ updated folder');
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.folderid === action.folder.folderid) {
@@ -128,9 +129,14 @@ function folderReducer(state = [], action) {
     }
 
     case actionTypes.DELETE_FOLDER_SUCCESS: {
+      console.log(action.folder, '<<<< Reducers/ deleted folder');
+
       const tempArr = state.slice();
+      console.log(tempArr, '<<<state')
       tempArr.forEach((value, i) => {
-        if (value.folderid === action.folder[0].folderid) {
+        console.log(value, '<<< forEach value');
+        if (value.folderid === action.folder.folderid) {
+          console.log('in if>>>', value, action.folder);
           index = i;
         }
       });
@@ -141,8 +147,12 @@ function folderReducer(state = [], action) {
 
     case actionTypes.ADD_FOLDER_ERROR:
     case actionTypes.GET_FOLDERS_ERROR:
-    case actionTypes.EDIT_FOLDER_ERROR:
+    case actionTypes.EDIT_FOLDER_ERROR: {
+      console.log(action.error, 'Reducer/ edit folder error');
+      return state;
+    }
     case actionTypes.DELETE_FOLDER_ERROR: {
+      console.log(action.error,'<<<< Reducers/ delete folder error')
       return state;
     }
 
@@ -154,6 +164,7 @@ function folderReducer(state = [], action) {
 
 function tagReducer(state = [], action) {
   // This part of the state is an array
+  let index;
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
@@ -168,6 +179,25 @@ function tagReducer(state = [], action) {
       console.log(action.tags, '<=== action.tags');
       return action.tags;
     }
+    case actionTypes.EDIT_TAG_SUCCESS: {
+      console.log(action.tag, '<<<< Reducer/ updated tag');
+      console.log(state, '<<<< tag state');
+      const tempArr = state.slice();
+      tempArr.forEach((value, i) => {
+        if (value.tagid === action.tag.tagid) {
+          index = i;
+        }
+      });
+
+      tempArr[index] = action.tag;
+      return tempArr;
+    }
+    case actionTypes.DELETE_TAG_SUCCESS: {
+      console.log(action.tagid, '<<<< Reducers/ deleted tag id');
+      return state
+    }
+
+
     case actionTypes.GET_TAGS_ERROR: {
       return state;
     }

@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
+
+const propTypes = {
+  folder: PropTypes.object,
+  folderid: PropTypes.number,
+  dispatch: PropTypes.func,
+  token: PropTypes.string,
+  onDelete: PropTypes.func,
+  onShare: PropTypes.func,
+};
 
 class Folder extends React.Component {
   constructor() {
@@ -20,6 +29,7 @@ class Folder extends React.Component {
   }
 
   editFolder(event, folderId, folderName) {
+    console.log(folderId, folderName, this.editedFolder.value, '<<<< Folder/ Updated folder')
     event.preventDefault();
     this.props.dispatch(actions.editFolder(
       this.props.folder.folderid,
@@ -29,6 +39,7 @@ class Folder extends React.Component {
   }
 
   deleteFolder(folderId) {
+    console.log(folderId, '<<<< Folder/ deleted folder id')
     this.props.onDelete(this.props.folder.folderid);
   }
 
@@ -67,6 +78,8 @@ class Folder extends React.Component {
     )
   }
 }
+
+Folder.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return {};

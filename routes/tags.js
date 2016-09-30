@@ -86,6 +86,7 @@ router.delete('/:tagid', jsonParser, (request, response) => {
 
   db.one(queries.DELETE_TAG, [tagid, userIdentity])
     .then((result) => {
+      console.log(result);
       response.json(result);
     })
     .catch((error) => {

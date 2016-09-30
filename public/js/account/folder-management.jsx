@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
 import Folder from './folder';
+
+const propTypes = {
+  folders: PropTypes.array,
+  dispatch: PropTypes.func,
+  token: PropTypes.string,
+};
 
 class FolderManagement extends React.Component {
   constructor() {
@@ -12,7 +18,8 @@ class FolderManagement extends React.Component {
 
   onDelete(folderId) {
     // TODO: Fix issue with folder not deleting in database
-    this.props.dispatch(actions.deleteFolder(folderId, this.props.token))
+    console.log(folderId, '<<<< FolderMgmt/ deleted folder id passed in dispatch')
+    this.props.dispatch(actions.deleteFolder(folderId, this.props.token));
   }
 
   onShare(folderId) {
@@ -44,6 +51,8 @@ class FolderManagement extends React.Component {
     );
   }
 }
+
+FolderManagement.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return {

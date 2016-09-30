@@ -33,7 +33,7 @@ function BookmarkTilesContainer(props) {
     const arr = [];
     // TODO: Fix tempArr so that it contains the bookmarks instead of arr
     const tempArr = props.bookmarks.filter((bookmark) => {
-      if (bookmark.tags) {
+      if (bookmark.tags && bookmark.tags[0] !== null) {
         bookmark.tags.map((tag) => {
           // To shut up ESLint: Informing parseInt that it's parsing with base 10 radix
           if (parseInt(tagId, 10) === tag.tagid) {

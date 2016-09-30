@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+
+const propTypes = {
+  tagname: PropTypes.string,
+  tagid: PropTypes.number,
+};
 
 class Tag extends React.Component {
 
@@ -16,5 +21,7 @@ class Tag extends React.Component {
     );
   }
 }
+
+Tag.propTypes = propTypes;
 
 module.exports = Tag;

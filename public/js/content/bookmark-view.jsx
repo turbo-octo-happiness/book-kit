@@ -25,7 +25,9 @@ class BookmarkView extends React.Component {
       url: this.url.value,
       title: this.title.value,
       description: this.description.value,
-      tags: this.tags.value.toLowerCase().split(', '),
+      tags: this.tags.value.toLowerCase().split(',').map((tag) => {
+        return tag.trim();
+      }),
       folderid: this.folder.value,
       screenshot: this.screenshot.value,
       bookmarkid: this.props.bookmark[0].bookmarkid,
@@ -39,7 +41,7 @@ class BookmarkView extends React.Component {
     const deleteStyle = this.props.delete ? {} : { display: 'none' };
     const imgStyle = this.props.show ? {
       backgroundImage: `url(${this.props.bookmark[0].screenshot})`,
-      display: 'none'
+      display: 'none',
     } : {
       backgroundImage: `url(${this.props.bookmark[0].screenshot})`,
     };
@@ -51,9 +53,9 @@ class BookmarkView extends React.Component {
     });
 
     let tags;
-    if (this.props.bookmark[0].tags) {
+    if (this.props.bookmark[0].tags && this.props.bookmark[0].tags[0] !== null) {
       tags = this.props.bookmark[0].tags.map((tagObj) => {
-        return tagObj.tag;
+        return tagObj.tagname;
       });
     }
 

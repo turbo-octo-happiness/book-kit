@@ -327,6 +327,7 @@ function editFolderError(error) {
 
 function editFolder(folderId, folderName, token) {
   console.log('in actions.editFolder');
+  console.log(folderId, folderName, '<<<Actions/ folderid and foldername')
   return (dispatch) => {
     const folder = {
       folderid: folderId,
@@ -342,11 +343,11 @@ function editFolder(folderId, folderName, token) {
       },
       body: JSON.stringify(folder),
     };
-    const url = `${SERVER_URL}/folders`;
+    const url = `${SERVER_URL}/folders/${folderId}`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((editedFolder) => {
-      console.log(editedFolder);
+      console.log(editedFolder, '<<<< Actions/ returned edited folder');
       dispatch(editFolderSuccess(editedFolder));
     }).catch((error) => {
       console.log(error, '<<<< ERROR');
@@ -435,6 +436,90 @@ function getTags(token) {
   };
 }
 
+// TODO: add constant types to constants.js
+function editTagSuccess(tag) {
+  return {
+    tag,
+    type: actionTypes.EDIT_TAG_SUCCESS,
+  };
+}
+
+function editTagError(error) {
+  return {
+    error,
+    type: actionTypes.EDIT_TAG_ERROR,
+  };
+}
+
+function editTag(tagId, tagName, token) {
+  console.log(tagId, tagName, '<<<< actions/ new tagid and tagname');
+  return (dispatch) => {
+    const tag = {
+      tagid: tagId,
+      tagname: tagName,
+    };
+
+    const init = {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(tag),
+    };
+    const url = `${SERVER_URL}/tags/${tagId}`;
+    const newFetch = fetchHelp(url, init);
+
+    newFetch.then((editedTag) => {
+      console.log(editedTag, '<<<< edited tag response');
+      dispatch(editTagSuccess(editedTag));
+    }).catch((error) => {
+      console.log(error, '<<<< edit tag ERROR');
+      dispatch(editTagError(error));
+    });
+  };
+}
+
+function deleteTagSuccess(deletedTagId) {
+  return {
+    tagid: deletedTagId,
+    type: actionTypes.DELETE_TAG_SUCCESS,
+  };
+}
+
+function deleteTagError(error) {
+  return {
+    error,
+    type: actionTypes.DELETE_TAG_ERROR,
+  };
+}
+
+function deleteTag(tagid, token) {
+  console.log('in actions/deleteTag, tagid==>', tagid);
+  return (dispatch) => {
+    const init = {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const url = `${SERVER_URL}/tags/${tagid}`;
+    const newFetch = fetchHelp(url, init);
+
+    newFetch.then((tag) => {
+      console.log('response tag===>', tag);
+      return dispatch(deleteTagSuccess(tag));
+    }).catch((error) => {
+      console.log('error==>', error);
+      return dispatch(deleteTagError(error));
+    });
+  };
+}
+
 function findBookmarksSuccess(bookmarks) {
   return {
     bookmarks,
@@ -490,4 +575,6 @@ exports.editFolder = editFolder;
 exports.deleteBookmark = deleteBookmark;
 exports.deleteFolder = deleteFolder;
 exports.getTags = getTags;
+exports.editTag = editTag;
+exports.deleteTag = deleteTag;
 exports.findBookmarks = findBookmarks;
