@@ -181,8 +181,10 @@ function editBookmark(editedBookmark, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
+      console.log(bookmark, '<<< Actions/ returned bookmark');
       return dispatch(editBookmarkSuccess(bookmark));
     }).catch((err) => {
+      console.log(err, 'Actions/ error message');
       return dispatch(editBookmarkError(err));
     });
   };

@@ -146,7 +146,7 @@ router.post('/', jsonParser, (request, response) => {
 router.put('/:bookmarkid', jsonParser, (request, response) => {
   const bookmarkid = request.params.bookmarkid;
   const userIdentity = `${request.user.identities[0].user_id}`;
-
+  console.log(request.body, '<<<< SERVER > REQUEST BODY');
   if (!request.body.url) {
     response.status(422).json({
       message: 'Missing field: URL',

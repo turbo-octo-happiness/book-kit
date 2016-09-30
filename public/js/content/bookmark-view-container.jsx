@@ -38,6 +38,7 @@ class BookmarkViewContainer extends React.Component {
   }
 
   onEdit(bookmark) {
+    console.log(bookmark, '<<<< edited bookmark in dispatch');
     this.props.dispatch(actions.editBookmark(bookmark, this.props.token));
     this.onShowEdit();
   }
