@@ -51,7 +51,7 @@ class BookmarkView extends React.Component {
     });
 
     let tags;
-    if (this.props.bookmark[0].tags) {
+    if (this.props.bookmark[0].tags && this.props.bookmark[0].tags[0] !== null) {
       tags = this.props.bookmark[0].tags.map((tagObj) => {
         return tagObj.tagname;
       });
