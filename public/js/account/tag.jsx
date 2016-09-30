@@ -29,6 +29,7 @@ class Tag extends React.Component {
   }
 
   deleteTag(tagId) {
+    console.log('in deleteTag, tagId==>', tagId)
     this.props.onDelete(this.props.tag.tagid);
   }
 

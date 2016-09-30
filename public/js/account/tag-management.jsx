@@ -16,6 +16,7 @@ class TagManagement extends React.Component {
   }
 
   onDelete(tagId) {
+    console.log('in onDelete, tagId===>', tagId)
     this.props.dispatch(actions.deleteTag(tagId, this.props.token));
   }
 
