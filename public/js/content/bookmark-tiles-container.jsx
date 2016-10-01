@@ -15,8 +15,10 @@ function BookmarkTilesContainer(props) {
   // folders with spaces show up with space in url which is bad
   // nav-child-folder and routes - folderId is not stored with bookmarks
   if (props.params.folderName) {
+    console.log(props.bookmarks, '<<< TilesCont/ bookmarks state')
     const folder = props.params.folderName;
     const tempArr = props.bookmarks.filter((bookmark) => {
+      console.log(bookmark);
       return folder === bookmark.foldername;
     });
 

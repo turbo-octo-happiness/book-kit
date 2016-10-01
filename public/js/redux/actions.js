@@ -125,6 +125,9 @@ function addBookmarkError(error) {
 function addBookmark(newBookmark, token) {
   console.log('inside addBookmark, new bookmark ===>', newBookmark);
   return (dispatch) => {
+    newBookmark.foldername = newBookmark.foldername[0].foldername;
+    console.log(newBookmark, '<<< new bookmark for request');
+    let tempFoldername = newBookmark.foldername;
     const init = {
       method: 'POST',
       headers: {
@@ -140,6 +143,7 @@ function addBookmark(newBookmark, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
+      bookmark.foldername = tempFoldername;
       console.log('returned bookmark=====>', bookmark);
       return dispatch(addBookmarkSuccess(bookmark));
     }).catch((error) => {
@@ -178,7 +182,6 @@ function editBookmark(editedBookmark, token) {
     };
 
     const url = `${SERVER_URL}/bookmarks/${editedBookmark.bookmarkid}`;
-    console.log(url, '<<< url')
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
