@@ -200,7 +200,7 @@ exports.SELECT_BOOKMARK = `SELECT bookmark.bookmarkid, url, title, description, 
 exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                               folderid, screenshot, customerid)
                             VALUES ($1, $2, $3, $4, $5, $6)
-                            RETURNING *;`;
+                            RETURNING *, (SELECT foldername FROM folder WHERE folderid = $7);`;
 
 exports.DELETE_BOOKMARK = `DELETE FROM bookmark
                            WHERE bookmarkid = $1 AND customerid = $2
