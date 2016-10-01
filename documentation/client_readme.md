@@ -8,6 +8,15 @@ The service will provide a means of organizing bookmarks outside of built in bro
 
 Disclaimer: This project is mainly built for learning purposes and not intended for production use.
 
+## Installation
+
+1. After cloning this repo. Run `npm install` at the command line.
+2. Start a local Postgres server. Create a new database with `createdb bookmarks`.
+3. If you would like to start the API with a blank slate, use `psql bookmarks < db/bookmarks.sql` to import the schema. If you prefer to start with some data, use `psql bookmarks < db/sqldump.sql`.
+4. To start the server run `node server.js`.
+
+Note on compatibility: The API relies on NodeJS v6.3.1 and PostgreSQL v9.5.3 All other dependencies are listed in the _package.json_ file. Although the API might run on alternative versions, it has not been tested.
+
 ### Scenarios
 
 #### Scenario 1:

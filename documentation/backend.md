@@ -2,28 +2,13 @@
 
 ## Overview
 
-RESTful API using NodeJS, Express, and Postgres. The main purpose of the API is as a backend to the Book Kit project.
-
-The API serves information about web bookmarks. Each Bookmark has a title, url, description (optional), folder name, and url representing a screenshot (optional).
-
-## Installation
-
-1. After cloning this repo. Run `npm install` at the command line.
-2. Start a local Postgres server. Create a new database with `createdb bookmarks`.
-3. If you would like to start the API with a blank slate, use `psql bookmarks < db/bookmarks.sql` to import the schema. If you prefer to start with some data, use `psql bookmarks < db/sqldump.sql`.
-4. To start the server run `node server.js`.
-
-Note on compatibility: The API relies on NodeJS v6.3.1 and PostgreSQL v9.5.3 All other dependencies are listed in the _package.json_ file. Although the API might run on alternative versions, it has not been tested.
+RESTful API using NodeJS, Express, and Postgres. The API serves information for the Book-Kit project.
 
 ## Database
 
-### EERD
-
-![EERD](db/diagrams/bookmark_database_eerd_aug4_16.png)
-
 ### Schema
 
-![Schema](db/diagrams/bookmark_database_schema_aug4_16.png)
+![Schema](documentation/diagrams/bookmark_database_schema_sep28_16.png)
 
 ## API endpoints
 

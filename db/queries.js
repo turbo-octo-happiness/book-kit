@@ -210,9 +210,9 @@ exports.DELETE_BOOKMARK = `DELETE FROM bookmark
 // bookmarks.
 // If the editor was not the creator, then we recieve a result of zero row effected.
 exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot) =
-                            ($2, $3, $4, $5, $6)
-                           WHERE bookmarkid = $7 AND customerid = $8
-                           RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
+                            ($1, $2, $3, $4, $5)
+                           WHERE bookmarkid = $6 AND customerid = $7
+                           RETURNING *, (SELECT foldername FROM folder WHERE folderid = $8);`;
 
 // Copies bookmark to a new folder, iff customer already has access to that folder.
 // params: [bookmarkid, customerid]

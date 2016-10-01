@@ -207,8 +207,8 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
         return t.batch(q).then((results) => {
           console.log('inserted tag updates', results);
 
-          return t.one(queries.UPDATE_BOOKMARK, [bookmarkid, url, title, bdescription,
-            folderid, bscreenshot, bookmarkid, userIdentity,
+          return t.one(queries.UPDATE_BOOKMARK, [url, title, bdescription,
+            folderid, bscreenshot, bookmarkid, userIdentity, folderid,
           ]).then((newBookmark) => {
             console.log('inserted bookmark ===>', newBookmark);
             resultsToReturn = Object.assign({}, resultsToReturn, newBookmark);
