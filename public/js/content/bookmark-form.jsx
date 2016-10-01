@@ -14,23 +14,19 @@ class BookmarkForm extends React.Component {
   }
 
   addBookmark(event) {
-    console.log(this.props.folders, '<<<<folders');
-    // TODO: Loop through this.props.folders until this.folder.value mathes the objects id, return it's foldername
-    // and set that variable to 'foldername: '
     event.preventDefault();
     this.props.onAdd({
       url: this.url.value,
       title: this.title.value,
       description: this.description.value,
+      screenshot: this.screenshot.value,
+      folderid: this.folder.value,
       foldername: this.props.folders.filter((folder) => {
-        console.log(this.folder, '<<<< this folder');
         if (this.folder.value === folder.folderid.toString()) {
-          console.log(folder, '<<<in if');
           return folder.foldername;
         }
+        return false;
       }),
-      folderid: this.folder.value,
-      screenshot: this.screenshot.value,
       tags: this.tags.value.trim() !== '' ? this.tags.value.toLowerCase().split(',').map((tag) => {
         return tag.trim();
       }) : [],

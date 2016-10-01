@@ -127,7 +127,7 @@ function addBookmark(newBookmark, token) {
   return (dispatch) => {
     newBookmark.foldername = newBookmark.foldername[0].foldername;
     console.log(newBookmark, '<<< new bookmark for request');
-    let tempFoldername = newBookmark.foldername;
+    const tempFoldername = newBookmark.foldername;
     const init = {
       method: 'POST',
       headers: {
@@ -171,6 +171,8 @@ function editBookmarkError(error) {
 function editBookmark(editedBookmark, token) {
   console.log(editedBookmark, '<<<< Actions/ edited bookmark');
   return (dispatch) => {
+    editedBookmark.foldername = editedBookmark.foldername[0].foldername;
+    console.log(editedBookmark, '<<< new bookmark for request');
     const init = {
       method: 'PUT',
       headers: {

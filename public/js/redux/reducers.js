@@ -60,6 +60,22 @@ function bookmarkReducer(state = [], action) {
       return tempArr;
     }
 
+    case actionTypes.EDIT_FOLDER_SUCCESS: {
+      console.log(action.folder, '<<<< BookmarkReducer/ updated folder');
+      const tempArr = state.slice();
+      console.log(tempArr, '<<< bookmark state before');
+      tempArr.forEach((value, i) => {
+        console.log(value, '<< obj in for each')
+        if (value.folderid === action.folder.folderid) {
+          console.log(value.folderid, action.folder.folderid, '<< in if/ comparison');
+          value.foldername = action.folder.foldername
+        }
+      });
+      console.log(tempArr, '< new state returned');
+      return tempArr;
+    }
+
+
     case actionTypes.GET_BOOKMARKS_SUCCESS: {
       return action.bookmarks;
     }
@@ -121,7 +137,6 @@ function folderReducer(state = [], action) {
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.folderid === action.folder.folderid) {
-          console.log(value.folderid, action.folder.folderid, '<<< compared folderids in if');
           index = i;
         }
       });
@@ -134,11 +149,8 @@ function folderReducer(state = [], action) {
       console.log(action.folder, '<<<< Reducers/ deleted folder');
 
       const tempArr = state.slice();
-      console.log(tempArr, '<<<state')
       tempArr.forEach((value, i) => {
-        console.log(value, '<<< forEach value');
         if (value.folderid === action.folder.folderid) {
-          console.log('in if>>>', value, action.folder);
           index = i;
         }
       });
@@ -210,7 +222,6 @@ function tagReducer(state = [], action) {
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.tagid === action.tag.tagid) {
-          console.log(value.tagid, action.tag.tagid, '<<<< values compared in if');
           index = i;
         }
       });

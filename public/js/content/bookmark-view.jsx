@@ -21,16 +21,26 @@ class BookmarkView extends React.Component {
 
   onSubmitEdit(event) {
     event.preventDefault();
+
+    console.log(this.props, '<<< props');
+
     this.props.onEdit({
       url: this.url.value,
       title: this.title.value,
       description: this.description.value,
+      screenshot: this.screenshot.value,
+      bookmarkid: this.props.bookmark[0].bookmarkid,
+      folderid: this.folder.value,
+      foldername: this.props.folders.filter((folder) => {
+        console.log(this.folder.value, folder.folderid.toString(), '<<< if comparison');
+        if (this.folder.value === folder.folderid.toString()) {
+          return folder.foldername;
+        }
+        return false;
+      }),
       tags: this.tags.value.trim() !== '' ? this.tags.value.toLowerCase().split(',').map((tag) => {
         return tag.trim();
       }) : [],
-      folderid: this.folder.value,
-      screenshot: this.screenshot.value,
-      bookmarkid: this.props.bookmark[0].bookmarkid,
     });
   }
 
