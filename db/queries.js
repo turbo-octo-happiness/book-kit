@@ -200,7 +200,7 @@ exports.SELECT_BOOKMARK = `SELECT bookmark.bookmarkid, url, title, description, 
 exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                               folderid, screenshot, customerid)
                             VALUES ($1, $2, $3, $4, $5, $6)
-                            RETURNING *;`;
+                            RETURNING *, (SELECT foldername FROM folder WHERE folderid = $7);`;
 
 exports.DELETE_BOOKMARK = `DELETE FROM bookmark
                            WHERE bookmarkid = $1 AND customerid = $2
@@ -210,9 +210,20 @@ exports.DELETE_BOOKMARK = `DELETE FROM bookmark
 // bookmarks.
 // If the editor was not the creator, then we recieve a result of zero row effected.
 exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot) =
-                            ($2, $3, $4, $5, $6)
-                           WHERE bookmarkid = $7 AND customerid = $8
-                           RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
+                            ($1, $2, $3, $4, $5)
+                           WHERE bookmarkid = $6 AND customerid = $7
+                           RETURNING *, (SELECT foldername FROM folder WHERE folderid = $8);`;
+
+// Copies bookmark to a new folder, iff customer already has access to that folder.
+// params: [bookmarkid, customerid]
+exports.COPY_BOOKMARK = `SELECT url, title, description, folder.folderid,
+                          screenshot, customer_folder.customerid
+                         FROM bookmark RIGHT JOIN folder ON bookmark.folderid = folder.folderid
+                          JOIN customer_folder ON folder.folderid = customer_folder.folderid
+                         WHERE bookmarkid = $1 AND customer_folder.customerid = ANY(
+                            SELECT customerid
+                            FROM customer_folder
+                            WHERE customerid = $2);`;
 
 /*
  ==================================================================================================

@@ -68,6 +68,10 @@ router.post('/', jsonParser, (request, response) => {
     response.status(422).json({
       message: 'Incorrect field type: title',
     });
+  } else if (!request.body.foldername) {
+    response.status(422).json({
+      message: 'Incorrect field type: foldername',
+    });
   } else if (!request.body.folderid) {
     response.status(422).json({
       message: 'Incorrect field type: folderid',
@@ -96,7 +100,7 @@ router.post('/', jsonParser, (request, response) => {
     db.tx((t) => {
         // First insert bookmark
         return t.one(queries.INSERT_BOOKMARK, [url, title, bdescription,
-            folderid, bscreenshot, userIdentity,
+            folderid, bscreenshot, userIdentity, folderid
           ])
           .then((bookmark) => {
             console.log('bookmark inserted: ', bookmark);
@@ -203,8 +207,8 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
         return t.batch(q).then((results) => {
           console.log('inserted tag updates', results);
 
-          return t.one(queries.UPDATE_BOOKMARK, [bookmarkid, url, title, bdescription,
-            folderid, bscreenshot, bookmarkid, userIdentity,
+          return t.one(queries.UPDATE_BOOKMARK, [url, title, bdescription,
+            folderid, bscreenshot, bookmarkid, userIdentity, folderid,
           ]).then((newBookmark) => {
             console.log('inserted bookmark ===>', newBookmark);
             resultsToReturn = Object.assign({}, resultsToReturn, newBookmark);
