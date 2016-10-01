@@ -214,6 +214,17 @@ exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderi
                            WHERE bookmarkid = $7 AND customerid = $8
                            RETURNING bookmarkid, url, title, description, folderid, screenshot;`;
 
+// Copies bookmark to a new folder, iff customer already has access to that folder.
+// params: [bookmarkid, customerid]
+exports.COPY_BOOKMARK = `SELECT url, title, description, folder.folderid,
+                          screenshot, customer_folder.customerid
+                         FROM bookmark RIGHT JOIN folder ON bookmark.folderid = folder.folderid
+                          JOIN customer_folder ON folder.folderid = customer_folder.folderid
+                         WHERE bookmarkid = $1 AND customer_folder.customerid = ANY(
+                            SELECT customerid
+                            FROM customer_folder
+                            WHERE customerid = $2);`;
+
 /*
  ==================================================================================================
                                       _  _  ____  ____  ____
