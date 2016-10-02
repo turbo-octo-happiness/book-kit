@@ -29,7 +29,7 @@ class Folder extends React.Component {
   }
 
   editFolder(event, folderId, folderName) {
-    console.log(folderId, folderName, this.editedFolder.value, '<<<< Folder/ Updated folder')
+    console.log(folderId, folderName, this.editedFolder.value, '<<<< Folder/ Edited folder');
     event.preventDefault();
     this.props.dispatch(actions.editFolder(
       this.props.folder.folderid,

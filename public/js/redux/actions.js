@@ -143,7 +143,7 @@ function addBookmark(newBookmark, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
-      bookmark.foldername = tempFoldername;
+      // bookmark.foldername = tempFoldername;
       console.log('returned bookmark=====>', bookmark);
       return dispatch(addBookmarkSuccess(bookmark));
     }).catch((error) => {
