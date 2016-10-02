@@ -180,20 +180,26 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
     let resultsToReturn = {};
     db.tx((t) => {
       return t.manyOrNone(queries.SELECT_TAGNAME, [userIdentity, bookmarkid]).then((tagnames) => {
-        const oldTags = tagnames.tagarray || [];
+        console.log(tagnames[0], '<<< tagnames' )
+        const oldTags = tagnames[0] || [];
         console.log('SELECT_TAGNAME oldTags: ', oldTags);
-        const add = []; // Not in oldTags, add BOOKMARK_TAG reference.
+        let add = []; // Not in oldTags, add BOOKMARK_TAG reference.
         const del = []; // In oldTags but not in tags, remove BOOKMARK_TAG reference.
 
-        for (let i = 0; i < tags.length; i++) {
-          if ((oldTags.indexOf(tags[i]) < 0 && !tags[i]) || !oldTags.length) {
-            add.push(tags[i]);
+        if (oldTags.tagarray) {
+          for (let i = 0; i < tags.length; i++) {
+            console.log(`${oldTags.tagarray.indexOf(tags[i]) < 0} && !${tags[i]}`);
+            if (oldTags.tagarray.indexOf(tags[i]) < 0) {
+              add.push(tags[i]);
+            }
           }
-        }
-        for (let i = 0; i < oldTags.length; i++) {
-          if (tags.indexOf(oldTags[i]) < 0) {
-            del.push(oldTags[i]);
+          for (let i = 0; i < oldTags.tagarray.length; i++) {
+            if (tags.indexOf(oldTags.tagarray[i]) < 0) {
+              del.push(oldTags.tagarray[i]);
+            }
           }
+        } else {
+          add = tags
         }
         console.log(add, del);
         const qa = add.map((tag) => {
