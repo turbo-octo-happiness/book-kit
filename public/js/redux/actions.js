@@ -16,7 +16,7 @@ function fetchHelp(url, init = {}) {
         error.response = res;
         reject(error);
       }
-
+      console.log(res, '<<< fetchHelp response');
       resolve(res.json());
     });
   });

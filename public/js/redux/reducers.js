@@ -55,23 +55,20 @@ function bookmarkReducer(state = [], action) {
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
-      console.log(action.bookmark, '<<<< Reducers/ new bookmark');
+      console.log(action.bookmark, '<<<< BkmrkReducer/ New Bookmark');
       tempArr.unshift(action.bookmark);
       return tempArr;
     }
 
     case actionTypes.EDIT_FOLDER_SUCCESS: {
-      console.log(action.folder, '<<<< BookmarkReducer/ updated folder');
+      console.log(action.folder, '<<<< BkmrkReducer/ Updated Folder');
       const tempArr = state.slice();
-      console.log(tempArr, '<<< bookmark state before');
-      tempArr.forEach((value, i) => {
-        console.log(value, '<< obj in for each')
+      tempArr.forEach((value => {
         if (value.folderid === action.folder.folderid) {
-          console.log(value.folderid, action.folder.folderid, '<< in if/ comparison');
-          value.foldername = action.folder.foldername
+          value.foldername = action.folder.foldername;
         }
-      });
-      console.log(tempArr, '< new state returned');
+      })
+
       return tempArr;
     }
 
@@ -81,14 +78,17 @@ function bookmarkReducer(state = [], action) {
     }
 
     case actionTypes.EDIT_BOOKMARK_SUCCESS: {
-      console.log(action.bookmark, '<<<< Reducers/ updated bookmark')
+      console.log(action.bookmark, '<<<< BkmrkReducer/ Updated Bookmark');
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.bookmarkid === action.bookmark.bookmarkid) {
+          value.tags.forEach((tag) => {
+            action.bookmark.tags.push(tag);
+          });
           index = i;
         }
       });
-
+      console.log(action.bookmark, '<<< BkmrkReducer/ bookmark added to state');
       tempArr[index] = action.bookmark;
       return tempArr;
     }
@@ -166,7 +166,7 @@ function folderReducer(state = [], action) {
       return state;
     }
     case actionTypes.DELETE_FOLDER_ERROR: {
-      console.log(action.error,'<<<< Reducers/ delete folder error')
+      console.log(action.error, '<<<< Reducers/ delete folder error');
       return state;
     }
 
@@ -181,24 +181,46 @@ function tagReducer(state = [], action) {
   let index;
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
+      // TODO: Check if tags are previously in state
       const tempArr = state.slice();
-      console.log('Reducers/ new tags====>', action.tags);
-      action.tags.forEach((tag) => {
+      const tempTags = action.bookmark.tags;
+      console.log(tempArr, '<<< TagReducer/ Tag State before');
+      console.log(tempTags, '<<<< TagReducer/ Bookmark Tags');
+      for (let i = 0; i < tempTags.length; i++) {
+        for (let j = 0; j < tempArr.length; j++) {
+          if (tempTags[i] && (tempTags[i].tagid === tempArr[j].tagid)) {
+            tempTags.splice(i, 1);
+          }
+        }
+      }
+      tempTags.forEach((tag) => {
         tempArr.push(tag);
       });
+
       return tempArr;
     }
 
     case actionTypes.EDIT_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
-      console.log('Reducers/ new tags====>', action.bookmark.tags);
-      action.bookmark.tags.forEach((tag) => {
+      const tempTags = action.bookmark.tags;
+      console.log(action.bookmark, '<<< TagReducer/ Bookmark');
+      console.log(tempArr, '<<< TagReducer/ Tag State before');
+      console.log(tempTags, '<<< TagReducer/ Bookmark Tags');
+      for (let i = 0; i < tempTags.length; i++) {
+        for (let j = 0; j < tempArr.length; j++) {
+          if (tempTags[i] && (tempTags[i].tagid === tempArr[j].tagid)) {
+            tempTags.splice(i, 1);
+          }
+        }
+      }
+      tempTags.forEach((tag) => {
         tempArr.push(tag);
       });
+
       return tempArr;
     }
 
-    case actionTypes.GET_TAGS_SUCCESS: {
+    case actionTypes.GET_TAGS_SUCCESS:  {
       console.log(action.tags, '<=== Reducers/ action.tags');
       return action.tags;
     }
