@@ -63,11 +63,11 @@ function bookmarkReducer(state = [], action) {
     case actionTypes.EDIT_FOLDER_SUCCESS: {
       console.log(action.folder, '<<<< BkmrkReducer/ Updated Folder');
       const tempArr = state.slice();
-      tempArr.forEach((value => {
+      tempArr.forEach((value) => {
         if (value.folderid === action.folder.folderid) {
           value.foldername = action.folder.foldername;
         }
-      })
+      });
 
       return tempArr;
     }
