@@ -22,6 +22,12 @@ class Folder extends React.Component {
 
   shareFolder() {
     event.preventDefault();
+    this.props.shareFolder(
+      this.props.folder.folderid,
+      this.share.value
+    );
+
+    this.share.value = '';
   }
 
   render() {

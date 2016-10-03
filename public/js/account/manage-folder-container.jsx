@@ -6,18 +6,15 @@ import Folder from './manage-folder-child';
 class FolderContainer extends React.Component {
   constructor() {
     super();
-    this.deleteFolder = this.deleteFolder.bind(this);
     this.onShowEdit = this.onShowEdit.bind(this);
     this.onShowShare = this.onShowShare.bind(this);
     this.editFolder = this.editFolder.bind(this);
+    this.deleteFolder = this.deleteFolder.bind(this);
+    this.shareFolder = this.shareFolder.bind(this);
     this.state = {
       show: false,
       showShare: false,
     };
-  }
-
-  deleteFolder(folderId) {
-    this.props.dispatch(actions.deleteFolder(folderId, this.props.token))
   }
 
   onShowShare() {
@@ -42,6 +39,14 @@ class FolderContainer extends React.Component {
     this.onShowEdit();
   }
 
+  deleteFolder(folderId) {
+    this.props.dispatch(actions.deleteFolder(folderId, this.props.token));
+  }
+
+  shareFolder(folderId, email) {
+    this.props.dispatch(actions.shareFolder(folderId, email, this.props.token));
+  }
+
   render() {
     return (
       <Folder
@@ -49,6 +54,7 @@ class FolderContainer extends React.Component {
         showShare={this.state.showShare}
         folder={this.props.folder}
         deleteFolder={this.deleteFolder}
+        shareFolder={this.shareFolder}
         onShowShare={this.onShowShare}
         onShowEdit={this.onShowEdit}
         editFolder={this.editFolder}
