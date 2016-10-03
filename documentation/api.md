@@ -8,7 +8,7 @@ RESTful API using NodeJS, Express, and Postgres. The API serves information for 
 
 ### Schema
 
-![Schema](documentation/diagrams/bookmark_database_schema_sep28_16.png)
+![Schema](diagrams/bookmark_database_schema_sep28_16.png)
 
 ## Endpoints
 
