@@ -6,22 +6,25 @@ import Folder from './manage-folder-child';
 class FolderContainer extends React.Component {
   constructor() {
     super();
-    this.onDelete = this.onDelete.bind(this);
-    this.onShare = this.onShare.bind(this);
+    this.deleteFolder = this.deleteFolder.bind(this);
     this.onShowEdit = this.onShowEdit.bind(this);
+    this.onShowShare = this.onShowShare.bind(this);
     this.editFolder = this.editFolder.bind(this);
     this.state = {
       show: false,
+      showShare: false,
     };
   }
 
-  onDelete(folderId) {
-    // TODO: Fix issue with folder not deleting in database
+  deleteFolder(folderId) {
     this.props.dispatch(actions.deleteFolder(folderId, this.props.token))
   }
 
-  onShare(folderId) {
+  onShowShare() {
     // TODO: dispatch action to share folder
+    this.setState({
+      showShare: !this.state.showShare,
+    });
   }
 
   onShowEdit() {
@@ -43,9 +46,10 @@ class FolderContainer extends React.Component {
     return (
       <Folder
         show={this.state.show}
+        showShare={this.state.showShare}
         folder={this.props.folder}
-        onDelete={this.onDelete}
-        onShare={this.onShare}
+        deleteFolder={this.deleteFolder}
+        onShowShare={this.onShowShare}
         onShowEdit={this.onShowEdit}
         editFolder={this.editFolder}
       />
