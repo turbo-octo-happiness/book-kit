@@ -12,6 +12,7 @@ const router = express.Router();
  * user.
  */
 router.get('/', (request, response) => {
+  // Some user_id's are numbers and some are alphanumeric.
   const userIdentity = `${request.user.identities[0].user_id}`;
 
   db.manyOrNone(queries.SELECT_TAG, [userIdentity])
@@ -25,11 +26,12 @@ router.get('/', (request, response) => {
 });
 
 /**
- * @description `PUT /tags/:tagid` endpoint; updates a user's tagname.
+ * @description `PUT /tags/:tagid` endpoint. Updates a user's tagname.
  * Only the tag's creator can edit it; if someone besides the owner of
  * the tag tries it will return 0 results.
  */
 router.put('/:tagid', jsonParser, (request, response) => {
+  // Some user_id's are numbers and some are alphanumeric.
   const userIdentity = `${request.user.identities[0].user_id}`;
 
   const tagid = request.params.tagid;
@@ -52,10 +54,11 @@ router.put('/:tagid', jsonParser, (request, response) => {
 });
 
 /**
- * @description `POST /tags/:tagid` endpoint; creats a new tag for a
+ * @description `POST /tags` endpoint. Creates a new tag for a
  * user. Does not associate it with any bookmarks.
  */
 router.post('/', jsonParser, (request, response) => {
+  // Some user_id's are numbers and some are alphanumeric.
   const userIdentity = `${request.user.identities[0].user_id}`;
 
   if (!request.body.tagname) {
@@ -77,9 +80,11 @@ router.post('/', jsonParser, (request, response) => {
 });
 
 /**
- * @description `DELETE /tags/:tagid`
+ * @description `DELETE /tags/:tagid` endpoint. Deletes specified tag; will also remove the tag
+ * from any associated bookmarks.
  */
 router.delete('/:tagid', jsonParser, (request, response) => {
+  // Some user_id's are numbers and some are alphanumeric.
   const userIdentity = `${request.user.identities[0].user_id}`;
 
   const tagid = request.params.tagid;

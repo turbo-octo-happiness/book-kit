@@ -4,7 +4,7 @@
 
 ### Overview
 
-The service will provide a means of organizing bookmarks outside of built in browser bookmark functions.
+The service will provide a means of organizing bookmarks outside of built-in browser bookmark functions.
 
 Disclaimer: This project is mainly built for learning purposes and not intended for production use.
 
@@ -12,8 +12,9 @@ Disclaimer: This project is mainly built for learning purposes and not intended 
 
 1. After cloning this repo. Run `npm install` at the command line.
 2. Start a local Postgres server. Create a new database with `createdb bookmarks`.
-3. If you would like to start the API with a blank slate, use `psql bookmarks < db/bookmarks.sql` to import the schema. If you prefer to start with some data, use `psql bookmarks < db/sqldump.sql`.
-4. To start the server run `node server.js`.
+3. Run `psql bookmarks < db/bookmarks.sql` to import the database schema.
+4. To start the server run `npm run start`.
+5. Finally, start the front-end by running `npm run build` in a new terminal window.
 
 Note on compatibility: The API relies on NodeJS v6.3.1 and PostgreSQL v9.5.3 All other dependencies are listed in the _package.json_ file. Although the API might run on alternative versions, it has not been tested.
 
@@ -29,10 +30,8 @@ Chris has a vast collection of cat videos he likes to use for various sarcastic 
 
 ### Non Goals
 
-This version will not support the following features:
+The current version does not support the following features:
 
-- Multiple Accounts
-- Sharing between Accounts
 - Cannot automatically grab screenshot from url
 - Rich text annotation
 
@@ -72,15 +71,9 @@ Folders - You will be able to add new folders on the sidebar
 
 Tags - You will only be able to add new tags while editing/adding a bookmark.
 
-Database is storing:
+## API
 
-- url
-- title
-- descriptions
-- tags
-- folder
-- screenshot (url)
-- User (2.0)
+[RESTful API](documentation/api.md) endpoint docs
 
 ## version 1.0
 
@@ -131,7 +124,7 @@ Database is storing:
   - [ ] List of Tags with the ability to delete (i.e. remove tag from all bookmarks) and edit
   - [ ] Change sidebar to be browsing only
 
-## Features we would like to complete by end of capstone
+## Features we would like to complete by 10/7/16
 
 - [ ] Styling
 

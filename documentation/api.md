@@ -73,7 +73,7 @@ Status: 201 Created
   "folderid": 8,
   "screenshot": "https://cdn.tutsplus.com/webdesign/uploads/legacy/articles/003_colorBlind/colortest.png",
   "bookmarkid": 40,
-  "customerid": "12989646",
+  "customerid": "123",
   "foldername": "fewd",
   "tags": [
     {
@@ -112,7 +112,7 @@ Status: 200 Ok
   "folderid": 8,
   "screenshot": "https://cdn.tutsplus.com/webdesign/uploads/legacy/articles/003_colorBlind/colortest.png",
   "bookmarkid": 40,
-  "customerid": "12989646",
+  "customerid": "123",
   "foldername":"fewd",
   "tags": [
     {
@@ -145,14 +145,16 @@ Status: 200 ok
   "folderid": 8,
   "screenshot": "https://css-tricks.com/wp-content/uploads/2014/05/flex-container.svg",
   "bookmarkid": 39,
-  "customerid": "12989646"
+  "customerid": "123"
 }
 `
 ```
 
+### Folders
+
 #### GET /folders
 
-- _Description:_ Returns an array of folders stored in the database.
+- _Description:_ Returns an array of objects containing information about a folder: folderid, foldername, count (i.e. number of customer's associated with a folder), and members (i.e. email addresses of all customers associated with a folder). Folders in the returned array will either be owned by the authenticated customer or be shared with that customer.
 - _Endpoint:_ `/folders`
 - _Example:_
 
@@ -161,48 +163,96 @@ Status: 200 ok
 
 Status: 200 OK
 [
-  "Work",
-  "Personal",
-  "thinkful",
-  "js",
-  "test1"
-]
-`
-```
-
-### GET /folder/bookmarks/:folderName
-
-- _Description:_ Returns an array of bookmarks with the provided folder name.
-- _Endpoint:_ `/folder/bookmarks/:folderName`
-- _Example:_
-
-```json
-> GET /folder/bookmarks/Work
-
-Status: 200 OK
-[
   {
-    "bookmarkid": 3,
-    "url": "https://trello.com/b/3Uj9v7Oq/full-stack-bookmarks-unnamed",
-    "title": "Trello Board",
-    "description": "The bookmark board project managment tool.",
-    "foldername": "Work",
-    "screenshot": "https://i.kinja-img.com/gawker-media/image/upload/s--mWjnesG_--/18ixcsrp44y9gjpg.jpg"
-  },
-  {
-    "bookmarkid": 6,
-    "url": "http://redux.js.org/docs/basics/Actions.html",
-    "title": "Redux Actions",
-    "description": "How to create an action in Redux.",
-    "foldername": "Work",
-    "screenshot": "https://image.slidesharecdn.com/reactreduxintroduction-151124165017-lva1-app6891/95/react-redux-introduction-33-638.jpg?cb=1448383914"
+    "folderid": 8,
+    "foldername": "fewd",
+    "count": "1",
+    "members": ["sierragregg@Gmail.com"]
   }
 ]
 ```
 
+### POST /folders
+
+- _Description:_ Creates a new folder and assigns ownership of the folder to the authenticated customer. If insertion into the database is successful, the new folder name and id is returned to the caller.
+- _Endpoint:_ `/folders`
+- _Data Parameters:_ An object with the following field: foldername.
+- _Example request:_
+
+```json
+> POST /folders
+> {
+>   "foldername": "Coding"
+> }
+
+Status: 201 Created
+{
+  "folderid": 9,
+  "foldername": "coding"
+}
+```
+
+#### POST /folders/customers/:folderid
+
+- _Description:_ Allows folders to be shared among multiple customers. Requires a folderid as url param and the customer email in the request body.
+- _Endpoint:_ `/folders/customers/:folderid`
+- _Data Parameters:_ An object with the following fields: email
+- _Example:_
+
+```json
+> POST /folders/customers/8
+> {
+>   "foldername": "456@example.com"
+> }
+
+Status: 201 Created
+{
+  "customerid": "456",
+  "folderid": 8
+}
+```
+
+#### PUT /folders
+
+- _Description:_ Updates a folder's name. If update is successful, then the edited folder is returned to the caller. Only non-shared folders can be edited.
+- _Endpoint:_ `/folders`
+- _Data Parameters:_ An object with the following fields: foldername
+- _Example:_
+
+```json
+> PUT /folders/18
+> {
+>   "foldername": "Javascript"
+> }
+
+Status: 201 Created
+{
+  "folderid": 10,
+  "foldername": "Javascript"
+}
+```
+
+#### DELETE /folder/:folderid
+
+- _Description:_ Attempts to delete the specified folder. Folders can only be deleted if the deleter does not own any bookmarks in the folder. Shared folders are not deleted until the last member has left. If deleting from the database is successful, then the deleted folder is returned to the caller.
+- _Endpoint:_ `/folders/:folderid`
+- _Example:_
+
+```json
+> DELETE /folders/8
+
+Status: 200 Created
+{
+  "folderid": 9,
+  "foldername": "coding"
+}
+```
+
+### Tags
+
 ### GET /tags
 
-- _Description:_ Returns an array of tags stored in the database.
+- _Description:_ Returns an array of tag objects that the authenticated customer has access to. Each tag object includes tagid, tagname, and an array of bookmarkids associated with the tag. Tags may or many not be connected to a bookmark.
 - _Endpoint:_ `/tags`
 - _Example:_
 
@@ -211,62 +261,83 @@ Status: 200 OK
 
 Status: 200 OK
 [
-  "Project-Managment",
-  "Thinkful",
-  "Redux"
-]
-```
-
-### GET /tag/bookmarks/:tagName
-
-- _Description:_ Returns an array of bookmarks with the provided tag name.
-- _Endpoint:_ `/tag/bookmarks/:tagName`
-- _Example:_
-
-```json
-> GET /tag/bookmarks/Thinkful
-
-Status: 200 OK
-[
   {
-    "bookmarkid": 6,
-    "url": "http://redux.js.org/docs/basics/Actions.html",
-    "title": "Redux Actions",
-    "description": "How to create an action in Redux.",
-    "foldername": "Work",
-    "screenshot": "https://image.slidesharecdn.com/reactreduxintroduction-151124165017-lva1-app6891/95/react-redux-introduction-33-638.jpg?cb=1448383914",
-    "tag": "Thinkful"
+    "tagid": 17,
+    "tagname": "a11y",
+    "bookmarkid": [
+      40
+    ]
   },
   {
-    "bookmarkid": 6,
-    "url": "http://redux.js.org/docs/basics/Actions.html",
-    "title": "Redux Actions",
-    "description": "How to create an action in Redux.",
-    "foldername": "Work",
-    "screenshot": "https://image.slidesharecdn.com/reactreduxintroduction-151124165017-lva1-app6891/95/react-redux-introduction-33-638.jpg?cb=1448383914",
-    "tag": "Redux"
+    "tagid": 18,
+    "tagname": "color",
+    "bookmarkid": [
+      40
+    ]
+  },
+  {
+    "tagid": 16,
+    "tagname": "reference",
+    "bookmarkid": [
+      null
+    ]
   }
 ]
 ```
 
-### POST /folder
+#### POST /tags
 
-- _Description:_ Takes an object with the following field: foldername. If insert into database is successful, then the new folder name is returned to the caller.
-- _Endpoint:_ `/bookmark`
-- _Data Parameters:_
-
-  - A folder to add wrapped in an object
-
-- _Example request:_
+- _Description:_ Creates a new tag for a customer. Does not associate it with any bookmarks.
+- _Endpoint:_ `/tags`
+- _Data Parameters:_ An object with the following fields: tagname
+- _Example:_
 
 ```json
-POST /bookmark
-{
-  "foldername": "Coding"
-}
+> PUT /tags
+> {
+>   "tagname": "Python"
+> }
 
-Status: 201 Created
+Status: 201 OK
 {
-  "foldername": "Coding"
+  "tagid": 19,
+  "tagname": "Python"
+}
+```
+
+#### PUT /tags/:tagid
+
+- _Description:_ Updates a user's tagname. Only the tag's creator can edit it; if someone besides the owner of the tag tries it will return 0 results.
+- _Endpoint:_ `/tags`
+- _Data Parameters:_ An object with the following fields: tagname
+- _Example:_
+
+```json
+> PUT /tags/17
+> {
+>   "tagname": "accessibility"
+> }
+
+Status: 200 OK
+{
+  "tagid": 17,
+  "tagname": "accessibility"
+}
+```
+
+#### DELETE /tags/:tagid
+
+- _Description:_ Deletes specified tag; will also remove the tag from any associated bookmarks.
+- _Endpoint:_ `/tags`
+- _Example:_
+
+```json
+> DELETE /tags/17
+
+Status: 200 OK
+{
+  "tagid": 17,
+  "customerid": "123",
+  "tagname": "accessibility"
 }
 ```
