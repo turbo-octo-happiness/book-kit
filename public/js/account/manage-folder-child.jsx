@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import actions from '../redux/actions';
 
 class Folder extends React.Component {
   constructor() {
@@ -8,33 +6,27 @@ class Folder extends React.Component {
     this.onShowEdit = this.onShowEdit.bind(this);
     this.editFolder = this.editFolder.bind(this);
     this.deleteFolder = this.deleteFolder.bind(this);
-    this.state = {
-      show: false,
-    };
   }
 
   onShowEdit() {
-    this.setState({
-      show: !this.state.show,
-    });
+    this.props.onShowEdit();
   }
 
-  editFolder(event, folderId, folderName) {
+  editFolder() {
     event.preventDefault();
-    this.props.dispatch(actions.editFolder(
+    this.props.editFolder(
       this.props.folder.folderid,
-      this.editedFolder.value,
-      this.props.token));
-    this.onShowEdit();
+      this.editedFolder.value
+    );
   }
 
-  deleteFolder(folderId) {
+  deleteFolder() {
     this.props.onDelete(this.props.folder.folderid);
   }
 
   render() {
-    const textStyle = this.state.show ? { display: 'none' } : {};
-    const inputStyle = this.state.show ? {} : { display: 'none' };
+    const textStyle = this.props.show ? { display: 'none' } : {};
+    const inputStyle = this.props.show ? {} : { display: 'none' };
     return (
       <li className="manage-folder">
         <h3 style={textStyle}>{this.props.folder.foldername}</h3>
@@ -64,12 +56,8 @@ class Folder extends React.Component {
           </button>
         </div>
       </li>
-    )
+    );
   }
 }
 
-function mapStateToProps(state) {
-  return {};
-}
-
-module.exports = connect(mapStateToProps)(Folder);
+module.exports = Folder;

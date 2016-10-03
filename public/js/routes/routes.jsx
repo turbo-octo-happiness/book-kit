@@ -8,7 +8,7 @@ import BookmarkFormContainer from '../content/bookmark-form-container';
 import AppContainer from '../app-container';
 import ManageContainer from '../account/manage-container';
 import Profile from '../account/profile';
-import FolderManagement from '../account/folder-management';
+import FolderManagement from '../account/manage-folder';
 import TagManagement from '../account/tag-management';
 
 const routes = (
