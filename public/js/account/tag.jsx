@@ -46,29 +46,31 @@ class Tag extends React.Component {
     const textStyle = this.state.show ? { display: 'none' } : {};
     const inputStyle = this.state.show ? {} : { display: 'none' };
     return (
-      <li className="manage-folder">
-        <h3 style={textStyle}>{this.props.tag.tagname}</h3>
-        <form
-          onSubmit={this.editTag}
-          style={inputStyle}
-        >
-          <input
-            type="text"
-            ref={editedTag => { this.editedTag = editedTag; }}
-            defaultValue={this.props.tag.tagname}
-          />
-        </form>
-        <div className="manage-buttons">
-          <button
-            onClick={this.onShowEdit}
-            aria-hidden="true"
-          >Edit
-          </button>
-          <button
-            onClick={this.deleteTag}
-          >Delete
-          </button>
-        </div>
+      <li className="manage-folder-container">
+        <li className="manage-folder">
+          <h3 style={textStyle}>{this.props.tag.tagname}</h3>
+          <form
+            onSubmit={this.editTag}
+            style={inputStyle}
+          >
+            <input
+              type="text"
+              ref={editedTag => { this.editedTag = editedTag; }}
+              defaultValue={this.props.tag.tagname}
+            />
+          </form>
+          <div className="manage-buttons">
+            <button
+              onClick={this.onShowEdit}
+              aria-hidden="true"
+            >Edit
+            </button>
+            <button
+              onClick={this.deleteTag}
+            >Delete
+            </button>
+          </div>
+        </li>
       </li>
     );
   }
