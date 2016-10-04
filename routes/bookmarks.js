@@ -232,7 +232,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
           console.log('inserted tag updates', results);
 
           return t.one(queries.UPDATE_BOOKMARK, [url, title, bdescription,
-            folderid, bscreenshot, bookmarkid, userIdentity, folderid,
+            folderid, bscreenshot, bookmarkid, userIdentity, userIdentity, folderid,
           ]).then((newBookmark) => {
             console.log('inserted bookmark ===>', newBookmark);
             resultsToReturn = Object.assign({}, resultsToReturn, newBookmark);
