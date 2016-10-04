@@ -69,7 +69,8 @@ ul {
 }
 
 button {
-  padding: 0.5rem;
+  height: 2.1rem;
+  padding: 0 0.5rem;
   background-color: @green;
   color: @white;
   border-radius: 0.5rem;
@@ -91,6 +92,11 @@ input {
   padding: 0.5rem;
   margin-bottom: 1rem;
   font-size: 0.9rem;
+}
+
+input {
+  padding: 0 0.5rem;
+  height: 2.1rem;
 }
 
 select {
@@ -311,9 +317,13 @@ header {
       margin-bottom: 1rem;
     }
 
-    .manage-buttons button {
-      margin-left: 0.3rem;
-      background-color: @green75;
+    .manage-buttons {
+      display: flex;
+
+      button {
+        margin-left: 0.3rem;
+        background-color: @green75;
+      }
     }
 
     /**
@@ -341,7 +351,9 @@ header {
         text-align: center;
         align-items: center;
         justify-content: center;
+        text-shadow: 0 0 1px @gray75;
       }
+
       .bg {
         position: absolute;
         z-index: -1;
