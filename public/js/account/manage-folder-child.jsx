@@ -44,13 +44,17 @@ class Folder extends React.Component {
     const inputStyle = this.props.show ? {} : { display: 'none' };
     const shareStyle = this.props.showShare ? {} : { display: 'none' };
 
-    const sharedUsers = this.props.folder.members.length > 1 ? (
-      this.props.folder.members.map((member, index) => {
-        return (
-          <li key={index}>{member}</li>
-        );
-      })
-    ) : [];
+    let sharedUsers = [];
+
+    if (this.props.folder.members) {
+      if (this.props.folder.members.length > 1) {
+        sharedUsers = this.props.folder.members.map((member, index) => {
+          return (
+            <li key={index}>{member}</li>
+          );
+        });
+      }
+    }
 
     const shared = sharedUsers.length ? (
       <ul className="folder-share">
