@@ -3,7 +3,7 @@ const jwt = require('jwt-simple');
 const chaiHttp = require('chai-http');
 const mocha = require('mocha');
 const app = require('../../server').app;
-const exec = require('child-process').exec;
+const exec = require('child_process').exec;
 require('dotenv').config();
 
 const should = chai.should();

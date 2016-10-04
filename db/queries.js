@@ -192,6 +192,7 @@ exports.SELECT_BOOKMARK = `SELECT bookmark.bookmarkid, url, title, description, 
                             LEFT JOIN bookmark_tag ON
                             bookmark.bookmarkid = bookmark_tag.bookmarkid LEFT JOIN tag ON
                             bookmark_tag.tagid = tag.tagid
+                          WHERE bookmark.bookmarkid IS NOT NULL
                           GROUP BY bookmark.bookmarkid, folder.folderid
                           HAVING (
                             SELECT customerid FROM customer WHERE customerid = $1
@@ -212,7 +213,10 @@ exports.DELETE_BOOKMARK = `DELETE FROM bookmark
 exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot) =
                             ($1, $2, $3, $4, $5)
                            WHERE bookmarkid = $6 AND customerid = $7
-                           RETURNING *, (SELECT foldername FROM folder WHERE folderid = $8);`;
+                           RETURNING *, $8 AS owner, (
+                             SELECT foldername
+                             FROM folder
+                             WHERE folderid = $9);`;
 
 // Copies bookmark to a new folder, iff customer already has access to that folder.
 // params: [bookmarkid, customerid]
