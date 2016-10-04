@@ -15,6 +15,7 @@ const router = express.Router();
  * empty array is returned.
  */
 router.get('/', (request, response) => {
+  // Some user_id's are numbers and some are alphanumeric.
   const userIdentity = `${request.user.identities[0].user_id}`;
   const email = request.user.email;
 
