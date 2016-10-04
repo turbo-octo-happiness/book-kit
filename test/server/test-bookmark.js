@@ -4,13 +4,14 @@ const chaiHttp = require('chai-http');
 const mocha = require('mocha');
 const app = require('../../server').app;
 const exec = require('child_process').exec;
+const db = require('../pgp');
 require('dotenv').config();
 
 const should = chai.should();
 
 chai.use(chaiHttp);
 
-const get_jwt = () => {
+const token = () => {
   const payload = {
     iss: 'https://ericsnell.auth0.com/',
     sub: 'auth0|57e97dbede4a3f3c0395b316',
@@ -26,12 +27,28 @@ const get_jwt = () => {
   };
   const secret = process.env.AUTH0_SECRET;
 
-  const token = jwt.encode(payload, secret);
-  console.log(token);
+  return jwt.encode(payload, secret);
 };
 
-get_jwt();
+describe ('Message endpoints', function() {
+  beforeEach((done) => {
+    // Clear the database
+    return db.tx((t) => {
+      t.none(`TRUNCATE TABLE bookmark_tags RESET IDENTITY,
+        customer_folder RESET IDENTITY, bookmark RESET IDENTITY,
+      DROP TABLE IF EXISTS "tag" CASCADE;
+      DROP TABLE IF EXISTS "folder" CASCADE;
+      DROP TABLE IF EXISTS "customer" CASCADE;`)
+    })
+    .then(() => {
+      done()
+    })
+    .catch((error) => {
+      console.log('ERROR:', error.message || error);
+    });
+  });
 
+});
 // const prepareDB = (next) => {
 //   exec('createdb testdb', (err) => {
 //     if (err !== null) {

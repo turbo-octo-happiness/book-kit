@@ -35,8 +35,20 @@ app.use('/folders', authenticate, foldersRoutes);
 app.use('/tags', authenticate, tagsRoutes);
 
 /* ---- Set port and start server ---- */
-app.set('port', (process.env.PORT || 5000));
 
-app.listen(app.get('port'), () => {
-  console.log('Node app is running on port', app.get('port'));
-});
+const runServer = (callback) => {
+  const port = process.env.PORT || 5000;
+  const server = app.listen(port, () => {
+    console.log('Node app is running on port', app.get('port'));
+    if (callback) {
+      callback(server);
+    }
+  });
+};
+
+if (require.main === module) {
+  runServer();
+}
+
+exports.app = app;
+exports.runServer = runServer;
