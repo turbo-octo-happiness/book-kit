@@ -86,6 +86,10 @@ router.post('/customers/:folderid', jsonParser, (request, response) => {
           errorMessage = `${email} already has access to ${folderid}`;
         }
 
+        if (errorMessage === 'No data returned from the query.') {
+          
+        }
+
         console.log('ERROR:', error.message || error);
         response.status(500).send({
           error: errorMessage,
