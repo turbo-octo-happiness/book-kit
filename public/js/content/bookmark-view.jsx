@@ -69,8 +69,8 @@ class BookmarkView extends React.Component {
 
     let tags;
     if (bookmark.tags && bookmark.tags[0] !== null) {
-      tags = bookmark.tags.map((tagObj) => {
-        return tagObj.tagname;
+      tags = bookmark.tags.map((tagObj, index) => {
+        return <li key={index}>{tagObj.tagname}</li>;
       });
     }
 
@@ -89,10 +89,11 @@ class BookmarkView extends React.Component {
             <div className="bookmark-screenshot" style={imgStyle} />
           </div>
 
-
           <p>{bookmark.description}</p>
           <h4>Folder:</h4>
           <p>{folder[0].foldername}</p>
+          <h4>Tags:</h4>
+          <ul className="tags-list">{tags}</ul>
 
           <button
             style={textStyle}

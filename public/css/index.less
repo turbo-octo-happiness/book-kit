@@ -49,10 +49,10 @@ h1 {
 a {
   text-decoration: none;
   color: @white;
+}
 
-  :hover {
-    color: @green125;
-  }
+a:hover {
+  color: @green125;
 }
 
 #app {
@@ -255,6 +255,10 @@ header {
       color: @green;
     }
 
+    a:hover {
+      color: @white;
+    }
+
     button {
       margin-right: 0.2rem;
     }
@@ -263,6 +267,13 @@ header {
       width: 100%;
 
       p {
+        margin-bottom: 1rem;
+      }
+
+      .tags-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
         margin-bottom: 1rem;
       }
 
