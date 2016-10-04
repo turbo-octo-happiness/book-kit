@@ -67,6 +67,8 @@ class Folder extends React.Component {
       <ul />
     );
 
+    const disabled = sharedUsers.length ? true : false;
+
     return (
       <li className="manage-folder-container">
         <div className="manage-folder">
@@ -95,6 +97,7 @@ class Folder extends React.Component {
             <button
               onClick={this.props.onShowEdit}
               aria-hidden="true"
+              disabled={disabled}
             >Edit
             </button>
             <button
