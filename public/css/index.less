@@ -310,19 +310,29 @@ header {
       margin-bottom: 1rem;
     }
 
-    .manage-folder {
-      display: flex;
-      justify-content: space-between;
+    .manage-folder-container {
       border-bottom: 0.5px solid @gray40;
       margin-bottom: 1rem;
-    }
+      padding-bottom: 1rem;
 
-    .manage-buttons {
-      display: flex;
+      .manage-folder {
+        display: flex;
+        justify-content: space-between;
+      }
 
-      button {
-        margin-left: 0.3rem;
-        background-color: @green75;
+      .manage-buttons {
+        display: flex;
+
+        button {
+          margin-left: 0.3rem;
+          background-color: @green75;
+        }
+      }
+
+      .folder-share {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
 

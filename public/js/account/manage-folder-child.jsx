@@ -44,44 +44,66 @@ class Folder extends React.Component {
     const inputStyle = this.props.show ? {} : { display: 'none' };
     const shareStyle = this.props.showShare ? {} : { display: 'none' };
 
+    const sharedUsers = this.props.folder.members.length > 1 ? (
+      this.props.folder.members.map((member, index) => {
+        return (
+          <li key={index}>{member}</li>
+        );
+      })
+    ) : [];
+
+    const shared = sharedUsers.length ? (
+      <ul className="folder-share">
+        <li>
+          <h5>Users:</h5>
+        </li>
+        {sharedUsers}
+      </ul>
+    ) : (
+      <ul />
+    );
+
     return (
-      <li className="manage-folder">
-        <h3 style={textStyle}>{this.props.folder.foldername}</h3>
-        <form
-          onSubmit={this.editFolder}
-          style={inputStyle}
-        >
-          <input
-            type="text"
-            ref={editedFolder => { this.editedFolder = editedFolder; }}
-            defaultValue={this.props.folder.foldername}
-          />
-        </form>
-        <div className="manage-buttons">
+      <li className="manage-folder-container">
+        <div className="manage-folder">
+          <h3 style={textStyle}>{this.props.folder.foldername}</h3>
           <form
-            onSubmit={this.shareFolder}
-            style={shareStyle}
+            onSubmit={this.editFolder}
+            style={inputStyle}
           >
             <input
               type="text"
-              ref={share => { this.share = share; }}
-              placeholder="Add email address..."
+              ref={editedFolder => { this.editedFolder = editedFolder; }}
+              defaultValue={this.props.folder.foldername}
             />
           </form>
-          <button
-            onClick={this.props.onShowEdit}
-            aria-hidden="true"
-          >Edit
-          </button>
-          <button
-            onClick={this.deleteFolder}
-          >Delete
-          </button>
-          <button
-            onClick={this.props.onShowShare}
-          >Share
-          </button>
+          <div className="manage-buttons">
+            <form
+              onSubmit={this.shareFolder}
+              style={shareStyle}
+            >
+              <input
+                type="text"
+                ref={share => { this.share = share; }}
+                placeholder="Add email address..."
+              />
+            </form>
+            <button
+              onClick={this.props.onShowEdit}
+              aria-hidden="true"
+            >Edit
+            </button>
+            <button
+              onClick={this.deleteFolder}
+            >Delete
+            </button>
+            <button
+              onClick={this.props.onShowShare}
+            >Share
+            </button>
+          </div>
         </div>
+        {shared}
       </li>
     );
   }
