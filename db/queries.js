@@ -192,6 +192,7 @@ exports.SELECT_BOOKMARK = `SELECT bookmark.bookmarkid, url, title, description, 
                             LEFT JOIN bookmark_tag ON
                             bookmark.bookmarkid = bookmark_tag.bookmarkid LEFT JOIN tag ON
                             bookmark_tag.tagid = tag.tagid
+                          WHERE bookmark.bookmarkid IS NOT NULL
                           GROUP BY bookmark.bookmarkid, folder.folderid
                           HAVING (
                             SELECT customerid FROM customer WHERE customerid = $1
