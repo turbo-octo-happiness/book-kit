@@ -5,8 +5,6 @@ import NavbarContainer from './nav/nav-header-container';
 // Renders a splash page and the NavbarContainer component if not logged in,
 // otherwise renders children (PageContainer component)
 
-// TODO: If isAuthenticated is true, route to /main (hashHistory.push(main))
-
 const propTypes = {
   isAuthenticated: PropTypes.bool,
   children: PropTypes.object,

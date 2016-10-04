@@ -32,7 +32,6 @@ class BookmarkView extends React.Component {
       bookmarkid: this.props.bookmark[0].bookmarkid,
       folderid: this.folder.value,
       foldername: this.props.folders.filter((folder) => {
-        console.log(this.folder.value, folder.folderid.toString(), '<<< if comparison');
         if (this.folder.value === folder.folderid.toString()) {
           return folder.foldername;
         }

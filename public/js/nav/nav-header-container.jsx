@@ -22,6 +22,7 @@ class NavbarContainer extends React.Component {
       this.props.dispatch(actions.getFolders(this.props.token));
       this.props.dispatch(actions.getBookmarks(this.props.token));
       this.props.dispatch(actions.getTags(this.props.token));
+      hashHistory.push('/main');
     }
   }
 
