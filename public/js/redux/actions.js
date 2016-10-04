@@ -318,11 +318,17 @@ function addFolder(newFolder, token) {
 // share folders
 
 function shareFolderSuccess(folder) {
-
+  return {
+    folder,
+    type: actionTypes.SHARE_FOLDER_SUCCESS,
+  };
 }
 
 function shareFolderError(error) {
-
+  return {
+    error,
+    type: actionTypes.SHARE_FOLDER_ERROR,
+  };
 }
 
 function shareFolder(folderId, email, token) {
