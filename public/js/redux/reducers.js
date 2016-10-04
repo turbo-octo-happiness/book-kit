@@ -106,7 +106,7 @@ function bookmarkReducer(state = [], action) {
       console.log(tempArr, '<<< BookmarkReducer/ Current state');
       for (let i = 0; i < tempArr.length; i++) {
         for (let j = 0; j < tempArr[i].tags.length; j++) {
-          if (tempArr[i].tags[j].tagid === action.tag.tagid) {
+          if (tempArr[i].tags[j] && (tempArr[i].tags[j].tagid === action.tag.tagid)) {
             tempArr[i].tags.splice(j, 1);
             break;
           }
