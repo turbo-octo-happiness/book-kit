@@ -27,7 +27,6 @@ class FolderContainer extends React.Component {
   }
 
   onEdit(id, folderName) {
-    console.log('in on edit');
     this.props.dispatch(actions.editFolder(id, folderName, this.props.token));
     this.onShowEdit();
   }

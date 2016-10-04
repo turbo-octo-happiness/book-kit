@@ -54,7 +54,9 @@ class BookmarkViewContainer extends React.Component {
 
     const id = this.props.params.bookmarkId;
     const bookmark = this.props.bookmarks.filter((bkmark) => {
-      return id === bkmark.bookmarkid.toString();
+      if (bkmark.bookmarkid !== null) {
+        return id === bkmark.bookmarkid.toString();
+      }
     });
 
     const folderArr = [];

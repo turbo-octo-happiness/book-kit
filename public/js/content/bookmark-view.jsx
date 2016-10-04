@@ -21,14 +21,25 @@ class BookmarkView extends React.Component {
 
   onSubmitEdit(event) {
     event.preventDefault();
+
+    console.log(this.props, '<<< props');
+
     this.props.onEdit({
       url: this.url.value,
       title: this.title.value,
       description: this.description.value,
-      tags: this.tags.value.toLowerCase().split(', '),
-      folderid: this.folder.value,
       screenshot: this.screenshot.value,
       bookmarkid: this.props.bookmark[0].bookmarkid,
+      folderid: this.folder.value,
+      foldername: this.props.folders.filter((folder) => {
+        if (this.folder.value === folder.folderid.toString()) {
+          return folder.foldername;
+        }
+        return false;
+      }),
+      tags: this.tags.value.trim() !== '' ? this.tags.value.toLowerCase().split(',').map((tag) => {
+        return tag.trim();
+      }) : [],
     });
   }
 
@@ -39,21 +50,21 @@ class BookmarkView extends React.Component {
     const deleteStyle = this.props.delete ? {} : { display: 'none' };
     const imgStyle = this.props.show ? {
       backgroundImage: `url(${this.props.bookmark[0].screenshot})`,
-      display: 'none'
+      display: 'none',
     } : {
       backgroundImage: `url(${this.props.bookmark[0].screenshot})`,
     };
 
     const folder = this.props.folders.filter((folderObj) => {
-      console.log(this.props.bookmark, '<=== bookmark');
-      console.log(folderObj, '<=== folder');
+      // console.log(this.props.bookmark, '<=== bookmark');
+      // console.log(folderObj, '<=== folder');
       return this.props.bookmark[0].folderid === folderObj.folderid;
     });
 
     let tags;
-    if (this.props.bookmark[0].tags) {
+    if (this.props.bookmark[0].tags && this.props.bookmark[0].tags[0] !== null) {
       tags = this.props.bookmark[0].tags.map((tagObj) => {
-        return tagObj.tag;
+        return tagObj.tagname;
       });
     }
 
@@ -78,9 +89,6 @@ class BookmarkView extends React.Component {
           <h4>Folder:</h4>
           <p>{folder[0].foldername}</p>
 
-          <h4>Tags:</h4>
-          <p>{}</p>
-
           <button
             style={textStyle}
             onClick={this.props.onShowEdit}
@@ -96,7 +104,7 @@ class BookmarkView extends React.Component {
             onClick={this.props.onShowDelete}
           >Delete
           </button>
-          <Link to={'/'} style={deleteStyle}>
+          <Link to={'/main'} style={deleteStyle}>
             <button
               onClick={() => { this.props.onDelete(this.props.bookmark[0].bookmarkid); }}
             >Confirm

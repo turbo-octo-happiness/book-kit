@@ -14,10 +14,12 @@ function BookmarkTilesContainer(props) {
   // FIXME: need to make it so we're routing to folderid and not name
   // folders with spaces show up with space in url which is bad
   // nav-child-folder and routes - folderId is not stored with bookmarks
-  if (props.params.folderId) {
-    const folder = props.params.folderId;
+  if (props.params.folderName) {
+    console.log(props.bookmarks, '<<< TilesCont/ bookmarks state')
+    const folder = props.params.folderName;
     const tempArr = props.bookmarks.filter((bookmark) => {
-      return parseInt(folder) === bookmark.folderid;
+      console.log(bookmark);
+      return folder === bookmark.foldername;
     });
 
     tempArr.forEach((bookmark) => {
@@ -33,10 +35,10 @@ function BookmarkTilesContainer(props) {
     const arr = [];
     // TODO: Fix tempArr so that it contains the bookmarks instead of arr
     const tempArr = props.bookmarks.filter((bookmark) => {
-      if (bookmark.tags) {
+      if (bookmark.tags && bookmark.tags[0] !== null) {
         bookmark.tags.map((tag) => {
           // To shut up ESLint: Informing parseInt that it's parsing with base 10 radix
-          if (parseInt(tagId, 10) === tag.id) {
+          if (parseInt(tagId, 10) === tag.tagid) {
             arr.push(bookmark);
             return true;
           }

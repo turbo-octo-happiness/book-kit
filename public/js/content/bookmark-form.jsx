@@ -19,9 +19,17 @@ class BookmarkForm extends React.Component {
       url: this.url.value,
       title: this.title.value,
       description: this.description.value,
-      folderid: this.folder.value,
       screenshot: this.screenshot.value,
-      tags: this.tags.value.split(', '),
+      folderid: this.folder.value,
+      foldername: this.props.folders.filter((folder) => {
+        if (this.folder.value === folder.folderid.toString()) {
+          return folder.foldername;
+        }
+        return false;
+      }),
+      tags: this.tags.value.trim() !== '' ? this.tags.value.toLowerCase().split(',').map((tag) => {
+        return tag.trim();
+      }) : [],
     });
 
     this.url.value = '';
@@ -38,7 +46,6 @@ class BookmarkForm extends React.Component {
     this.props.folders.forEach((folder, index) => {
       folderArr.push(<Folder key={index} folder={folder} />);
     });
-
     return (
       <div className="content-section bookmark-form-container">
         <div className="bookmark-form">

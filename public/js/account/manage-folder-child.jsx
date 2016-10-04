@@ -1,5 +1,14 @@
 import React from 'react';
 
+const propTypes = {
+  folder: PropTypes.object,
+  folderid: PropTypes.number,
+  dispatch: PropTypes.func,
+  token: PropTypes.string,
+  onDelete: PropTypes.func,
+  onShare: PropTypes.func,
+};
+
 class Folder extends React.Component {
   constructor() {
     super();

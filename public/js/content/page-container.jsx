@@ -1,8 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import Nav from '../nav/nav-header-container';
-import actions from '../redux/actions';
+import React, { PropTypes } from 'react';
 import SidebarContainer from '../sidebar/sidebar-container';
+
+const propTypes = {
+  children: PropTypes.object,
+};
 
 function PageContainer(props) {
   return (
@@ -14,5 +15,7 @@ function PageContainer(props) {
     </section>
   );
 }
+
+PageContainer.propTypes = propTypes;
 
 module.exports = PageContainer;

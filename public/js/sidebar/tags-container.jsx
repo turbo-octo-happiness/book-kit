@@ -8,14 +8,13 @@ const propTypes = {
 
 class TagContainer extends React.Component {
   render() {
-    console.log(this.props.tags, '<===tags state in tagcontainer');
     const tagArray = [];
 
     this.props.tags.forEach((tag) => {
       tagArray.push(<Tag
-        key={tag.id}
-        tag={tag.tag}
-        id={tag.id}
+        key={tag.tagid}
+        tagname={tag.tagname}
+        tagid={tag.tagid}
       />);
     });
 

@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
 import Tag from './tag';
+
+const propTypes = {
+  tags: PropTypes.array,
+  dispatch: PropTypes.func,
+  token: PropTypes.string,
+};
 
 class TagManagement extends React.Component {
   constructor() {
@@ -10,7 +16,8 @@ class TagManagement extends React.Component {
   }
 
   onDelete(tagId) {
-    this.props.dispatch(actions.deleteTag(tagId, this.props.token))
+    console.log('in onDelete, tagId===>', tagId)
+    this.props.dispatch(actions.deleteTag(tagId, this.props.token));
   }
 
   render() {
@@ -22,19 +29,21 @@ class TagManagement extends React.Component {
           onDelete={this.onDelete}
           token={this.props.token}
         />
-      )
+    );
     });
 
     return (
-      <div>
-        <h1>Tags</h1>
-        <ul>
-          {tags}
-        </ul>
-      </div>
-    )
+      <ul className="content-section">
+        <li>
+          <h2 className="folder-header">Manage Tags:</h2>
+        </li>
+        {tags}
+      </ul>
+    );
   }
 }
+
+TagManagement.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return {

@@ -5,10 +5,9 @@ import actions from '../redux/actions';
 class Profile extends React.Component {
 
   render() {
-    console.log(this.props.profile, '<===== Profile')
     return(
       <div className="content-section profile">
-        <img src={this.props.profile.picture} alt="Avatar" className="prof-pic"/>
+        <img src={this.props.profile.picture} alt="Avatar" className="prof-pic" />
         <div className="prof-text">
           <div className="prof-labels">
             <h4>Name:</h4>
@@ -18,7 +17,7 @@ class Profile extends React.Component {
           <div className="prof-user">
             <h4>{this.props.profile.name}</h4>
             <h4>{this.props.profile.email}</h4>
-            <h4><a>{this.props.profile.html_url}</a></h4>
+            <h4><a href={this.props.profile.html_url}>{this.props.profile.nickname}</a></h4>
           </div>
         </div>
       </div>

@@ -8,16 +8,20 @@ const SERVER_URL = window.location.origin;
 /* Fetch Helper Function */
 
 function fetchHelp(url, init = {}) {
-  return new Promise((resolve, reject) => {
-    fetch(url, init).then((res) => {
-      console.log(res.status);
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        reject(error);
-      }
-
-      resolve(res.json());
+  return fetch(url, init).then((res) => {
+    console.log(res.status);
+    if (res.status < 200 || res.status >= 300) {
+      const error = new Error(res.statusText);
+      error.response = res;
+      throw error;
+    }
+    // console.log(res.clone().text(), '<<< fetchHelp response');
+    console.log(url, '<< url');
+    return res.text().then(text => {
+      // console.log(text, '<<< text');
+      // console.log(JSON.parse(text), '<<< JSON.parse');
+      // console.log(JSON.stringify(JSON.parse(text)), '<<<< JSON stringify');
+      return JSON.parse(text);
     });
   });
 }
@@ -107,11 +111,11 @@ function getBookmarks(token) {
   };
 }
 // Post Requests
-function addBookmarkSuccess(newBookmark, newTags) {
+function addBookmarkSuccess(newBookmark) {
   return {
     type: actionTypes.ADD_BOOKMARK_SUCCESS,
     bookmark: newBookmark,
-    tags: newTags,
+    tags: newBookmark.tags,
   };
 }
 
@@ -125,6 +129,9 @@ function addBookmarkError(error) {
 function addBookmark(newBookmark, token) {
   console.log('inside addBookmark, new bookmark ===>', newBookmark);
   return (dispatch) => {
+    newBookmark.foldername = newBookmark.foldername[0].foldername;
+    console.log(newBookmark, '<<< new bookmark for request');
+    const tempFoldername = newBookmark.foldername;
     const init = {
       method: 'POST',
       headers: {
@@ -140,13 +147,9 @@ function addBookmark(newBookmark, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
+      // bookmark.foldername = tempFoldername;
       console.log('returned bookmark=====>', bookmark);
-      const tags = [
-        { id: 1, tag: 'movies' },
-        { id: 2, tag: 'reviews' },
-        { id: 3, tag: 'video games' },
-      ];
-      return dispatch(addBookmarkSuccess(bookmark, tags));
+      return dispatch(addBookmarkSuccess(bookmark));
     }).catch((error) => {
       console.log(error);
       return dispatch(addBookmarkError(error));
@@ -170,7 +173,10 @@ function editBookmarkError(error) {
 }
 
 function editBookmark(editedBookmark, token) {
+  console.log(editedBookmark, '<<<< Actions/ edited bookmark');
   return (dispatch) => {
+    editedBookmark.foldername = editedBookmark.foldername[0].foldername;
+    console.log(editedBookmark, '<<< new bookmark for request');
     const init = {
       method: 'PUT',
       headers: {
@@ -185,8 +191,11 @@ function editBookmark(editedBookmark, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
+      console.log(bookmark, '<<< Actions/ returned bookmark');
+      // console.log(JSON.stringify(bookmark), '<<< stringify bookmark');
       return dispatch(editBookmarkSuccess(bookmark));
     }).catch((err) => {
+      console.log(err, 'Actions/ error message');
       return dispatch(editBookmarkError(err));
     });
   };
@@ -372,7 +381,7 @@ function editFolderError(error) {
 }
 
 function editFolder(folderId, folderName, token) {
-  console.log('in actions.editFolder');
+  console.log(folderId, folderName, '<<<< Actions/ folderId, folderName');
   return (dispatch) => {
     const folder = {
       folderid: folderId,
@@ -388,11 +397,11 @@ function editFolder(folderId, folderName, token) {
       },
       body: JSON.stringify(folder),
     };
-    const url = `${SERVER_URL}/folders`;
+    const url = `${SERVER_URL}/folders/${folderId}`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((editedFolder) => {
-      console.log(editedFolder);
+      console.log(editedFolder, '<<<< Actions/ returned edited folder');
       dispatch(editFolderSuccess(editedFolder));
     }).catch((error) => {
       console.log(error, '<<<< ERROR');
@@ -466,7 +475,7 @@ function getTags(token) {
       },
     };
 
-    const url = 'http://localhost:5000/';
+    const url = `${SERVER_URL}/tags`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((tags) => {
@@ -481,24 +490,70 @@ function getTags(token) {
   };
 }
 
-function findBookmarksSuccess(bookmarks) {
+// TODO: add constant types to constants.js
+function editTagSuccess(tag) {
   return {
-    bookmarks,
-    type: actionTypes.FIND_BOOKMARKS_SUCCESS,
+    tag,
+    type: actionTypes.EDIT_TAG_SUCCESS,
   };
 }
 
-function findBookmarksError(error) {
+function editTagError(error) {
   return {
     error,
-    type: actionTypes.FIND_BOOKMARKS_ERROR,
+    type: actionTypes.EDIT_TAG_ERROR,
   };
 }
 
-function findBookmarks(tag, token) {
+function editTag(tagId, tagName, token) {
+  console.log(tagId, tagName, '<<<< actions/ new tagid and tagname');
+  return (dispatch) => {
+    const tag = {
+      tagid: tagId,
+      tagname: tagName,
+    };
+
+    const init = {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(tag),
+    };
+    const url = `${SERVER_URL}/tags/${tagId}`;
+    const newFetch = fetchHelp(url, init);
+
+    newFetch.then((editedTag) => {
+      console.log(editedTag, '<<<< edited tag response');
+      dispatch(editTagSuccess(editedTag));
+    }).catch((error) => {
+      console.log(error, '<<<< edit tag ERROR');
+      dispatch(editTagError(error));
+    });
+  };
+}
+
+function deleteTagSuccess(tag) {
+  return {
+    tag,
+    type: actionTypes.DELETE_TAG_SUCCESS,
+  };
+}
+
+function deleteTagError(error) {
+  return {
+    error,
+    type: actionTypes.DELETE_TAG_ERROR,
+  };
+}
+
+function deleteTag(tagid, token) {
+  console.log('in actions/deleteTag, tagid==>', tagid);
   return (dispatch) => {
     const init = {
-      method: 'GET',
+      method: 'DELETE',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -506,17 +561,15 @@ function findBookmarks(tag, token) {
       },
     };
 
-    const url = `http://localhost:5000/bookmarks/${tag.id}`;
+    const url = `${SERVER_URL}/tags/${tagid}`;
     const newFetch = fetchHelp(url, init);
 
-    newFetch.then((bookmarks) => {
-      return dispatch(
-        findBookmarksSuccess(bookmarks)
-      );
-    }).catch((err) => {
-      return dispatch(
-        findBookmarksError(err)
-      );
+    newFetch.then((tag) => {
+      console.log('response tag===>', tag);
+      return dispatch(deleteTagSuccess(tag));
+    }).catch((error) => {
+      console.log('error==>', error);
+      return dispatch(deleteTagError(error));
     });
   };
 }
@@ -537,4 +590,5 @@ exports.editFolder = editFolder;
 exports.deleteBookmark = deleteBookmark;
 exports.deleteFolder = deleteFolder;
 exports.getTags = getTags;
-exports.findBookmarks = findBookmarks;
+exports.editTag = editTag;
+exports.deleteTag = deleteTag;
