@@ -79,10 +79,14 @@ button {
   font-weight: bold;
   font-size: 0.9rem;
   margin-bottom: 1rem;
+}
 
-  :hover {
-    background-color: @green125
-  }
+button:hover {
+  background-color: @green125;
+}
+
+button:disabled {
+  background-color: @green25;
 }
 
 textarea,
@@ -276,6 +280,7 @@ header {
           height: 16rem;
           background-color: black;
           background-size: cover;
+          background-position: center;
           border-radius: 0.5rem;
         }
       }
@@ -378,6 +383,7 @@ header {
         right: 0;
         opacity: .4;
         background-size: cover;
+        background-position: center;
         border-radius: 0.8rem;
       }
     }
