@@ -8,16 +8,20 @@ const SERVER_URL = window.location.origin;
 /* Fetch Helper Function */
 
 function fetchHelp(url, init = {}) {
-  return new Promise((resolve, reject) => {
-    fetch(url, init).then((res) => {
-      console.log(res.status);
-      if (res.status < 200 || res.status >= 300) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        reject(error);
-      }
-      console.log(res, '<<< fetchHelp response');
-      resolve(res.json());
+  return fetch(url, init).then((res) => {
+    console.log(res.status);
+    if (res.status < 200 || res.status >= 300) {
+      const error = new Error(res.statusText);
+      error.response = res;
+      throw error;
+    }
+    // console.log(res.clone().text(), '<<< fetchHelp response');
+    console.log(url, '<< url');
+    return res.text().then(text => {
+      // console.log(text, '<<< text');
+      // console.log(JSON.parse(text), '<<< JSON.parse');
+      // console.log(JSON.stringify(JSON.parse(text)), '<<<< JSON stringify');
+      return JSON.parse(text);
     });
   });
 }
@@ -188,6 +192,7 @@ function editBookmark(editedBookmark, token) {
 
     newFetch.then((bookmark) => {
       console.log(bookmark, '<<< Actions/ returned bookmark');
+      // console.log(JSON.stringify(bookmark), '<<< stringify bookmark');
       return dispatch(editBookmarkSuccess(bookmark));
     }).catch((err) => {
       console.log(err, 'Actions/ error message');
@@ -528,46 +533,6 @@ function deleteTag(tagid, token) {
   };
 }
 
-function findBookmarksSuccess(bookmarks) {
-  return {
-    bookmarks,
-    type: actionTypes.FIND_BOOKMARKS_SUCCESS,
-  };
-}
-
-function findBookmarksError(error) {
-  return {
-    error,
-    type: actionTypes.FIND_BOOKMARKS_ERROR,
-  };
-}
-
-function findBookmarks(tag, token) {
-  return (dispatch) => {
-    const init = {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const url = `http://localhost:5000/bookmarks/${tag.id}`;
-    const newFetch = fetchHelp(url, init);
-
-    newFetch.then((bookmarks) => {
-      return dispatch(
-        findBookmarksSuccess(bookmarks)
-      );
-    }).catch((err) => {
-      return dispatch(
-        findBookmarksError(err)
-      );
-    });
-  };
-}
-
 
 exports.logout = logout;
 exports.loginSuccess = loginSuccess;
@@ -585,4 +550,3 @@ exports.deleteFolder = deleteFolder;
 exports.getTags = getTags;
 exports.editTag = editTag;
 exports.deleteTag = deleteTag;
-exports.findBookmarks = findBookmarks;

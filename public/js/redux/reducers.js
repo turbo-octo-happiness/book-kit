@@ -82,13 +82,9 @@ function bookmarkReducer(state = [], action) {
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.bookmarkid === action.bookmark.bookmarkid) {
-          value.tags.forEach((tag) => {
-            action.bookmark.tags.push(tag);
-          });
           index = i;
         }
       });
-      console.log(action.bookmark, '<<< BkmrkReducer/ bookmark added to state');
       tempArr[index] = action.bookmark;
       return tempArr;
     }
@@ -181,46 +177,64 @@ function tagReducer(state = [], action) {
   let index;
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
-      // TODO: Check if tags are previously in state
+      // // TODO: Check if tags are previously in state
+      // const tempArr = state.slice();
+      // const tempTags = action.bookmark.tags;
+      // console.log(tempArr, '<<< TagReducer/ Tag State before');
+      // console.log(tempTags, '<<<< TagReducer/ Bookmark Tags');
+      // for (let i = 0; i < tempTags.length; i++) {
+      //   for (let j = 0; j < tempArr.length; j++) {
+      //     if (tempTags[i] && (tempTags[i].tagid === tempArr[j].tagid)) {
+      //       tempTags.splice(i, 1);
+      //     }
+      //   }
+      // }
+      // tempTags.forEach((tag) => {
+      //   tempArr.push(tag);
+      // });
+      //
+      // return tempArr;
+      //       const tempArr = state.slice();
       const tempArr = state.slice();
-      const tempTags = action.bookmark.tags;
-      console.log(tempArr, '<<< TagReducer/ Tag State before');
-      console.log(tempTags, '<<<< TagReducer/ Bookmark Tags');
-      for (let i = 0; i < tempTags.length; i++) {
-        for (let j = 0; j < tempArr.length; j++) {
-          if (tempTags[i] && (tempTags[i].tagid === tempArr[j].tagid)) {
-            tempTags.splice(i, 1);
+      const tempTags = action.bookmark.tags.slice();
+
+      console.log(tempArr, '<<< Tag Reducer/ Tag State Before');
+      console.log(tempTags, '<<< tempTags');
+
+      const newArr = tempTags.filter((tag) => {
+        for (let i = 0; i < tempArr.length; i++) {
+          if (tag.tagid === tempArr[i].tagid) {
+            return false;
           }
         }
-      }
-      tempTags.forEach((tag) => {
-        tempArr.push(tag);
+        return true;
       });
 
-      return tempArr;
+      console.log(newArr, '<<< newArr');
+      return tempArr.concat(newArr);
     }
 
     case actionTypes.EDIT_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
-      const tempTags = action.bookmark.tags;
-      console.log(action.bookmark, '<<< TagReducer/ Bookmark');
-      console.log(tempArr, '<<< TagReducer/ Tag State before');
-      console.log(tempTags, '<<< TagReducer/ Bookmark Tags');
-      for (let i = 0; i < tempTags.length; i++) {
-        for (let j = 0; j < tempArr.length; j++) {
-          if (tempTags[i] && (tempTags[i].tagid === tempArr[j].tagid)) {
-            tempTags.splice(i, 1);
+      const tempTags = action.bookmark.tags.slice();
+
+      console.log(tempArr, '<<< Tag Reducer/ Tag State Before');
+      console.log(tempTags, '<<< tempTags');
+
+      const newArr = tempTags.filter((tag) => {
+        for (let i = 0; i < tempArr.length; i++) {
+          if (tag.tagid === tempArr[i].tagid) {
+            return false;
           }
         }
-      }
-      tempTags.forEach((tag) => {
-        tempArr.push(tag);
+        return true;
       });
 
-      return tempArr;
+      console.log(newArr, '<<< newArr');
+      return tempArr.concat(newArr);
     }
 
-    case actionTypes.GET_TAGS_SUCCESS:  {
+    case actionTypes.GET_TAGS_SUCCESS: {
       console.log(action.tags, '<=== Reducers/ action.tags');
       return action.tags;
     }
@@ -240,7 +254,6 @@ function tagReducer(state = [], action) {
 
     case actionTypes.DELETE_TAG_SUCCESS: {
       console.log(action.tag.tagid, '<<<< Reducers/ deleted tag id');
-
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.tagid === action.tag.tagid) {
@@ -252,16 +265,10 @@ function tagReducer(state = [], action) {
       return tempArr;
     }
 
-
     case actionTypes.GET_TAGS_ERROR: {
       return state;
     }
-    case actionTypes.FIND_BOOKMARKS_SUCCESS: {
-      return action.bookmarks;
-    }
-    case actionTypes.FIND_BOOKMARKS_ERROR: {
-      return state;
-    }
+
     default: {
       return state;
     }
