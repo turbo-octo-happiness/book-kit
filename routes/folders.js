@@ -76,6 +76,11 @@ router.post('/customers/:folderid', jsonParser, (request, response) => {
     const email = request.body.email;
     const folderid = request.params.folderid;
 
+    // Database transaction, all queries within will either complete or fail.
+    db.tx((t) => {}).then((results) => {}).catch((error) => {
+      console.log('ERROR:', error.message || error);
+      response.status(500);
+    });
     db.one(queries.ADD_USER_TO_FOLDER_BY_EMAIL, [folderid, email, email])
       .then((result) => {
         response.status(201).json(result);
@@ -87,7 +92,7 @@ router.post('/customers/:folderid', jsonParser, (request, response) => {
         }
 
         if (errorMessage === 'No data returned from the query.') {
-          
+
         }
 
         console.log('ERROR:', error.message || error);
@@ -156,7 +161,7 @@ router.delete('/:folderid', (request, response) => {
         console.log(result);
         return t.one(queries.DELETE_FOLDER_REFERENCE, [folderid, userIdentity])
           .then(() => {
-            return t.oneOrNone(queries.DELETE_FOLDER, [folderid, userIdentity])
+            return t.oneOrNone(queries.DELETE_FOLDER, [folderid, folderid])
               .then((delFolder) => {
                 return Promise.resolve(delFolder);
               });
