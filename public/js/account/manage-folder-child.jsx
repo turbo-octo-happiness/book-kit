@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 const propTypes = {
   folder: PropTypes.object,
@@ -29,7 +29,7 @@ class Folder extends React.Component {
     this.props.deleteFolder(this.props.folder.folderid);
   }
 
-  shareFolder() {
+  shareFolder(event) {
     event.preventDefault();
     this.props.shareFolder(
       this.props.folder.folderid,
