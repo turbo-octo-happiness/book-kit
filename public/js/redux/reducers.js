@@ -101,6 +101,21 @@ function bookmarkReducer(state = [], action) {
       return tempArr;
     }
 
+    case actionTypes.DELETE_TAG_SUCCESS: {
+      const tempArr = state.slice();
+      console.log(tempArr, '<<< BookmarkReducer/ Current state');
+      for (let i = 0; i < tempArr.length; i++) {
+        for (let j = 0; j < tempArr[i].tags.length; j++) {
+          if (tempArr[i].tags[j].tagid === action.tag.tagid) {
+            tempArr[i].tags.splice(j, 1);
+            break;
+          }
+        }
+      }
+
+      return tempArr;
+    }
+
     case actionTypes.ADD_BOOKMARK_ERROR:
     case actionTypes.GET_BOOKMARKS_ERROR:
     case actionTypes.EDIT_BOOKMARK_ERROR:
@@ -173,34 +188,13 @@ function folderReducer(state = [], action) {
 }
 
 function tagReducer(state = [], action) {
-  // This part of the state is an array
   let index;
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
-      // // TODO: Check if tags are previously in state
-      // const tempArr = state.slice();
-      // const tempTags = action.bookmark.tags;
-      // console.log(tempArr, '<<< TagReducer/ Tag State before');
-      // console.log(tempTags, '<<<< TagReducer/ Bookmark Tags');
-      // for (let i = 0; i < tempTags.length; i++) {
-      //   for (let j = 0; j < tempArr.length; j++) {
-      //     if (tempTags[i] && (tempTags[i].tagid === tempArr[j].tagid)) {
-      //       tempTags.splice(i, 1);
-      //     }
-      //   }
-      // }
-      // tempTags.forEach((tag) => {
-      //   tempArr.push(tag);
-      // });
-      //
-      // return tempArr;
-      //       const tempArr = state.slice();
       const tempArr = state.slice();
       const tempTags = action.bookmark.tags.slice();
-
       console.log(tempArr, '<<< Tag Reducer/ Tag State Before');
       console.log(tempTags, '<<< tempTags');
-
       const newArr = tempTags.filter((tag) => {
         for (let i = 0; i < tempArr.length; i++) {
           if (tag.tagid === tempArr[i].tagid) {
@@ -217,10 +211,8 @@ function tagReducer(state = [], action) {
     case actionTypes.EDIT_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
       const tempTags = action.bookmark.tags.slice();
-
       console.log(tempArr, '<<< Tag Reducer/ Tag State Before');
       console.log(tempTags, '<<< tempTags');
-
       const newArr = tempTags.filter((tag) => {
         for (let i = 0; i < tempArr.length; i++) {
           if (tag.tagid === tempArr[i].tagid) {
