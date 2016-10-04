@@ -47,7 +47,7 @@ class Tag extends React.Component {
     const inputStyle = this.state.show ? {} : { display: 'none' };
     return (
       <li className="manage-folder-container">
-        <li className="manage-folder">
+        <div className="manage-folder">
           <h3 style={textStyle}>{this.props.tag.tagname}</h3>
           <form
             onSubmit={this.editTag}
@@ -70,7 +70,7 @@ class Tag extends React.Component {
             >Delete
             </button>
           </div>
-        </li>
+        </div>
       </li>
     );
   }
