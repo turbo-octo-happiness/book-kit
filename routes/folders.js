@@ -77,29 +77,31 @@ router.post('/customers/:folderid', jsonParser, (request, response) => {
     const folderid = request.params.folderid;
 
     // Database transaction, all queries within will either complete or fail.
-    db.tx((t) => {}).then((results) => {}).catch((error) => {
-      console.log('ERROR:', error.message || error);
-      response.status(500);
-    });
-    db.one(queries.ADD_USER_TO_FOLDER_BY_EMAIL, [folderid, email, email])
-      .then((result) => {
-        response.status(201).json(result);
-      }).catch((error) => {
-        let errorMessage = error.message || error;
-
-        if (errorMessage === 'duplicate key value violates unique constraint "user_folder_pkey"') {
-          errorMessage = `${email} already has access to ${folderid}`;
-        }
-
-        if (errorMessage === 'No data returned from the query.') {
-
-        }
-
-        console.log('ERROR:', error.message || error);
-        response.status(500).send({
-          error: errorMessage,
+    db.tx((t) => {
+      return db.one(queries.ADD_USER_TO_FOLDER_BY_EMAIL, [folderid, email, email])
+        .then((result) => {
+          console.log(`queries.ADD_USER_TO_FOLDER_BY_EMAIL result: ${result}`);
+          return db.one(queries.SELECT_FOLDER_INFO, [result.folderid]);
         });
+    }).then((data) => {
+      console.log('transaction then', data);
+      response.status(201).json(data);
+    }).catch((error) => {
+      let errorMessage = error.message || error;
+
+      if (errorMessage === 'duplicate key value violates unique constraint "user_folder_pkey"') {
+        errorMessage = `${email} already has access to ${folderid}`;
+      }
+
+      if (errorMessage === 'No data returned from the query.') {
+        errorMessage = `${email} does not exist in the database.`;
+      }
+
+      console.log('ERROR:', error.message || error);
+      response.status(500).send({
+        error: errorMessage,
       });
+    });
   }
 });
 
@@ -160,10 +162,12 @@ router.delete('/:folderid', (request, response) => {
         }
         console.log(result);
         return t.one(queries.DELETE_FOLDER_REFERENCE, [folderid, userIdentity])
-          .then(() => {
+          .then((data) => {
             return t.oneOrNone(queries.DELETE_FOLDER, [folderid, folderid])
               .then((delFolder) => {
-                return Promise.resolve(delFolder);
+                console.log(`delFolder = ${delFolder}; data = ${data}`)
+                const resultsToReturn = delFolder || data;
+                return Promise.resolve(resultsToReturn);
               });
           });
       });
