@@ -49,6 +49,7 @@ h1 {
 a {
   text-decoration: none;
   color: @white;
+  transition: color 0.3s ease;
 }
 
 a:hover {
@@ -79,6 +80,7 @@ button {
   font-weight: bold;
   font-size: 0.9rem;
   margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
@@ -231,6 +233,10 @@ header {
     flex-direction: column;
     align-items: center;
 
+    a {
+      color: @green;
+    }
+
     .prof-text {
       display: flex;
       justify-content: space-around;
@@ -369,13 +375,16 @@ header {
       display: flex;
       flex-wrap: wrap;
       align-items: flex-end;
-      justify-content: space-between;
     }
 
     .bookmark-tile {
       width: 16.86rem;
       list-style: none;
       margin-left: 0;
+
+      a:hover {
+        text-shadow: none;
+      }
 
       h3 {
         height: 10rem;
@@ -386,7 +395,15 @@ header {
         text-align: center;
         align-items: center;
         justify-content: center;
-        text-shadow: 0 0 1px @gray75;
+        text-shadow: 0 0 0.5px @gray75;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        font-size: 1.5rem;
+        line-height: 2.3rem;
+
+        span {
+          margin: 0 1rem;
+        }
       }
 
       .bg {
