@@ -81,8 +81,9 @@ router.post('/customers/:folderid', jsonParser, (request, response) => {
         response.status(201).json(result);
       }).catch((error) => {
         let errorMessage = error.message || error;
+
         if (errorMessage === 'duplicate key value violates unique constraint "user_folder_pkey"') {
-          errorMessage = `${email} already has access to folder ${folderid}`;
+          errorMessage = `${email} already has access to ${folderid}`;
         }
 
         console.log('ERROR:', error.message || error);
