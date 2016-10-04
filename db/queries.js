@@ -134,7 +134,7 @@ exports.ADD_USER_TO_FOLDER_BY_ID = `INSERT INTO customer_folder(customerid, fold
 exports.ADD_USER_TO_FOLDER_BY_EMAIL = `INSERT INTO customer_folder(customerid, folderid)
                                        SELECT customerid, $1 FROM customer
                                        WHERE email = $2
-                                       RETURNING customerid, folderid;`;
+                                       RETURNING $3 AS email, folderid;`;
 
 // Who has the right to delete a folder?
 // This query will delete the folder and all references to it in the customer_folder table

@@ -76,13 +76,19 @@ router.post('/customers/:folderid', jsonParser, (request, response) => {
     const email = request.body.email;
     const folderid = request.params.folderid;
 
-    db.one(queries.ADD_USER_TO_FOLDER_BY_EMAIL, [folderid, email])
+    db.one(queries.ADD_USER_TO_FOLDER_BY_EMAIL, [folderid, email, email])
       .then((result) => {
         response.status(201).json(result);
       }).catch((error) => {
+        let errorMessage = error.message || error;
+
+        if (errorMessage === 'duplicate key value violates unique constraint "user_folder_pkey"') {
+          errorMessage = `${email} already has access to ${folderid}`;
+        }
+
         console.log('ERROR:', error.message || error);
         response.status(500).send({
-          error: 'Database error',
+          error: errorMessage,
         });
       });
   }
