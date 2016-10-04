@@ -1,6 +1,4 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import actions from '../redux/actions';
+import React from 'react';
 
 const propTypes = {
   folder: PropTypes.object,
@@ -14,38 +12,38 @@ const propTypes = {
 class Folder extends React.Component {
   constructor() {
     super();
-    this.onShowEdit = this.onShowEdit.bind(this);
     this.editFolder = this.editFolder.bind(this);
     this.deleteFolder = this.deleteFolder.bind(this);
-    this.state = {
-      show: false,
-    };
+    this.shareFolder = this.shareFolder.bind(this);
   }
 
-  onShowEdit() {
-    this.setState({
-      show: !this.state.show,
-    });
-  }
-
-  editFolder(event, folderId, folderName) {
-    console.log(folderId, folderName, this.editedFolder.value, '<<<< Folder/ Edited folder');
+  editFolder() {
     event.preventDefault();
-    this.props.dispatch(actions.editFolder(
+    this.props.editFolder(
       this.props.folder.folderid,
-      this.editedFolder.value,
-      this.props.token));
-    this.onShowEdit();
+      this.editedFolder.value
+    );
   }
 
-  deleteFolder(folderId) {
-    console.log(folderId, '<<<< Folder/ deleted folder id')
-    this.props.onDelete(this.props.folder.folderid);
+  deleteFolder() {
+    this.props.deleteFolder(this.props.folder.folderid);
+  }
+
+  shareFolder() {
+    event.preventDefault();
+    this.props.shareFolder(
+      this.props.folder.folderid,
+      this.share.value
+    );
+
+    this.share.value = '';
   }
 
   render() {
-    const textStyle = this.state.show ? { display: 'none' } : {};
-    const inputStyle = this.state.show ? {} : { display: 'none' };
+    const textStyle = this.props.show ? { display: 'none' } : {};
+    const inputStyle = this.props.show ? {} : { display: 'none' };
+    const shareStyle = this.props.showShare ? {} : { display: 'none' };
+
     return (
       <li className="manage-folder">
         <h3 style={textStyle}>{this.props.folder.foldername}</h3>
@@ -60,8 +58,18 @@ class Folder extends React.Component {
           />
         </form>
         <div className="manage-buttons">
+          <form
+            onSubmit={this.shareFolder}
+            style={shareStyle}
+          >
+            <input
+              type="text"
+              ref={share => { this.share = share; }}
+              placeholder="Add email address..."
+            />
+          </form>
           <button
-            onClick={this.onShowEdit}
+            onClick={this.props.onShowEdit}
             aria-hidden="true"
           >Edit
           </button>
@@ -70,19 +78,13 @@ class Folder extends React.Component {
           >Delete
           </button>
           <button
-            onClick={this.props.onShare}
+            onClick={this.props.onShowShare}
           >Share
           </button>
         </div>
       </li>
-    )
+    );
   }
 }
 
-Folder.propTypes = propTypes;
-
-function mapStateToProps(state) {
-  return {};
-}
-
-module.exports = connect(mapStateToProps)(Folder);
+module.exports = Folder;

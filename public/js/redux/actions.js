@@ -324,6 +324,47 @@ function addFolder(newFolder, token) {
   };
 }
 
+// share folders
+
+function shareFolderSuccess(folder) {
+  return {
+    folder,
+    type: actionTypes.SHARE_FOLDER_SUCCESS,
+  };
+}
+
+function shareFolderError(error) {
+  return {
+    error,
+    type: actionTypes.SHARE_FOLDER_ERROR,
+  };
+}
+
+function shareFolder(folderId, email, token) {
+  return (dispatch) => {
+    const init = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    };
+
+    const url = `${SERVER_URL}/folders/customers/${folderId}`;
+    const newFetch = fetchHelp(url, init);
+
+    newFetch.then((folder) => {
+      return dispatch(shareFolderSuccess(folder));
+    }).catch((error) => {
+      return dispatch(shareFolderError(error));
+    });
+  };
+}
+
 // Put Requests
 function editFolderSuccess(editedFolder) {
   return {
@@ -540,6 +581,7 @@ exports.loginError = loginError;
 exports.searchTextChange = searchTextChange;
 exports.addBookmark = addBookmark;
 exports.addFolder = addFolder;
+exports.shareFolder = shareFolder;
 exports.getBookmarks = getBookmarks;
 exports.getFolders = getFolders;
 exports.getTags = getTags;
