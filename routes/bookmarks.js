@@ -94,7 +94,7 @@ router.post('/', jsonParser, (request, response) => {
     // provide a value use defaults.
     const bdescription = request.body.description ? request.body.description : '';
     const bscreenshot = request.body.screenshot ?
-      request.body.screenshot : 'placeholder.png';
+      request.body.screenshot : 'img/placeholder.png';
 
     const url = request.body.url;
     const title = request.body.title;
@@ -182,7 +182,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
     // value use defaults.
     const bdescription = request.body.description ? request.body.description : '';
     const bscreenshot = request.body.screenshot ?
-      request.body.screenshot : 'placeholder.png';
+      request.body.screenshot : 'img/placeholder.png';
 
     const url = request.body.url;
     const title = request.body.title;
