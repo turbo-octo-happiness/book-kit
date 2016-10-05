@@ -1,6 +1,3 @@
-// Where the database is located
-exports.CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/bookmarks';
-
 /* ---- Postgres Queries Used by the API ---- */
 
 /*

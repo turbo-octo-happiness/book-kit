@@ -37,9 +37,13 @@ app.use('/tags', authenticate, tagsRoutes);
 /* ---- Set port and start server ---- */
 
 const runServer = (callback) => {
-  const port = process.env.PORT || 5000;
+  let port = process.env.PORT || 5000;
+  if (process.env.DEVELOPMENT === 'testing') {
+    port = 8000;
+  }
+  console.log(`port = ${port}`);
   const server = app.listen(port, () => {
-    console.log('Node app is running on port', app.get('port'));
+    console.log('Node app is running on port', port);
     if (callback) {
       callback(server);
     }
