@@ -7,7 +7,7 @@ import Tile from '../../public/js/content/bookmark-tiles-child';
 const should = chai.should();
 
 describe('Tile Component', () => {
-  it('Renders...', () => {
+  it('Renders an individual bookmark', () => {
     /* ------- MOCK DATA ------- */
     const title = 'title';
     const id = 'bookmarkId';
