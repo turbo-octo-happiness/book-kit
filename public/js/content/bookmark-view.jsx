@@ -137,7 +137,7 @@ class BookmarkView extends React.Component {
         </div>
 
         <div className="bookmark-edit" style={inputStyle}>
-          <form onSubmit={this.onSubmitEdit}>
+          <form>
             <h4>Title *</h4>
             <input
               type="text"
@@ -168,21 +168,21 @@ class BookmarkView extends React.Component {
               defaultValue={bookmark.screenshot}
               placeholder="Screenshot URL"
             />
-          <h4>Tags</h4>
+            <h4>Tags</h4>
             <input
               type="text"
               className="form-control"
-              ref={tags => { this.tags = tags; }}
+              ref={tagsInput => { this.tags = tagsInput; }}
               defaultValue={tagsList}
             />
             <h4>Folder *</h4>
             <select
-              ref={folder => { this.folder = folder; }}
+              ref={folderInput => { this.folder = folderInput; }}
               required
             >{folderArr}
             </select><br />
-            <button type="submit">Submit</button>
-            <button onClick={() => this.props.onShowEdit}>Cancel</button>
+            <button onClick={this.onSubmitEdit} type="submit">Submit</button>
+            <button onClick={() => { this.props.onShowEdit(); }}>Cancel</button>
           </form>
         </div>
       </section>
