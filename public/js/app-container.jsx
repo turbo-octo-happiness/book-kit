@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import NavbarContainer from './nav/nav-header-container';
+import SplashPage from './content/splash-page';
 
 // Renders a splash page and the NavbarContainer component if not logged in,
 // otherwise renders children (PageContainer component)
@@ -12,9 +13,7 @@ const propTypes = {
 
 function AppContainer(props) {
   const display = !props.isAuthenticated ? (
-    <div className="splash-page">
-      <h1>Splash Page Stuff</h1>
-    </div>
+    <SplashPage />
   ) : (
     props.children
   );

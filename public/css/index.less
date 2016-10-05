@@ -127,7 +127,6 @@ header {
   justify-content: center;
   background-color: @green;
   font-family: 'Open Sans', sans-serif;
-  margin-bottom: 1rem;
 
   nav {
     display: flex;
@@ -180,13 +179,47 @@ header {
  *  Pre-login Splash Page
  */
 .splash-page {
-  position: absolute;
-  top: 3rem;
-  bottom: 0px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .splash-main {
+    background-image: url('img/splash.jpeg');
+    background-position: top;
+    background-size: cover;
+
+    height: 35rem;
+  }
+
+  .splash-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    left: 0;
+    margin-left: 50%;
+
+    .learn-more {
+      position: absolute;
+      min-width: 10rem;
+      text-align: center;
+      padding-bottom: 7rem;
+    }
+
+    .splash-scroll-btn {
+      position: absolute;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background-color: @white;
+      border-radius: 50%;
+      padding: 0 1rem;
+      color: @green;
+    }
+  }
+
+  .splash-features {
+    background-color: @green;
+    height: 35rem;
+  }
+
 }
 
 /**
@@ -194,6 +227,8 @@ header {
  */
 .main-section {
   // consistent across the board for all components
+  margin-top: 1rem;
+
   .main-container {
     display: flex;
     justify-content: space-between;
