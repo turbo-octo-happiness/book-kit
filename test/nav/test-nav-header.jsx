@@ -52,7 +52,7 @@ describe('Navbar component', () => {
     /* ------- MOCK DATA ------- */
     const isAuthenticated = true;
     const profile = {
-      picture: 'imageurl'
+      picture: 'imageurl',
     };
 
     const onLogoutClick = () => {

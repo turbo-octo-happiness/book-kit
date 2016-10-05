@@ -30,14 +30,13 @@ describe('BookmarkTilesContainer component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    // console.log('RESULT >>>', result, '<<< RESULT');
+    console.log('RESULT >>>', result, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.be.a('function');
     result.type.should.have.property('propTypes').with.property('tileArr');
     result.props.should.have.property('tileArr');
     result.props.tileArr.should.be.a('array');
-    result.props.tileArr.should.not.be.a('object');
   });
 
   it('Renders BookmarkTiles and passes props when params is tagid and search state is falsey', () => {
@@ -71,7 +70,6 @@ describe('BookmarkTilesContainer component', () => {
     result.type.should.have.property('propTypes').with.property('tileArr');
     result.props.should.have.property('tileArr');
     result.props.tileArr.should.be.a('array');
-    result.props.tileArr.should.not.be.a('object');
   });
 
   it('Renders BookmarkTiles and passes props when search state is true and no params', () => {
@@ -105,7 +103,6 @@ describe('BookmarkTilesContainer component', () => {
     result.type.should.have.property('propTypes').with.property('tileArr');
     result.props.should.have.property('tileArr');
     result.props.tileArr.should.be.a('array');
-    result.props.tileArr.should.not.be.a('object');
   });
 
   it('Renders BookmarkTiles and passes props when params and search state are falsey', () => {
@@ -139,7 +136,6 @@ describe('BookmarkTilesContainer component', () => {
     result.type.should.have.property('propTypes').with.property('tileArr');
     result.props.should.have.property('tileArr');
     result.props.tileArr.should.be.a('array');
-    result.props.tileArr.should.not.be.a('object');
   });
 
   it('Renders BookmarkTiles and passes props when params and search state are true', () => {
@@ -166,13 +162,12 @@ describe('BookmarkTilesContainer component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    console.log('RESULT >>>', result, '<<< RESULT');
+    // console.log('RESULT >>>', result, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.be.a('function');
     result.type.should.have.property('propTypes').with.property('tileArr');
     result.props.should.have.property('tileArr');
     result.props.tileArr.should.be.a('array');
-    result.props.tileArr.should.not.be.a('object');
   });
 });

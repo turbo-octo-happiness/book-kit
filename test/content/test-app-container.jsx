@@ -23,8 +23,18 @@ describe('AppContainer component', () => {
     /* ------- TESTS -------- */
     result.type.should.equal('div');
     result.props.children.length.should.equal(2);
-    result.props.children[0].type.should.be.a('function');
-    result.props.children[0].type.displayName.should.equal('Connect(NavbarContainer)');
+
+    const navbar = result.props.children[0];
+    navbar.type.should.be.a('function');
+    navbar.type.should.have.property('propTypes');
+    navbar.type.should.have.property('displayName')
+      .that.equals('Connect(NavbarContainer)');
+    navbar.type.should.have.property('WrappedComponent');
+    navbar.type.should.have.deep.property('WrappedComponent.propTypes.dispatch');
+    navbar.type.should.have.deep.property('WrappedComponent.propTypes.isAuthenticated');
+    navbar.type.should.have.deep.property('WrappedComponent.propTypes.token');
+    navbar.type.should.have.property('propTypes')
+      .with.property('store');
 
     const splashPage = result.props.children[1];
     splashPage.type.should.equal('div');
@@ -48,8 +58,18 @@ describe('AppContainer component', () => {
 
     /* ------- TESTS -------- */
     result.type.should.equal('div');
-    result.props.children[0].type.should.be.a('function');
-    result.props.children[0].type.displayName.should.equal('Connect(NavbarContainer)');
+
+    const navbar = result.props.children[0];
+    navbar.type.should.be.a('function');
+    navbar.type.should.have.property('propTypes');
+    navbar.type.should.have.property('displayName')
+      .that.equals('Connect(NavbarContainer)');
+    navbar.type.should.have.property('WrappedComponent');
+    navbar.type.should.have.deep.property('WrappedComponent.propTypes.dispatch');
+    navbar.type.should.have.deep.property('WrappedComponent.propTypes.isAuthenticated');
+    navbar.type.should.have.deep.property('WrappedComponent.propTypes.token');
+    navbar.type.should.have.property('propTypes')
+      .with.property('store');
     // Test for props.children ??
   });
 });
