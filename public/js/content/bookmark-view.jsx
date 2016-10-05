@@ -71,7 +71,6 @@ class BookmarkView extends React.Component {
     let tagsList;
     if (bookmark.tags && bookmark.tags[0] !== null) {
       tags = bookmark.tags.map((tagObj, index) => {
-        console.log(tagObj, '<<<< TAGOBJ');
         return <li key={index}>{tagObj.tagname}</li>;
       });
 
@@ -79,8 +78,6 @@ class BookmarkView extends React.Component {
         return tagObj.tagname;
       });
     }
-
-    console.log(tagsList, '<<<< TAGS LIST');
 
     return (
       <section className="content-section bookmark-section">
