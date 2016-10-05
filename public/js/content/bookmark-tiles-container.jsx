@@ -9,7 +9,7 @@ const propTypes = {
   search: PropTypes.string,
 };
 
-function BookmarkTilesContainer(props) {
+export function BookmarkTilesContainer(props) {
   let tileArr = [];
   // FIXME: need to make it so we're routing to folderid and not name
   // folders with spaces show up with space in url which is bad
@@ -123,6 +123,4 @@ const mapStateToProps = state => {
 
 BookmarkTilesContainer.propTypes = propTypes;
 
-const Container = connect(mapStateToProps)(BookmarkTilesContainer);
-
-module.exports = Container;
+export default connect(mapStateToProps)(BookmarkTilesContainer);

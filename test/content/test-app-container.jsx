@@ -18,10 +18,12 @@ describe('AppContainer component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    // console.log(result, '<<< RESULT');
+    // console.log(result.props.children, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.equal('div');
+    result.props.children.length.should.equal(2);
+    result.props.children[0].type.should.be.a('function');
     result.props.children[0].type.displayName.should.equal('Connect(NavbarContainer)');
 
     const splashPage = result.props.children[1];
@@ -42,10 +44,12 @@ describe('AppContainer component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    // console.log(result, '<<< RESULT');
+    // console.log(result.props.children, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.equal('div');
+    result.props.children[0].type.should.be.a('function');
+    result.props.children[0].type.displayName.should.equal('Connect(NavbarContainer)');
     // Test for props.children ??
   });
 });

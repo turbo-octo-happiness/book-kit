@@ -48,7 +48,7 @@ describe('Navbar component', () => {
     login.props.children.props.style.should.eql({});
   });
 
-  it('Renders Navbar with profile pic, account button, and logout button', () => {
+  it('Renders Navbar with profile pic, account button, and logout button if authenticated', () => {
     /* ------- MOCK DATA ------- */
     const isAuthenticated = true;
     const profile = {
@@ -69,7 +69,7 @@ describe('Navbar component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    console.log(result.props.children.props.children[1].props.children[2], '<<< RESULT');
+    // console.log(result, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.equal('header');
