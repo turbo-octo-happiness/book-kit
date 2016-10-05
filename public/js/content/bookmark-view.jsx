@@ -68,11 +68,19 @@ class BookmarkView extends React.Component {
     });
 
     let tags;
+    let tagsList;
     if (bookmark.tags && bookmark.tags[0] !== null) {
       tags = bookmark.tags.map((tagObj, index) => {
+        console.log(tagObj, '<<<< TAGOBJ');
         return <li key={index}>{tagObj.tagname}</li>;
       });
+
+      tagsList = bookmark.tags.map((tagObj) => {
+        return tagObj.tagname;
+      });
     }
+
+    console.log(tagsList, '<<<< TAGS LIST');
 
     return (
       <section className="content-section bookmark-section">
@@ -165,7 +173,7 @@ class BookmarkView extends React.Component {
               type="text"
               className="form-control"
               ref={tags => { this.tags = tags; }}
-              defaultValue={tags}
+              defaultValue={tagsList}
             />
             <h4>Folder *</h4>
             <select
