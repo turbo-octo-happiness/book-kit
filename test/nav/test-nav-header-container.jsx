@@ -17,6 +17,11 @@ describe('NavbarContainer component', () => {
 
     /* ------- TESTS -------- */
     result.type.should.be.a('function');
+    result.type.propTypes.should.have.property('onLogoutClick');
+    result.type.propTypes.should.have.property('profile');
+    result.type.propTypes.should.have.property('isAuthenticated');
+    result.props.should.have.property('onLogoutClick')
+      .that.is.a('function');
   });
   it('Passes props to Navbar component', () => {
     /* ------- MOCK DATA ------- */
@@ -37,10 +42,20 @@ describe('NavbarContainer component', () => {
     // console.log(result, '<<< RESULT');
 
     /* ------- TESTS -------- */
-    result.props.onLogoutClick.should.be.a('function');
-    result.props.profile.should.be.a('object');
-    result.props.profile.picture.should.equal('imageurl');
-    result.props.isAuthenticated.should.be.a('boolean');
+    result.type.should.be.a('function');
+    result.type.propTypes.should.have.property('onLogoutClick');
+    result.type.propTypes.should.have.property('profile');
+    result.type.propTypes.should.have.property('isAuthenticated');
+    result.props.should.have.property('onLogoutClick')
+      .that.is.a('function');
+    result.props.should.have.property('profile')
+      .that.is.a('object')
+      .with.property('picture')
+      .that.equals('imageurl');
+    result.props.should.have.property('isAuthenticated')
+      .that.is.a('boolean');
+    result.props.isAuthenticated.should.be.a('boolean')
+      .that.equals(true);
     result.props.getProfile.should.be.a('function');
   })
 });
