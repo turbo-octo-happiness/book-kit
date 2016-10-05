@@ -11,7 +11,10 @@ require('dotenv').config();
 /* ---- Initial Setup ---- */
 const app = express();
 
-app.use(logger('dev')); // log every HTTP request to the console
+if (!process.env.DEVELOPMENT) {
+  app.use(logger('dev')); // log every HTTP request to the console
+}
+
 app.disable('etag');
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

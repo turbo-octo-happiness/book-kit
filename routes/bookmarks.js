@@ -37,7 +37,7 @@ router.get('/', (request, response) => {
         // Returning customer with bookmarks, return them with tags seperated into an array of
         // objects.
       } else {
-        console.log('GET SELECT_BOOKMARK', resultsToReturn);
+        // console.log('GET SELECT_BOOKMARK', resultsToReturn);
         for (let i = 0; i < resultsToReturn.length; i++) {
           if (resultsToReturn[i].tags[0] !== null) {
             resultsToReturn[i].tags = resultsToReturn[i].tags.map((current) => {
@@ -49,7 +49,7 @@ router.get('/', (request, response) => {
             });
           }
         }
-        console.log('RESPOSE SELECT_BOOKMARK: ', resultsToReturn);
+        // console.log('RESPOSE SELECT_BOOKMARK: ', resultsToReturn);
         response.json(resultsToReturn);
       }
     })
