@@ -27,7 +27,7 @@ describe('BookmarkTiles component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    console.log('RESULT >>>', result, '<<< RESULT');
+    // console.log(result, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.equal('section');
