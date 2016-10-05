@@ -50,7 +50,7 @@ function Navbar(props) {
     <header>
       <nav>
         <Link to="/main" className="main-logo">
-          <img src="img/logo.png" alt="Book Kit!" />
+          <img src="img/book-kit-logo.svg" alt="Book Kit!" />
         </Link>
         {navContent}
       </nav>
