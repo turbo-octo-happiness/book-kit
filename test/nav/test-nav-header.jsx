@@ -1,122 +1,123 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import chai from 'chai';
+import Navbar from '../../public/js/nav/nav-header';
 import { Link } from 'react-router';
-import NavHeader from '../../src/js/nav/nav-header';
-import BookmarkFormContainer from '../../src/js/content/bookmark-form-container';
 
 const should = chai.should();
 
-describe('NavHeader - nav-header.jsx', () => {
-  it('Should render the initial header', () => {
-    const onAddInput = () => {
-      // test function
-    };
+describe('Navbar component', () => {
+  it('Renders Navbar with Login button if not authenticated', () => {
+    /* ------- MOCK DATA ------- */
+    const isAuthenticated = false;
 
-    const addFolder = () => {
-      // test function
-    };
-
-    const folder = {
-      folderid: 1,
-      foldername: 'folderName',
-    };
-
-    const folders = [folder];
-
+    /* ------ TEST RENDER ------ */
     const renderer = TestUtils.createRenderer();
     renderer.render(
-      <NavHeader
-        onAddInput={onAddInput}
-        addFolder={addFolder}
-        folders={folders}
+      <Navbar
+        isAuthenticated={isAuthenticated}
       />
     );
-
     const result = renderer.getRenderOutput();
-    result.type.should.equal('header');
-    result.props.children.should.be.a('object');
+    // console.log(result, '<<< RESULT');
 
-    // <nav className="navbar navbar-default">
+    /* ------- TESTS -------- */
+    result.type.should.equal('header');
+
     const nav = result.props.children;
     nav.type.should.equal('nav');
-    nav.props.className.should.equal('navbar navbar-default');
-    nav.props.children.should.be.a('object');
+    nav.props.children.length.should.equal(2);
 
-    // <div className="container">
-    const divContainer = nav.props.children;
-    divContainer.type.should.equal('div');
-    divContainer.props.className.should.equal('container');
-    divContainer.props.children.should.be.a('array');
-    divContainer.props.children.length.should.equal(3);
+    const link = nav.props.children[0];
+    link.type.should.equal(Link);
+    link.props.to.should.equal('/main');
+    link.props.className.should.equal('main-logo');
+    link.props.style.should.be.a('object');
+    link.props.style.should.eql({});
+    link.props.children.type.should.equal('img');
+    link.props.children.props.src.should.equal('img/logo.png');
+    link.props.children.props.alt.should.equal('Book Kit!');
 
-    // <ul className="nav navbar-nav">
-    const ulLeftNav = divContainer.props.children[0];
-    ulLeftNav.type.should.equal('ul');
-    ulLeftNav.props.className.should.equal('nav navbar-nav');
-    ulLeftNav.props.children.should.be.a('array');
-    ulLeftNav.props.children.length.should.equal(2);
+    const login = nav.props.children[1];
+    login.type.should.equal('div');
+    login.props.className.should.equal('login');
+    login.props.children.type.should.equal(Link);
+    login.props.children.props.to.should.equal('#');
+    login.props.children.props.children.should.equal('Login');
+    login.props.children.props.style.should.be.a('object');
+    login.props.children.props.style.should.eql({});
+  });
 
-    // <li>
-    const logo = ulLeftNav.props.children[0];
-    logo.type.should.equal('li');
-    logo.props.children.should.be.a('object');
+  it('Renders Navbar with profile pic, account button, and logout button', () => {
+    /* ------- MOCK DATA ------- */
+    const isAuthenticated = true;
+    const profile = {
+      picture: 'imageurl'
+    };
 
-    // <Link className="navbar-brand" to={'/'}>
-    const logoLink = logo.props.children;
-    logoLink.type.should.equal(Link);
-    logoLink.props.className.should.equal('navbar-brand');
-    logoLink.props.to.should.equal('/');
-    logoLink.props.children.should.be.a('object');
+    const onLogoutClick = () => {
+      // Test Function
+    };
 
-    // <img src="img/logo.png" alt="Book Kit!" />
-    const logoImg = logoLink.props.children;
-    logoImg.type.should.equal('img');
-    logoImg.props.src.should.equal('img/logo.png');
-    logoImg.props.alt.should.equal('Book Kit!');
+    /* ------ TEST RENDER ------ */
+    const renderer = TestUtils.createRenderer();
+    renderer.render(
+      <Navbar
+        isAuthenticated={isAuthenticated}
+        profile={profile}
+        onLogoutClick={onLogoutClick}
+      />
+    );
+    const result = renderer.getRenderOutput();
+    console.log(result.props.children.props.children[1].props.children[2], '<<< RESULT');
 
-    // <li>
-    const addBkmk = ulLeftNav.props.children[1];
-    addBkmk.type.should.equal('li');
-    addBkmk.props.children.should.be.a('array');
-    addBkmk.props.children.length.should.equal(2);
+    /* ------- TESTS -------- */
+    result.type.should.equal('header');
 
-    // <a data-toggle="modal" data-target="#add-form">
-    const addModal = addBkmk.props.children[0];
-    addModal.type.should.equal('a');
-    addModal.props['data-toggle'].should.equal('modal');
-    addModal.props['data-target'].should.equal('#add-form');
-    addModal.props.children.should.be.a('object');
+    const nav = result.props.children;
+    nav.type.should.equal('nav');
+    nav.props.children.length.should.equal(2);
 
-    // <span className="glyphicon glyphicon-plus" aria-hidden="true" />
-    const addPlus = addModal.props.children;
-    addPlus.type.should.equal('span');
-    addPlus.props.className.should.equal('glyphicon glyphicon-plus');
-    addPlus.props['aria-hidden'].should.equal('true');
+    const link = nav.props.children[0];
+    link.type.should.equal(Link);
+    link.props.to.should.equal('/main');
+    link.props.className.should.equal('main-logo');
+    link.props.style.should.be.a('object');
+    link.props.style.should.eql({});
+    link.props.children.type.should.equal('img');
+    link.props.children.props.src.should.equal('img/logo.png');
+    link.props.children.props.alt.should.equal('Book Kit!');
 
-    // <div className="modal fade" id="add-form">
-    const divModal = addBkmk.props.children[1];
-    divModal.type.should.equal('div');
-    divModal.props.className.should.equal('modal fade');
-    divModal.props.id.should.equal('add-form');
-    divModal.props.children.should.be.a('object');
+    const account = nav.props.children[1];
+    account.type.should.equal('div');
+    account.props.children.length.should.equal(3);
 
-    // <BookmarkFormContainer />
-    // const bookmarkContainer = divModal.props.children;
-    // bookmarkContainer.should.equal(BookmarkFormContainer);
+    const profileLink = account.props.children[0];
+    profileLink.type.should.equal(Link);
+    profileLink.props.to.should.equal('/manage/profile');
+    profileLink.props.className.should.equal('prof-link');
+    profileLink.props.style.should.be.a('object');
+    profileLink.props.style.should.eql({});
+    profileLink.props.children.type.should.equal('img');
+    profileLink.props.children.props.src.should.equal('imageurl');
+    profileLink.props.children.props.height.should.equal('40px');
+    profileLink.props.children.props.alt.should.equal('profile');
+    profileLink.props.children.props.className.should.equal('prof-pic');
 
-    const formRightNav = divContainer.props.children[1];
-    formRightNav.type.should.equal('form');
-    formRightNav.props.className.should.equal('navbar-form navbar-right');
-    formRightNav.props.children.should.be.a('object');
+    const accountButton = account.props.children[1];
+    accountButton.type.should.equal(Link);
+    accountButton.props.to.should.equal('/manage/profile');
+    accountButton.props.children.should.equal('My Account');
+    accountButton.props.style.should.be.a('object');
+    accountButton.props.style.should.eql({});
 
-    // formRightNav children
-
-    const ulRightNav = divContainer.props.children[2];
-    ulRightNav.type.should.equal('ul');
-    ulRightNav.props.className.should.equal('nav navbar-nav navbar-right');
-    ulRightNav.props.children.should.be.a('object');
-
-    // ulRightNav children
+    const logout = account.props.children[2];
+    logout.type.should.equal(Link);
+    logout.props.to.should.equal('/');
+    logout.props.onClick.should.be.a('function');
+    logout.props.onClick.should.equal(onLogoutClick);
+    logout.props.children.should.equal('Logout');
+    logout.props.style.should.be.a('object');
+    logout.props.style.should.eql({});
   });
 });

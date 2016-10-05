@@ -1,12 +1,12 @@
-import React from 'react';
-import chai from 'chai';
-import TestUtils from 'react-addons-test-utils';
-import { Provider, connect } from 'react-redux';
-import store from '../../src/js/redux/store';
-import NavFolderContainer from '../../src/js/nav/nav-folder-container';
-import NavFolder from '../../src/js/nav/nav-folder';
-
-const should = chai.should();
+// import React from 'react';
+// import chai from 'chai';
+// import TestUtils from 'react-addons-test-utils';
+// import { Provider, connect } from 'react-redux';
+// import store from '../../src/js/redux/store';
+// import NavFolderContainer from '../../src/js/nav/nav-folder-container';
+// import NavFolder from '../../src/js/nav/nav-folder';
+//
+// const should = chai.should();
 
 // FIXME: make this work
 
