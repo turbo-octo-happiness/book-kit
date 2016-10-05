@@ -11,7 +11,7 @@ function Tile(props) {
     backgroundImage: `url(${props.screenshot})`,
   };
 
-  const title = props.title.length > 50 ? props.title.slice(0, 50).concat('...') : props.title;
+  const title = props.title.length > 50 ? props.title.slice(0, 50).concat('...').toUpperCase() : props.title.toUpperCase();
 
   return (
     <li className="bookmark-tile col-md-3">

@@ -23,8 +23,6 @@ class BookmarkView extends React.Component {
   onSubmitEdit(event) {
     event.preventDefault();
 
-    console.log(this.props, '<<< props');
-
     this.props.onEdit({
       url: this.url.value,
       title: this.title.value,
@@ -58,10 +56,7 @@ class BookmarkView extends React.Component {
       backgroundImage: `url(${bookmark.screenshot})`,
     };
 
-    console.log(owner.toString(), 'OWNER');
-    console.log(bookmark.owner, 'BOOKMARK OWNER');
-
-    const disabled = owner.toString() === bookmark.owner ? false : true;
+    const disabled = owner.toString() !== bookmark.owner;
 
     const folder = folders.filter((folderObj) => {
       return bookmark.folderid === folderObj.folderid;
@@ -79,6 +74,15 @@ class BookmarkView extends React.Component {
       });
     }
 
+    const httpCheck = /http/;
+    const url = httpCheck.test(bookmark.url) ? bookmark.url : `//${bookmark.url}`;
+
+    const sharedMarker = folder[0].members ? (
+      <span className="shared-marker">Shared</span>
+    ) : (
+      <span />
+    );
+
     return (
       <section className="content-section bookmark-section">
         <div className="bookmark-view" style={textStyle}>
@@ -86,7 +90,7 @@ class BookmarkView extends React.Component {
             <div className="bookmark-title">
               <h2>{bookmark.title}</h2>
               <h4>
-                <a href={bookmark.url}>
+                <a href={url} target="_blank">
                   {bookmark.url}
                 </a>
               </h4>
@@ -96,7 +100,11 @@ class BookmarkView extends React.Component {
 
           <p>{bookmark.description}</p>
           <h4>Folder:</h4>
-          <p>{folder[0].foldername}</p>
+          <div className="view-folder">
+            <p>{folder[0].foldername}</p>
+            {sharedMarker}
+          </div>
+
           <h4>Tags:</h4>
           <ul className="tags-list">{tags}</ul>
 
