@@ -24,5 +24,13 @@ describe('PageContainer component', () => {
     const sidebar = result.props.children.props.children[0];
     sidebar.type.should.be.a('function');
     sidebar.type.displayName.should.equal('Connect(SidebarContainer)');
+    sidebar.type.propTypes.should.have.property('store');
+    sidebar.type.should.have.property('WrappedComponent')
+      .that.is.a('function')
+      .with.property('propTypes');
+    sidebar.type.should.have.deep.property('WrappedComponent.propTypes.folders');
+    sidebar.type.should.have.deep.property('WrappedComponent.propTypes.tags');
+    sidebar.type.should.have.deep.property('WrappedComponent.propTypes.dispatch');
+    sidebar.type.should.have.deep.property('WrappedComponent.propTypes.token');
   });
 });

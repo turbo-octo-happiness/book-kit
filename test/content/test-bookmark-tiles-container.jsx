@@ -30,7 +30,7 @@ describe('BookmarkTilesContainer component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    console.log('RESULT >>>', result, '<<< RESULT');
+    // console.log('RESULT >>>', result, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.be.a('function');
