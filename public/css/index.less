@@ -6,28 +6,24 @@
 @gray15: #F6F7F7;
 @gray5: #FAFBFB;
 @white: #F4F8FC;
-
 @blue: #85C7F2;
 @blue125: darken(@blue, 30%);
 @blue75: mix(@blue, @white, 75%);
 @blue50: mix(@blue, @white, 50%);
 @blue25: mix(@blue, @white, 25%);
 @blue5: mix(@blue, @white, 7%);
-
 @green: #23CE6B;
 @green125: darken(@green, 10%);
 @green75: mix(@green, @white, 75%);
 @green50: mix(@green, @white, 50%);
 @green25: mix(@green, @white, 25%);
 @green5: mix(@green, @white, 7%);
-
 // Globals
-
-body, html {
+body,
+html {
   height: 100%;
   color: @gray75;
   background-color: @white;
-
   font-size: 1rem;
   line-height: 1.875;
   -webkit-font-smoothing: antialiased;
@@ -91,8 +87,8 @@ button:disabled {
   background-color: @green25;
 }
 
-textarea,
-input {
+input,
+textarea {
   border-radius: 0.5rem;
   border: 0.5px solid @gray40;
   padding: 0.5rem;
@@ -116,9 +112,7 @@ select {
 .prof-pic {
   border-radius: 50%;
 }
-
 // Section Styles
-
 /**
  * HEADER SECTION - nav
  */
@@ -170,11 +164,9 @@ header {
     }
   }
 }
-
 /**
  * Main body section under nav
  */
-
 /**
  *  Pre-login Splash Page
  */
@@ -183,7 +175,6 @@ header {
     background-image: url('img/splash.jpeg');
     background-position: top;
     background-size: cover;
-
     height: 35rem;
   }
 
@@ -199,7 +190,6 @@ header {
 
     .main-tagline {
       margin-top: -1rem;
-      text-shadow:
     }
 
     .second-tagline {
@@ -214,7 +204,6 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     position: absolute;
     left: 0;
     margin-left: 50%;
@@ -227,7 +216,6 @@ header {
       font-size: 1.1rem;
       font-weight: bold;
       border-bottom: 2px solid @white;
-
       transition: border-color 0.3s ease;
     }
 
@@ -252,9 +240,7 @@ header {
     background-color: @green;
     height: 35rem;
   }
-
 }
-
 /**
  * Post-Login Styling
  */
@@ -269,7 +255,6 @@ header {
     max-width: 1024px;
     margin: 0 auto;
   }
-
   // same styling for main pages and manage page
   .sidebar {
     width: 20%;
@@ -286,9 +271,9 @@ header {
       color: @green125;
     }
 
-    .search-bar,
+    .add-bookmark,
     .add-folder,
-    .add-bookmark {
+    .search-bar {
       width: 80%;
     }
 
@@ -304,11 +289,9 @@ header {
       margin-bottom: 2rem;
     }
   }
-
   /**
    * Styling for manage/profile account page
    */
-
   .profile {
     display: flex;
     justify-content: center;
@@ -334,11 +317,9 @@ header {
       }
     }
   }
-
   /**
    * Styling for bookmark view page
    */
-
   .bookmark-section {
     display: flex;
     justify-content: space-between;
@@ -414,18 +395,14 @@ header {
       }
     }
   }
-
   /**
    * Styling for everything right of the sidebar
    */
-
   .content-section {
     width: 80%;
-
     /**
      * MANAGE FOLDER PAGE
      */
-
     .folder-header {
       border-bottom: 0.5px solid @gray40;
       margin-bottom: 1rem;
@@ -473,11 +450,9 @@ header {
         }
       }
     }
-
     /**
      * BOOKMARK TILES SECTION
      */
-
     ul {
       display: flex;
       flex-wrap: wrap;
@@ -528,7 +503,7 @@ header {
         bottom: 0;
         left: 0;
         right: 0;
-        opacity: .4;
+        opacity: 0.4;
         background-size: cover;
         background-position: center;
         border-radius: 0.8rem;
@@ -536,11 +511,9 @@ header {
       }
     }
   }
-
   /**
    * BOOKMARK FORM
    */
-
   .bookmark-form-container {
     display: flex;
     justify-content: center;
