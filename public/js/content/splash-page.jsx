@@ -5,7 +5,8 @@ export default function SplashPage() {
     <div className="splash-page">
       <section className="splash-main">
         <div className="splash-head-text">
-          <span className="main-tagline">Stop losing your resources.</span>
+          <span className="main-tagline">Coding is hard.</span>
+          <span className="main-tagline">Bookmarking shouldn't be.</span>
           <span className="second-tagline">Made by bootcamp students for bootcamp students.</span>
         </div>
       </section>
