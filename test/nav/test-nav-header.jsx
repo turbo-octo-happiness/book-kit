@@ -4,6 +4,8 @@ import chai from 'chai';
 import Navbar from '../../public/js/nav/nav-header';
 import { Link } from 'react-router';
 
+process.env.DEVELOPMENT = 'testing';
+
 const should = chai.should();
 
 describe('Navbar component', () => {

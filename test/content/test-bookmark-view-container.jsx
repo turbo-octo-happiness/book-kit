@@ -3,6 +3,8 @@ import TestUtils from 'react-addons-test-utils';
 import chai from 'chai';
 import { BookmarkViewContainer } from '../../public/js/content/bookmark-view-container';
 
+process.env.DEVELOPMENT = 'testing';
+
 const should = chai.should();
 
 describe('BookmarkViewContainer Component', () => {

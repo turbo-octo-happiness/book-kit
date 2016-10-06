@@ -3,6 +3,8 @@ import TestUtils from 'react-addons-test-utils';
 import chai from 'chai';
 import BookmarkTiles from '../../public/js/content/bookmark-tiles';
 
+process.env.DEVELOPMENT = 'testing';
+
 const should = chai.should();
 
 describe('BookmarkTiles component', () => {

@@ -3,6 +3,8 @@ import TestUtils from 'react-addons-test-utils';
 import chai from 'chai';
 import SelectFolder from '../../public/js/content/bookmark-form-folder';
 
+process.env.DEVELOPMENT = 'testing';
+
 const should = chai.should();
 
 describe('SelectFolder Component', () => {

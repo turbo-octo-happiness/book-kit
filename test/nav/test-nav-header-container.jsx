@@ -3,6 +3,8 @@ import TestUtils from 'react-addons-test-utils';
 import chai from 'chai';
 import { NavbarContainer } from '../../public/js/nav/nav-header-container';
 
+process.env.DEVELOPMENT = 'testing';
+
 const should = chai.should();
 
 describe('NavbarContainer component', () => {

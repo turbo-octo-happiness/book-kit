@@ -3,6 +3,8 @@ import TestUtils from 'react-addons-test-utils';
 import chai from 'chai';
 import PageContainer from '../../public/js/content/page-container';
 
+process.env.DEVELOPMENT = 'testing';
+
 const should = chai.should();
 
 describe('PageContainer component', () => {

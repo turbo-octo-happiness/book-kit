@@ -4,6 +4,8 @@ import chai from 'chai';
 import BookmarkForm from '../../public/js/content/bookmark-form';
 import { Link } from 'react-router';
 
+process.env.DEVELOPMENT = 'testing';
+
 const should = chai.should();
 
 describe('BookmarkForm Component', () => {

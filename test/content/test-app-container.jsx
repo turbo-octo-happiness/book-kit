@@ -3,6 +3,8 @@ import TestUtils from 'react-addons-test-utils';
 import chai from 'chai';
 import { AppContainer } from '../../public/js/app-container';
 
+process.env.DEVELOPMENT = 'testing';
+
 const should = chai.should();
 
 describe('AppContainer component', () => {

@@ -4,6 +4,8 @@ import chai from 'chai';
 import { Link } from 'react-router';
 import Tile from '../../public/js/content/bookmark-tiles-child';
 
+process.env.DEVELOPMENT = 'testing';
+
 const should = chai.should();
 
 describe('Tile Component', () => {
