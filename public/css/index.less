@@ -32,7 +32,7 @@ body, html {
   line-height: 1.875;
   -webkit-font-smoothing: antialiased;
   font-family: 'Open Sans', sans-serif;
-  letter-spacing: 0.04rem;
+  letter-spacing: 0.02rem;
 }
 
 * {
@@ -41,7 +41,7 @@ body, html {
 }
 
 h1 {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 3rem;
 }
 
@@ -75,7 +75,7 @@ button {
   color: @white;
   border-radius: 0.5rem;
   border: none;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: bold;
   font-size: 0.9rem;
   margin-bottom: 1rem;
@@ -187,6 +187,24 @@ header {
     height: 35rem;
   }
 
+  .splash-head-text {
+    position: absolute;
+    margin-left: 10%;
+    margin-top: 8rem;
+    font-size: 3rem;
+    font-family: 'Roboto', sans-serif;
+    color: @green125;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    .second-tagline {
+      font-size: 1rem;
+      font-family: 'Open Sans', sans-serif;
+      color: @gray50;
+    }
+  }
+
   .splash-btn {
     display: flex;
     flex-direction: column;
@@ -199,9 +217,14 @@ header {
 
     .learn-more {
       position: absolute;
-      min-width: 10rem;
+      min-width: 7rem;
       text-align: center;
-      padding-bottom: 7rem;
+      margin-top: -3.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-bottom: 2px solid @white;
+
+      transition: border-color 0.3s ease;
     }
 
     .splash-scroll-btn {
@@ -212,6 +235,12 @@ header {
       border-radius: 50%;
       padding: 0 1rem;
       color: @green;
+    }
+  }
+
+  .splash-btn:hover {
+    .learn-more {
+      border-color: @green125;
     }
   }
 
@@ -477,7 +506,7 @@ header {
         text-align: center;
         align-items: center;
         justify-content: center;
-        font-family: 'Oswald', sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-weight: 900;
         font-size: 1.5rem;
         line-height: 2.3rem;

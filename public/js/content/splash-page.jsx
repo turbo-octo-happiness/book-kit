@@ -4,13 +4,18 @@ export default function SplashPage() {
   return (
     <div className="splash-page">
       <section className="splash-main">
-
+        <div className="splash-head-text">
+          <span className="main-tagline">Stop losing your resources.</span>
+          <span className="second-tagline">Made by bootcamp students for bootcamp students.</span>
+        </div>
       </section>
-      <a href="#" className="splash-btn">
+      <a href="#features" className="splash-btn">
         <span className="learn-more">Learn More</span>
-        <span className="splash-scroll-btn">&#x2228;</span>
+        <span className="splash-scroll-btn">
+          <i className="fa fa-caret-down" aria-hidden="true" />
+        </span>
       </a>
-      <section className="splash-features">
+      <section className="splash-features" id="features">
 
       </section>
       <footer className="splash-footer"></footer>
