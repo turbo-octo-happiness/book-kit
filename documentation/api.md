@@ -75,6 +75,7 @@ Status: 201 Created
   "bookmarkid": 40,
   "owner": "123",
   "foldername": "fewd",
+  "members": ["123"],
   "tags": [
     {
       "tagid": 17,
@@ -114,6 +115,7 @@ Status: 200 Ok
   "bookmarkid": 40,
   "customerid": "123",
   "foldername":"fewd",
+  "members": ["123"],
   "tags": [
     {
       "tagid": 17,

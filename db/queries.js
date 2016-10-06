@@ -210,7 +210,13 @@ exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                               SELECT foldername
                               FROM folder
                               WHERE folderid = $7
-                            );`;
+                            ),
+                            (
+                              SELECT array_agg(DISTINCT customer_folder.customerid) AS members
+                              FROM customer_folder
+                              WHERE folderid = $8
+                              GROUP BY folderid
+                            ) AS members;`;
 
 exports.DELETE_BOOKMARK = `DELETE FROM bookmark
                            WHERE bookmarkid = $1 AND customerid = $2
@@ -225,7 +231,14 @@ exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderi
                            RETURNING *, $8 AS owner, (
                              SELECT foldername
                              FROM folder
-                             WHERE folderid = $9);`;
+                             WHERE folderid = $9
+                           ),
+                           (
+                             SELECT array_agg(DISTINCT customer_folder.customerid) AS members
+                             FROM customer_folder
+                             WHERE folderid = $10
+                             GROUP BY folderid
+                           ) AS members;`;
 
 // Copies bookmark to a new folder, iff customer already has access to that folder.
 // params: [bookmarkid, customerid]

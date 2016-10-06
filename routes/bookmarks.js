@@ -110,7 +110,7 @@ router.post('/', jsonParser, (request, response) => {
     db.tx((t) => {
         // First insert new bookmark
       return t.one(queries.INSERT_BOOKMARK, [url, title, bdescription,
-            folderid, bscreenshot, userIdentity, folderid,
+            folderid, bscreenshot, userIdentity, folderid, folderid,
           ])
           .then((bookmark) => {
             console.log('bookmark inserted: ', bookmark);
@@ -232,7 +232,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
           console.log('inserted tag updates', results);
 
           return t.one(queries.UPDATE_BOOKMARK, [url, title, bdescription,
-            folderid, bscreenshot, bookmarkid, userIdentity, userIdentity, folderid,
+            folderid, bscreenshot, bookmarkid, userIdentity, userIdentity, folderid, folderid,
           ]).then((newBookmark) => {
             console.log('inserted bookmark ===>', newBookmark);
             resultsToReturn = Object.assign({}, resultsToReturn, newBookmark);
