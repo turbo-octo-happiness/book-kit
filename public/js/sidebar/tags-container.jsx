@@ -6,7 +6,7 @@ const propTypes = {
   tags: PropTypes.array,
 };
 
-class TagContainer extends React.Component {
+export class TagContainer extends React.Component {
   render() {
     const tagArray = [];
 
@@ -34,4 +34,4 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = connect(mapStateToProps)(TagContainer);
+export default connect(mapStateToProps)(TagContainer);
