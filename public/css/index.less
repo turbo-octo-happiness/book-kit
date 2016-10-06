@@ -170,6 +170,7 @@ header {
 /**
  *  Pre-login Splash Page
  */
+
 .splash-page {
   .splash-main {
     background-image: url('img/splash.jpeg');
@@ -298,6 +299,14 @@ header {
         margin-top: 7rem;
         display: flex;
         flex-direction: column;
+
+        a {
+          color: @green;
+
+          &:hover {
+            color: @green125;
+          }
+        }
 
         .about-child {
           margin-bottom: 7rem;
