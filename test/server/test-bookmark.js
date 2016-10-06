@@ -178,7 +178,7 @@ describe('/bookmarks endpoints', () => {
       });
     });
 
-    it('it should return a list of bookmarks with tags', () => {
+    it('Should return a list of bookmarks with tags', () => {
       let folder = {
         foldername: 'test folder',
         customerid: customer1.user_id,
@@ -391,8 +391,6 @@ describe('/bookmarks endpoints', () => {
             .set('Authorization', `Bearer ${customer1_token}`)
             .send(message)
             .then((res) => {
-              console.log(res.body);
-
               res.should.have.status(201);
               res.type.should.equal('application/json');
               res.charset.should.equal('utf-8');
@@ -423,6 +421,9 @@ describe('/bookmarks endpoints', () => {
               bookmark.should.have.property('folderid');
               bookmark.folderid.should.be.an('number');
               bookmark.folderid.should.equal(message.folderid);
+              bookmark.members.should.be.an('array');
+              bookmark.members.length.should.equal(1);
+              bookmark.members[0].should.equal(customer1.user_id);
               bookmark.should.have.property('tags');
               bookmark.tags.should.be.an('array');
               bookmark.tags.length.should.equal(1);
@@ -434,6 +435,125 @@ describe('/bookmarks endpoints', () => {
               bookmark.tags[0].tagname.should.equal(message.tags[0]);
             });
         });
+    });
+  });
+
+  describe('PUT', () => {
+    it('Should update bookmark', () => {
+      let folder = {
+        foldername: 'test folder',
+        customerid: customer1.user_id,
+        email: customer1.email,
+      };
+
+      let bookmark1 = {
+        url: 'test.com',
+        title: 'example title',
+        description: 'example description',
+        screenshot: 'example.png',
+        customerid: '123',
+      };
+
+      let message = {
+        url: 'updated.com',
+        title: 'update example title',
+        description: 'example description',
+        screenshot: 'example.png',
+        folderid: 1,
+        foldername: 'test folder',
+        tags: ['test tag 1', 'update']
+      };
+
+      let tag1 = {
+        tagname: 'test tag 1'
+      };
+
+      return db.tx((t) => {
+        return t.one(`WITH customer AS (
+                          INSERT INTO customer(customerid, email)
+                          VALUES ('${customer1.user_id}', '${customer1.email}')
+                        ),
+                        folders AS (
+                          INSERT INTO folder(foldername) VALUES ($[foldername])
+                          RETURNING folderid, foldername
+                         )
+                         INSERT INTO customer_folder(customerid, folderid)
+                         VALUES ('${customer1.user_id}', (SELECT folderid from folders))
+                         RETURNING folderid, (SELECT foldername from folders);`, folder)
+          .then((folder) => {
+            bookmark1.folderid = folder.folderid;
+            return t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
+                      VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                      RETURNING *;`,
+                bookmark1)
+              .then(() => {
+                return t.none(`WITH t AS (
+                            INSERT INTO tag (customerid, tagname)
+                            SELECT '${customer1.user_id}', $[tagname]
+                            RETURNING tagid
+                          )
+                          INSERT INTO bookmark_tag(bookmarkid, tagid)
+                          SELECT 1, tagid FROM (
+                            SELECT tagid
+                            FROM t) AS s;`, tag1);
+              });
+          });
+      }).then(() => {
+        return chai.request(app)
+          .put(`${API_ENDPOINT}/1`)
+          .set('Authorization', `Bearer ${customer1_token}`)
+          .send(message)
+          .then((res) => {
+            res.should.have.status(200);
+            res.type.should.equal('application/json');
+            res.charset.should.equal('utf-8');
+            res.body.should.be.an('object');
+
+            let bookmark = res.body;
+            bookmark.should.have.property('bookmarkid');
+            bookmark.bookmarkid.should.be.a('number');
+            bookmark.bookmarkid.should.equal(1);
+            bookmark.should.have.property('url');
+            bookmark.url.should.be.a('string');
+            bookmark.url.should.equal(message.url);
+            bookmark.should.have.property('title');
+            bookmark.title.should.be.an('string');
+            bookmark.title.should.equal(message.title);
+            bookmark.should.have.property('description');
+            bookmark.description.should.be.an('string');
+            bookmark.description.should.equal(message.description);
+            bookmark.should.have.property('screenshot');
+            bookmark.screenshot.should.be.an('string');
+            bookmark.screenshot.should.equal(message.screenshot);
+            bookmark.should.have.property('owner');
+            bookmark.owner.should.be.an('string');
+            bookmark.owner.should.equal(customer1.user_id);
+            bookmark.should.have.property('foldername');
+            bookmark.foldername.should.be.an('string');
+            bookmark.foldername.should.equal(message.foldername);
+            bookmark.should.have.property('folderid');
+            bookmark.folderid.should.be.an('number');
+            bookmark.folderid.should.equal(message.folderid);
+            bookmark.members.should.be.an('array');
+            bookmark.members.length.should.equal(1);
+            bookmark.members[0].should.equal(customer1.user_id);
+            bookmark.should.have.property('tags');
+            bookmark.tags.should.be.an('array');
+            bookmark.tags.length.should.equal(2);
+            bookmark.tags[0].should.have.property('tagid');
+            bookmark.tags[0].tagid.should.be.an('number');
+            bookmark.tags[0].tagid.should.equal(1);
+            bookmark.tags[0].should.have.property('tagname');
+            bookmark.tags[0].tagname.should.be.an('string');
+            bookmark.tags[0].tagname.should.equal(message.tags[0]);
+            bookmark.tags[1].should.have.property('tagid');
+            bookmark.tags[1].tagid.should.be.an('number');
+            bookmark.tags[1].tagid.should.equal(2);
+            bookmark.tags[1].should.have.property('tagname');
+            bookmark.tags[1].tagname.should.be.an('string');
+            bookmark.tags[1].tagname.should.equal(message.tags[1]);
+          });
+      });
     });
   });
 });

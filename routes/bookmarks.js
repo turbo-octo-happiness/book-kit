@@ -70,7 +70,7 @@ router.post('/', jsonParser, (request, response) => {
   // Some user_id's are numbers and some are alphanumeric.
   const userIdentity = `${request.user.identities[0].user_id}`;
 
-  console.log(request.body, '<<<< SERVER > REQUEST BODY');
+  // console.log(request.body, '<<<< SERVER > REQUEST BODY');
 
   // Validate that the required fields were passed in the body of the request.
   if (!request.body.url) {
@@ -113,7 +113,7 @@ router.post('/', jsonParser, (request, response) => {
             folderid, bscreenshot, userIdentity, folderid, folderid,
           ])
           .then((bookmark) => {
-            console.log('bookmark inserted: ', bookmark);
+            // console.log('bookmark inserted: ', bookmark);
             resultsToReturn = Object.assign({}, resultsToReturn, bookmark);
 
             // Then insert the array of tags
@@ -122,7 +122,7 @@ router.post('/', jsonParser, (request, response) => {
             });
             return t.batch(q)
               .then((tagidArray) => {
-                console.log('tags inserted: ', tagidArray);
+                // console.log('tags inserted: ', tagidArray);
                 resultsToReturn = Object.assign({}, resultsToReturn, {
                   tags: tagidArray,
                 });
@@ -133,15 +133,13 @@ router.post('/', jsonParser, (request, response) => {
                 });
                 return t.batch(q2)
                   .then((result) => {
-                    console.log('book_tag inserted: ', result);
-                    console.log('final result', result);
                     return resultsToReturn;
                   });
               });
           });
     })
       .then((data) => {
-        console.log('transaction then', data);
+        // console.log('transaction then', data);
         response.status(201).json(data);
       })
       .catch((error) => {
@@ -158,7 +156,7 @@ router.post('/', jsonParser, (request, response) => {
  * foldername, screenshot (optional), and an array of tags.
  */
 router.put('/:bookmarkid', jsonParser, (request, response) => {
-  console.log(request.body, '<<<< SERVER > REQUEST BODY');
+  // console.log(request.body, '<<<< SERVER > REQUEST BODY');
   const bookmarkid = request.params.bookmarkid;
   // Some user_id's are numbers and some are alphanumeric.
   const userIdentity = `${request.user.identities[0].user_id}`;
@@ -194,16 +192,14 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
     // Database transaction, all queries within will either complete or fail.
     db.tx((t) => {
       return t.manyOrNone(queries.SELECT_TAGNAME, [userIdentity, bookmarkid]).then((tagnames) => {
-        console.log(tagnames[0], '<<< tagnames');
         const oldTags = tagnames[0] || [];
-        console.log('SELECT_TAGNAME oldTags: ', oldTags);
         let add = []; // Not in oldTags, add tag if necessary and BOOKMARK_TAG reference.
         const del = []; // In oldTags but not in tags, remove BOOKMARK_TAG reference.
 
         // If the bookmark already had tags, then we figure out what to add and what to delete
         if (oldTags.tagarray) {
           for (let i = 0; i < tags.length; i++) {
-            console.log(`${oldTags.tagarray.indexOf(tags[i]) < 0} && !${tags[i]}`);
+            // console.log(`${oldTags.tagarray.indexOf(tags[i]) < 0} && !${tags[i]}`);
             if (oldTags.tagarray.indexOf(tags[i]) < 0) {
               add.push(tags[i]);
             }
@@ -217,8 +213,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
           // No tags were previously associated with the bookmark, just add the new tags.
           add = tags;
         }
-
-        console.log(add, del);
+        
         // Create an array of queries for both inserting new tags and deleting old tags
         const qa = add.map((tag) => {
           return t.one(queries.INSERT_FULL_TAG, [userIdentity, tag, userIdentity, tag, bookmarkid]);
@@ -229,17 +224,17 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
 
         const q = qa.concat(qd);
         return t.batch(q).then((results) => {
-          console.log('inserted tag updates', results);
+          // console.log('inserted tag updates', results);
 
           return t.one(queries.UPDATE_BOOKMARK, [url, title, bdescription,
             folderid, bscreenshot, bookmarkid, userIdentity, userIdentity, folderid, folderid,
           ]).then((newBookmark) => {
-            console.log('inserted bookmark ===>', newBookmark);
+            // console.log('inserted bookmark ===>', newBookmark);
             resultsToReturn = Object.assign({}, resultsToReturn, newBookmark);
 
             return t.manyOrNone(queries.SELECT_TAG_FOR_BOOKMARK, [userIdentity, bookmarkid])
               .then((bookmarkTags) => {
-                console.log('new Tags: ', bookmarkTags);
+                // ('new Tags: ', bookmarkTags);
                 resultsToReturn = Object.assign({}, resultsToReturn, {
                   tags: bookmarkTags,
                 });
@@ -249,7 +244,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
         });
       });
     }).then((data) => {
-      console.log('then for transaction ===>', data);
+      // console.log('then for transaction ===>', data);
       response.json(data);
     }).catch((error) => {
       console.log('ERROR:', error.message || error);

@@ -93,17 +93,17 @@ Status: 201 Created
 - _Example Request:_
 
 ```json
-PUT /bookmark/40
-{
-  "url": "https://webdesign.tutsplus.com/articles/designing-for-and-as-a-color-blind-person--webdesign-3408",
-  "title": "Designing For, and As, a Color-Blind Person",
-  "description": "Be careful about color combinations.",
-  "screenshot": "https://cdn.tutsplus.com/webdesign/uploads/legacy/articles/003_colorBlind/colortest.png",
-  "bookmarkid": 40,
-  "folderid": "8",
-  "foldername": "fewd",
-  "tags": ["a11y","color"]
-}
+> PUT /bookmark/40
+> {
+>   "url": "https://webdesign.tutsplus.com/articles/designing-for-and-as-a-color-blind-person--webdesign-3408",
+>   "title": "Designing For, and As, a Color-Blind Person",
+>   "description": "Be careful about color combinations.",
+>   "screenshot": "https://cdn.tutsplus.com/webdesign/uploads/legacy/articles/003_colorBlind/colortest.png",
+>   "bookmarkid": 40,
+>   "folderid": "8",
+>   "foldername": "fewd",
+>   "tags": ["a11y","color"]
+> }
 
 Status: 200 Ok
 {
