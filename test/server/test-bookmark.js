@@ -180,6 +180,28 @@ describe('Message endpoints', () => {
       });
 
       it('it should return a list of bookmarks with tags', () => {
+        let folder = {
+          foldername: 'test folder',
+          customerid: customer1.user_id,
+          email: customer1.email,
+        }
+
+        let bookmark1 = {
+          url: 'test.com',
+          title: 'example title',
+          description: 'example description',
+          screenshot: 'example.png',
+          customerid: '123',
+        }
+
+        let bookmark2 = {
+          url: 'test.com',
+          title: 'test title',
+          description: 'test description',
+          screenshot: 'test.png',
+          customerid: '123',
+        }
+
         let tag1 = {
           tagname: 'test tag 1'
         };
@@ -187,7 +209,64 @@ describe('Message endpoints', () => {
         let tag2 = {
           tagname: 'tag 2'
         };
-
+        return db.tx((t) => {
+          return t.one(`WITH customer AS (
+                          INSERT INTO customer(customerid, email)
+                          VALUES ($[customerid], $[email])
+                        ),
+                        folders AS (
+                          INSERT INTO folder(foldername) VALUES ($[foldername])
+                          RETURNING folderid, foldername
+                         )
+                         INSERT INTO customer_folder(customerid, folderid)
+                         VALUES ($[customerid], (SELECT folderid from folders))
+                         RETURNING folderid, (SELECT foldername from folders);`, folder)
+            .then((folder) => {
+              bookmark1.folderid = folder.folderid;
+              bookmark2.folderid = folder.folderid;
+              return t.batch([
+                t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
+                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                        RETURNING *;`,
+                  bookmark1),
+                t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
+                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                        RETURNING *;`,
+                  bookmark2)
+              ]).then(() => {
+                // bookmark1 should have two tags and bookmark2 should have 1
+                return t.batch([
+                  t.none(`WITH t AS (
+                            INSERT INTO tag (customerid, tagname)
+                            SELECT '${customer1.user_id}', '${customer1.email}'
+                            RETURNING tagid
+                          )
+                          INSERT INTO bookmark_tag(bookmarkid, tagid)
+                          SELECT 1, tagid FROM (
+                            SELECT tagid
+                            FROM t) AS s;`, tag1),
+                  t.none(`INSERT INTO bookmark_tag(bookmarkid, tagid)
+                          VALUE (2, 1);`),
+                  t.none(`WITH t AS (
+                            INSERT INTO tag (customerid, tagname)
+                            SELECT '${customer1.user_id}', '${customer1.email}'
+                            RETURNING tagid
+                          )
+                          INSERT INTO bookmark_tag(bookmarkid, tagid)
+                          SELECT 1, tagid FROM (
+                            SELECT tagid
+                            FROM t) AS s;`, tag2),
+                ]);
+              });
+            });
+        }).then((data) => {
+          return chai.request(app)
+            .get(API_ENDPOINT)
+            .set('Authorization', `Bearer ${customer1_token}`)
+            .then((res) => {
+              console.log(res.body);
+            });
+        });
       });
     });
   });
