@@ -1,14 +1,15 @@
+/* eslint-env node, mocha */
+const mocha = require('mocha');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const mocha = require('mocha');
 const app = require('../../server').app;
 const exec = require('child_process').exec;
 const db = require('../../pgp');
 // Authentication/User information
 const customer1 = require('./test_setup').customer1;
-const customer2 = require('./test_setup').customer2;
-const customer1_token = require('./test_setup').customer1_token;
-const customer2_token = require('./test_setup').customer2_token;
+const customer1Token = require('./test_setup').customer1Token;
+// const customer2 = require('./test_setup').customer2;
+// const customer2Token = require('./test_setup').customer2Token;
 
 process.env.DEVELOPMENT = 'testing';
 
@@ -20,7 +21,7 @@ const API_ENDPOINT = '/bookmarks';
 describe('/bookmarks endpoints', () => {
   afterEach((done) => {
     // Clear the database by deleting every table and then re-creating them
-    exec('psql test-bookmarks < db/bookmarks_schema.sql', (error, stdout, stderr) => {
+    exec('psql test-bookmarks < db/bookmarks_schema.sql', (error) => {
       if (error) {
         console.error(`exec error: ${error}`);
         return;
@@ -33,7 +34,7 @@ describe('/bookmarks endpoints', () => {
     it('should return an empty list of bookmarks initially', () => {
       return chai.request(app)
         .get(API_ENDPOINT)
-        .set('Authorization', `Bearer ${customer1_token}`)
+        .set('Authorization', `Bearer ${customer1Token}`)
         .then((res) => {
           res.should.have.status(200);
           res.type.should.equal('application/json');
@@ -44,27 +45,27 @@ describe('/bookmarks endpoints', () => {
     });
 
     it('should return a list of bookmarks', () => {
-      let folder = {
+      const folder = {
         foldername: 'test folder',
         customerid: customer1.user_id,
         email: customer1.email,
-      }
+      };
 
-      let bookmark1 = {
+      const bookmark1 = {
         url: 'test.com',
         title: 'example title',
         description: 'example description',
         screenshot: 'example.png',
         customerid: '123',
-      }
+      };
 
-      let bookmark2 = {
+      const bookmark2 = {
         url: 'test.com',
         title: 'test title',
         description: 'test description',
         screenshot: 'test.png',
         customerid: '123',
-      }
+      };
 
       return db.tx((t) => {
         return t.one(`WITH customer AS (
@@ -78,24 +79,26 @@ describe('/bookmarks endpoints', () => {
                          INSERT INTO customer_folder(customerid, folderid)
                          VALUES ($[customerid], (SELECT folderid from folders))
                          RETURNING folderid, (SELECT foldername from folders);`, folder)
-          .then((folder) => {
-            bookmark1.folderid = folder.folderid;
-            bookmark2.folderid = folder.folderid;
+          .then((folderResult) => {
+            bookmark1.folderid = folderResult.folderid;
+            bookmark2.folderid = folderResult.folderid;
             return t.batch([
               t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
-                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot],
+                          $[customerid])
                         RETURNING *;`,
                 bookmark1),
               t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
-                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot],
+                          $[customerid])
                         RETURNING *;`,
-                bookmark2)
+                bookmark2),
             ]);
           });
-      }).then((data) => {
+      }).then(() => {
         return chai.request(app)
           .get(API_ENDPOINT)
-          .set('Authorization', `Bearer ${customer1_token}`)
+          .set('Authorization', `Bearer ${customer1Token}`)
           .then((res) => {
             res.should.have.status(200);
             res.type.should.equal('application/json');
@@ -179,35 +182,36 @@ describe('/bookmarks endpoints', () => {
     });
 
     it('Should return a list of bookmarks with tags', () => {
-      let folder = {
+      const folder = {
         foldername: 'test folder',
         customerid: customer1.user_id,
         email: customer1.email,
-      }
+      };
 
-      let bookmark1 = {
+      const bookmark1 = {
         url: 'test.com',
         title: 'example title',
         description: 'example description',
         screenshot: 'example.png',
         customerid: '123',
-      }
+      };
 
-      let bookmark2 = {
+      const bookmark2 = {
         url: 'test.com',
         title: 'test title',
         description: 'test description',
         screenshot: 'test.png',
         customerid: '123',
-      }
-
-      let tag1 = {
-        tagname: 'test tag 1'
       };
 
-      let tag2 = {
-        tagname: 'tag 2'
+      const tag1 = {
+        tagname: 'test tag 1',
       };
+
+      const tag2 = {
+        tagname: 'tag 2',
+      };
+
       return db.tx((t) => {
         return t.one(`WITH customer AS (
                           INSERT INTO customer(customerid, email)
@@ -220,18 +224,20 @@ describe('/bookmarks endpoints', () => {
                          INSERT INTO customer_folder(customerid, folderid)
                          VALUES ('${customer1.user_id}', (SELECT folderid from folders))
                          RETURNING folderid, (SELECT foldername from folders);`, folder)
-          .then((folder) => {
-            bookmark1.folderid = folder.folderid;
-            bookmark2.folderid = folder.folderid;
+          .then((folderResult) => {
+            bookmark1.folderid = folderResult.folderid;
+            bookmark2.folderid = folderResult.folderid;
             return t.batch([
               t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
-                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot],
+                          $[customerid])
                         RETURNING *;`,
                 bookmark1),
               t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
-                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                        VALUES ($[url], $[title], $[description], $[folderid], $[screenshot],
+                          $[customerid])
                         RETURNING *;`,
-                bookmark2)
+                bookmark2),
             ]).then(() => {
               // bookmark1 should have two tags and bookmark2 should have 1
               return t.batch([
@@ -258,10 +264,10 @@ describe('/bookmarks endpoints', () => {
               ]);
             });
           });
-      }).then((data) => {
+      }).then(() => {
         return chai.request(app)
           .get(API_ENDPOINT)
-          .set('Authorization', `Bearer ${customer1_token}`)
+          .set('Authorization', `Bearer ${customer1Token}`)
           .then((res) => {
             res.should.have.status(200);
             res.type.should.equal('application/json');
@@ -298,7 +304,7 @@ describe('/bookmarks endpoints', () => {
             bookmark.foldername.should.equal(folder.foldername);
             bookmark.should.have.property('folderid');
             bookmark.folderid.should.be.an('number');
-            bookmark.folderid.should.equal(bookmark1.folderid);
+            bookmark.folderid.should.equal(1);
             bookmark.should.have.property('tags');
             bookmark.tags.should.be.an('array');
             bookmark.tags.length.should.equal(2);
@@ -360,18 +366,18 @@ describe('/bookmarks endpoints', () => {
 
   describe('POST', () => {
     it('Should return the new bookmark', () => {
-      let folder = {
+      const folder = {
         foldername: 'test folder',
-      }
+      };
 
-      let message = {
+      const message = {
         url: 'test.com',
         title: 'example title',
         description: 'example description',
         screenshot: 'example.png',
         folderid: 1,
         foldername: 'test folder',
-        tags: ['tag']
+        tags: ['tag'],
       };
 
       return db.one(`WITH customer AS (
@@ -388,7 +394,7 @@ describe('/bookmarks endpoints', () => {
         .then(() => {
           return chai.request(app)
             .post(API_ENDPOINT)
-            .set('Authorization', `Bearer ${customer1_token}`)
+            .set('Authorization', `Bearer ${customer1Token}`)
             .send(message)
             .then((res) => {
               res.should.have.status(201);
@@ -396,7 +402,7 @@ describe('/bookmarks endpoints', () => {
               res.charset.should.equal('utf-8');
               res.body.should.be.an('object');
 
-              let bookmark = res.body;
+              const bookmark = res.body;
               bookmark.should.have.property('bookmarkid');
               bookmark.bookmarkid.should.be.a('number');
               bookmark.bookmarkid.should.equal(1);
@@ -440,13 +446,13 @@ describe('/bookmarks endpoints', () => {
 
   describe('PUT', () => {
     it('Should update bookmark', () => {
-      let folder = {
+      const folder = {
         foldername: 'test folder',
         customerid: customer1.user_id,
         email: customer1.email,
       };
 
-      let bookmark1 = {
+      const bookmark1 = {
         url: 'test.com',
         title: 'example title',
         description: 'example description',
@@ -454,18 +460,18 @@ describe('/bookmarks endpoints', () => {
         customerid: '123',
       };
 
-      let message = {
+      const message = {
         url: 'updated.com',
         title: 'update example title',
         description: 'example description',
         screenshot: 'example.png',
         folderid: 1,
         foldername: 'test folder',
-        tags: ['test tag 1', 'update']
+        tags: ['test tag 1', 'update'],
       };
 
-      let tag1 = {
-        tagname: 'test tag 1'
+      const tag1 = {
+        tagname: 'test tag 1',
       };
 
       return db.tx((t) => {
@@ -480,11 +486,13 @@ describe('/bookmarks endpoints', () => {
                          INSERT INTO customer_folder(customerid, folderid)
                          VALUES ('${customer1.user_id}', (SELECT folderid from folders))
                          RETURNING folderid, (SELECT foldername from folders);`, folder)
-          .then((folder) => {
-            bookmark1.folderid = folder.folderid;
-            return t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
-                      VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
-                      RETURNING *;`,
+          .then((folderResult) => {
+            bookmark1.folderid = folderResult.folderid;
+            return t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot,
+                            customerid)
+                          VALUES ($[url], $[title], $[description], $[folderid], $[screenshot],
+                            $[customerid])
+                          RETURNING *;`,
                 bookmark1)
               .then(() => {
                 return t.none(`WITH t AS (
@@ -501,7 +509,7 @@ describe('/bookmarks endpoints', () => {
       }).then(() => {
         return chai.request(app)
           .put(`${API_ENDPOINT}/1`)
-          .set('Authorization', `Bearer ${customer1_token}`)
+          .set('Authorization', `Bearer ${customer1Token}`)
           .send(message)
           .then((res) => {
             res.should.have.status(200);
@@ -509,7 +517,7 @@ describe('/bookmarks endpoints', () => {
             res.charset.should.equal('utf-8');
             res.body.should.be.an('object');
 
-            let bookmark = res.body;
+            const bookmark = res.body;
             bookmark.should.have.property('bookmarkid');
             bookmark.bookmarkid.should.be.a('number');
             bookmark.bookmarkid.should.equal(1);
@@ -559,13 +567,13 @@ describe('/bookmarks endpoints', () => {
 
   describe('DELETE', () => {
     it('Should delete a bookmark', () => {
-      let folder = {
+      const folder = {
         foldername: 'test folder',
         customerid: customer1.user_id,
         email: customer1.email,
       };
 
-      let bookmark1 = {
+      const bookmark1 = {
         url: 'test.com',
         title: 'example title',
         description: 'example description',
@@ -573,8 +581,8 @@ describe('/bookmarks endpoints', () => {
         customerid: '123',
       };
 
-      let tag1 = {
-        tagname: 'test tag 1'
+      const tag1 = {
+        tagname: 'test tag 1',
       };
 
       return db.tx((t) => {
@@ -589,11 +597,13 @@ describe('/bookmarks endpoints', () => {
                          INSERT INTO customer_folder(customerid, folderid)
                          VALUES ('${customer1.user_id}', (SELECT folderid from folders))
                          RETURNING folderid, (SELECT foldername from folders);`, folder)
-          .then((folder) => {
-            bookmark1.folderid = folder.folderid;
-            return t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
-                      VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
-                      RETURNING *;`,
+          .then((folderResult) => {
+            bookmark1.folderid = folderResult.folderid;
+            return t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot,
+                            customerid)
+                          VALUES ($[url], $[title], $[description], $[folderid], $[screenshot],
+                            $[customerid])
+                          RETURNING *;`,
                 bookmark1)
               .then(() => {
                 return t.none(`WITH t AS (
@@ -610,14 +620,14 @@ describe('/bookmarks endpoints', () => {
       }).then(() => {
         return chai.request(app)
           .delete(`${API_ENDPOINT}/1`)
-          .set('Authorization', `Bearer ${customer1_token}`)
+          .set('Authorization', `Bearer ${customer1Token}`)
           .then((res) => {
             res.should.have.status(200);
             res.type.should.equal('application/json');
             res.charset.should.equal('utf-8');
             res.body.should.be.an('object');
 
-            let bookmark = res.body;
+            const bookmark = res.body;
             bookmark.should.have.property('bookmarkid');
             bookmark.bookmarkid.should.be.a('number');
             bookmark.bookmarkid.should.equal(1);

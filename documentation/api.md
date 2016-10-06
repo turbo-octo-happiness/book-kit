@@ -18,7 +18,7 @@ All endpoints use JWT authentication.
 
 #### GET /bookmarks
 
-- _Description:_ Returns an array of all the bookmarks associated with an authenticated user. A bookmark record normally consist of an id, url, title, description, a folder id, and a customer id (i.e. the owner/creator of a bookmark). For the connivence of the front-end, the endpoint also returns the folder name, an array of all users with access to the bookmark, and a list of tags. If the user doesn't exit in the database, they are added and an empty array is returned.
+- _Description:_ Returns an array of all the bookmarks associated with an authenticated user. A bookmark record normally consist of an id, url, title, description, a folder id, and a customer id (i.e. the owner/creator of a bookmark). For the connivence of the front-end, the endpoint also returns the folder name, an array of all users with access to the bookmark, and a list of tags. If the user doesn't exist in the database, they are added and an empty array is returned.
 - _Endpoint:_ `/bookmarks`
 - _Example:_
 
@@ -47,7 +47,7 @@ Status: 200 OK
 
 #### POST /bookmarks
 
-- _Description:_ Inserts a bookmark into the database and associates it with a folder and tag(s). The bookmark is automatically assigned to the authenticated customer. If insertion into database is successful, then the new bookmark plus tags are returned to the caller.
+- _Description:_ Inserts a bookmark into the database and associates it with a folder and tag(s). The bookmark is automatically assigned to the authenticated customer. If insertion into database is successful, then the new bookmark, a list of associated tags, and a list of customers who have access to the bookmark are returned to the caller.
 - _Endpoint:_ `/bookmark`
 - _Data Parameters:_ An object with the following fields: url, title, description (optional), folderid, foldername, screenshot (optional), and an array of tags (optional).
 
@@ -87,7 +87,7 @@ Status: 201 Created
 
 #### PUT /bookmarks/:bookmarkid
 
-- _Description:_ Updates a bookmark and it's associations in the database. If the update is successful, then the edited bookmark is returned to the caller.
+- _Description:_ Updates a bookmark and it's associations in the database. If the update is successful, then the updated bookmark, a list of associated tags, and a list of customers who have access to the bookmark are returned to the caller.
 - _Endpoint:_ `/bookmarks/:bookmarkid`
 - _Data Parameters:_ An object with the following fields: url, title, description (optional), folderid, foldername, screenshot (optional), and an array of tags.
 - _Example Request:_
