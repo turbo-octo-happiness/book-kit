@@ -31,7 +31,7 @@ describe('BookmarkViewContainer Component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    console.log(result.props.bookmark, '<<< RESULT');
+    // console.log(result.props.bookmark, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.be.a('function');
