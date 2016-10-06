@@ -110,7 +110,7 @@ router.post('/', jsonParser, (request, response) => {
     db.tx((t) => {
         // First insert new bookmark
       return t.one(queries.INSERT_BOOKMARK, [url, title, bdescription,
-            folderid, bscreenshot, userIdentity, folderid,
+            folderid, bscreenshot, userIdentity, folderid, folderid,
           ])
           .then((bookmark) => {
             console.log('bookmark inserted: ', bookmark);
@@ -142,7 +142,7 @@ router.post('/', jsonParser, (request, response) => {
     })
       .then((data) => {
         console.log('transaction then', data);
-        response.json(data);
+        response.status(201).json(data);
       })
       .catch((error) => {
         console.log('ERROR:', error.message || error);
