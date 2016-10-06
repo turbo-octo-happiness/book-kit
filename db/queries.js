@@ -1,6 +1,3 @@
-// Where the database is located
-exports.CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/bookmarks';
-
 /* ---- Postgres Queries Used by the API ---- */
 
 /*
@@ -178,7 +175,7 @@ exports.UPDATE_FOLDER = `WITH count AS (
                          AND customer_folder.customerid = $3
                          AND folder.folderid = $4
                          AND (SELECT * FROM count) = 1
-                        RETURNING folder.folderid, foldername;`;
+                        RETURNING folder.folderid AS folderid, foldername;`;
 
 /*
  ==================================================================================================

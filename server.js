@@ -11,7 +11,10 @@ require('dotenv').config();
 /* ---- Initial Setup ---- */
 const app = express();
 
-app.use(logger('dev')); // log every HTTP request to the console
+if (!process.env.DEVELOPMENT) {
+  app.use(logger('dev')); // log every HTTP request to the console
+}
+
 app.disable('etag');
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -35,8 +38,24 @@ app.use('/folders', authenticate, foldersRoutes);
 app.use('/tags', authenticate, tagsRoutes);
 
 /* ---- Set port and start server ---- */
-app.set('port', (process.env.PORT || 5000));
 
-app.listen(app.get('port'), () => {
-  console.log('Node app is running on port', app.get('port'));
-});
+const runServer = (callback) => {
+  let port = process.env.PORT || 5000;
+  if (process.env.DEVELOPMENT === 'testing') {
+    port = 8000;
+  }
+  console.log(`port = ${port}`);
+  const server = app.listen(port, () => {
+    console.log('Node app is running on port', port);
+    if (callback) {
+      callback(server);
+    }
+  });
+};
+
+if (require.main === module) {
+  runServer();
+}
+
+exports.app = app;
+exports.runServer = runServer;
