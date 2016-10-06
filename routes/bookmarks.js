@@ -142,7 +142,7 @@ router.post('/', jsonParser, (request, response) => {
     })
       .then((data) => {
         console.log('transaction then', data);
-        response.json(data);
+        response.status(201).json(data);
       })
       .catch((error) => {
         console.log('ERROR:', error.message || error);
