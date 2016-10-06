@@ -59,7 +59,7 @@ export default function SplashPage() {
             <div className="about-child">
               <div>
                 <h2>Built by Bootcampers.</h2>
-                <p>Book Kit was an idea birthed out of a need we had in our bootcamp experience. We needed a way to save and share our resources. Book Kit was built to cater to our bootcamp needs and yours as well.</p>
+                <p>During our bootcamp experience, we needed a way to save and share our resources. Book Kit was built to cater to our bootcamp needs and yours as well.</p>
               </div>
               <img src="img/built.svg" alt="built by bootcampers" />
             </div>
@@ -75,7 +75,7 @@ export default function SplashPage() {
             <div className="about-child">
               <div>
                 <h2>Help us, help you.</h2>
-                <p>Book Kit is open source. We encourage you to help improve your favorite bookmarking tool and grow in your coding skills as well. Find us on Github.</p>
+                <p>Book Kit is open source. We encourage you to help improve your favorite bookmarking tool and grow in your coding skills as well. Find us on <a href="https://github.com/turbo-octo-happiness/book-kit/">Github</a>.</p>
               </div>
               <img src="img/handshake.svg" alt="handshake" />
             </div>
