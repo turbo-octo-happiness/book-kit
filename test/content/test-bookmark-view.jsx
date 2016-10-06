@@ -179,9 +179,6 @@ describe('BookmarkView Component', () => {
     close.props.children.type.should.equal('button');
     close.props.children.props.children.should.be.a('string')
       .that.equals('Close');
-
-
-
   });
 
   it('Renders bookmark editing form and hides bookmark details when show state is true', () => {

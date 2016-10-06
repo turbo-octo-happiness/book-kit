@@ -10,7 +10,7 @@ const propTypes = {
   token: PropTypes.string,
 };
 
-class SidebarContainer extends React.Component {
+export class SidebarContainer extends React.Component {
   constructor() {
     super();
     this.onAddInput = this.onAddInput.bind(this);
@@ -48,4 +48,4 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = connect(mapStateToProps)(SidebarContainer);
+export default connect(mapStateToProps)(SidebarContainer);
