@@ -184,10 +184,5 @@ describe('BookmarkForm Component', () => {
     closeButton.props.children.props.type.should.equal('button');
     closeButton.props.children.props.children.should.be.a('string')
       .that.equals('Close');
-
-
-
-
   });
-
 });
