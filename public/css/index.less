@@ -193,6 +193,7 @@ header {
 
     .main-tagline {
       margin-top: -1rem;
+      text-shadow: 0 1px 1px rgba(30, 40, 53, .2);
     }
 
     .second-tagline {
@@ -230,6 +231,7 @@ header {
       border-radius: 50%;
       padding: 0 1rem;
       color: @green;
+      z-index: 1;
     }
   }
 
@@ -241,6 +243,7 @@ header {
 
   .splash-features {
     background-color: @green;
+    z-index: 0;
 
     .feature-container {
       width: 1024px;
@@ -251,15 +254,15 @@ header {
       align-items: center;
 
       h1 {
-        margin-top: 4rem;
+        margin-top: 7rem;
       }
 
       .features {
         display: flex;
-        margin-top: 2rem;
+        margin-top: 3rem;
 
         &:nth-child(3) {
-          margin-bottom: 4rem;
+          margin-bottom: 7rem;
         }
 
         .features-child {
@@ -282,6 +285,52 @@ header {
             font-size: 0.9rem;
           }
         }
+      }
+    }
+  }
+
+  .splash-about {
+    .about-container {
+      width: 1020px;
+      margin: 0 auto;
+
+      .about {
+        margin-top: 7rem;
+        display: flex;
+        flex-direction: column;
+
+        .about-child {
+          margin-bottom: 7rem;
+          display: flex;
+          justify-content: space-around;
+
+          div {
+            width: 23rem;
+          }
+
+          img {
+            height: 12rem;
+          }
+        }
+      }
+    }
+  }
+
+  .splash-footer {
+    background-color: @green;
+    color: @white;
+
+    .footer-container {
+      width: 1020px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 0;
+
+      img {
+        width: 7rem;
+        margin-right: 2rem;
       }
     }
   }

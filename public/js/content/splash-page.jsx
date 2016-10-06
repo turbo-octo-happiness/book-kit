@@ -48,12 +48,46 @@ export default function SplashPage() {
 
           <div className="features-child">
             <i className="fa fa-laptop fa-2x" aria-hidden="true" />
-            <span>Book Kit is open sourced and the source code is public and open for users to contribute to</span>
+            <span>Book Kit is open source and our source code is public and open on GitHub for users to contribute to</span>
           </div>
           </div>
         </div>
       </section>
-      <footer className="splash-footer"></footer>
+      <section className="splash-about" id="about">
+        <div className="about-container">
+          <div className="about">
+            <div className="about-child">
+              <div>
+                <h2>Built by Bootcampers.</h2>
+                <p>Book Kit was an idea birthed out of a need we had in our bootcamp experience. We needed a way to save and share our resources. Book Kit was built to cater to our bootcamp needs and yours as well.</p>
+              </div>
+              <img src="img/built.svg" alt="built by bootcampers" />
+            </div>
+
+            <div className="about-child">
+              <img src="img/growth.svg" alt="growing content" />
+              <div>
+                <h2>Growing Content.</h2>
+                <p>We are constantly growing our codebase to improve your experience. With so many bootcamps out there, we want to make a product that is viable and maintainable for our users.</p>
+              </div>
+            </div>
+
+            <div className="about-child">
+              <div>
+                <h2>Help us, help you.</h2>
+                <p>Book Kit is open source. We encourage you to help improve your favorite bookmarking tool and grow in your coding skills as well. Find us on Github.</p>
+              </div>
+              <img src="img/handshake.svg" alt="handshake" />
+            </div>
+          </div>
+        </div>
+      </section>
+      <footer className="splash-footer">
+        <div className="footer-container">
+          <img src="img/book-kit-logo.svg" alt="main-logo" />
+          <a href="https://github.com/turbo-octo-happiness/book-kit">Github</a>
+        </div>
+      </footer>
     </div>
   );
 }
