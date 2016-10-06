@@ -24,7 +24,7 @@ const onDelete = () => {
 };
 
 describe('SidebarFolder Component', () => {
-  it('Renders an individual folder and icon', () => {
+  it('Renders a folder icon and name linking to it\'s route', () => {
     /* ------ TEST RENDER ------ */
     const renderer = TestUtils.createRenderer();
     renderer.render(
@@ -40,15 +40,21 @@ describe('SidebarFolder Component', () => {
 
     /* ------- TESTS -------- */
     result.type.should.equal('li');
-    result.props.children.type.should.equal(Link);
-    result.props.children.props.to.should.be.a('string')
+
+    const folderLink = result.props.children;
+    folderLink.type.should.equal(Link);
+    folderLink.props.to.should.be.a('string')
       .that.equals('/folders/folderId');
-    result.props.children.props.children.should.have.length(2);
-    result.props.children.props.children[0].type.should.equal('i');
-    result.props.children.props.children[0].props.className.should.equal('fa fa-folder-o');
-    result.props.children.props.children[1].type.should.equal('span');
-    result.props.children.props.children[1].props.className.should.equal('folder-name');
-    result.props.children.props.children[1].props.children.should.be.a('string')
+    folderLink.props.children.should.have.length(2);
+
+    const folderIcon = folderLink.props.children[0];
+    folderIcon.type.should.equal('i');
+    folderIcon.props.className.should.equal('fa fa-folder-o');
+
+    const folderName = folderLink.props.children[1];
+    folderName.type.should.equal('span');
+    folderName.props.className.should.equal('folder-name');
+    folderName.props.children.should.be.a('string')
       .that.equals('folderName');
   });
 });
