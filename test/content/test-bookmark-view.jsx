@@ -8,39 +8,42 @@ process.env.DEVELOPMENT = 'testing';
 
 const should = chai.should();
 
-describe('BookmarkView Component', () => {
-  it('Renders the initial details of an individual bookmark', () => {
-    /* ------- MOCK DATA ------- */
-    const bookmark = [{
-      bookmarkid: 'bookmarkId',
-      title: 'bookmarkTitle',
-      url: 'bookmarkUrl',
-      description: 'bookmarkDesc',
-      screenshot: 'bookmarkImg',
-      tags: [
-        { tagid: 'tagId', tagname: 'tagName' },
-      ],
-      folderid: 'folderId',
-    }];
+/* ------- MOCK DATA ------- */
+const bookmark = [{
+  bookmarkid: 'bookmarkId',
+  title: 'bookmarkTitle',
+  url: 'bookmarkUrl',
+  description: 'bookmarkDesc',
+  screenshot: 'bookmarkImg',
+  tags: [
+    { tagid: 'tagId', tagname: 'tagName' },
+  ],
+  folderid: 'folderId',
+}];
 
-    const folder = {
-      folderid: 'folderId',
-      foldername: 'folderName',
-    };
-    const folders = [folder];
-    const folderArr = [folder];
-    const onShowEdit = () => {
-      // Test Function
-    };
-    const onShowDelete = () => {
-      // Test Function
-    };
-    const onEdit = () => {
-      // Test Function
-    };
-    const onDelete = () => {
-      // Test Function
-    };
+const folder = {
+  folderid: 'folderId',
+  foldername: 'folderName',
+};
+const folders = [folder];
+const folderArr = [folder];
+const onShowEdit = () => {
+  // Test Function
+};
+const onShowDelete = () => {
+  // Test Function
+};
+const onEdit = () => {
+  // Test Function
+};
+const onDelete = () => {
+  // Test Function
+};
+
+
+describe('BookmarkView Component', () => {
+  it('Renders bookmark details and hides editing form when show state is false', () => {
+    /* ------- MOCK DATA ------- */
     const deleteState = false;
     const showState = false;
 
@@ -178,13 +181,49 @@ describe('BookmarkView Component', () => {
       .that.equals('Close');
 
 
+
+  });
+
+  it('Renders bookmark editing form and hides bookmark details when show state is true', () => {
+    /* ------- MOCK DATA ------- */
+    const showState = true;
+
+    /* ------ TEST RENDER ------ */
+    const renderer = TestUtils.createRenderer();
+    renderer.render(
+      <BookmarkView
+        onShowEdit={onShowEdit}
+        onShowDelete={onShowDelete}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        show={showState}
+        bookmark={bookmark}
+        folderArr={folderArr}
+        folders={folders}
+      />
+    );
+    const result = renderer.getRenderOutput();
+    // console.log(result.props, '<<< RESULT');
+
+    /* ------- TESTS -------- */
+    const view = result.props.children[0];
+
+    const edit = view.props.children[4];
+    edit.type.should.equal('button');
+    edit.props.style.should.be.a('object')
+      .that.has.property('display')
+      .that.is.a('string')
+      .that.equals('none');
+    edit.props.onClick.should.be.a('function')
+      .that.eqls(onShowEdit);
+    edit.props.children.should.be.a('string')
+      .that.equals('Edit');
+
     const editForm = result.props.children[1];
     editForm.type.should.equal('div');
     editForm.props.className.should.equal('bookmark-edit');
     editForm.props.style.should.be.a('object')
-      .that.has.property('display')
-      .that.is.a('string')
-      .that.equals('none');
+      .that.eqls({});
 
     const form = editForm.props.children;
     form.type.should.equal('form');
@@ -264,7 +303,6 @@ describe('BookmarkView Component', () => {
     tagsInput.props.defaultValue[0].should.be.a('string')
       .that.equals('tagName');
 
-        console.log(form.props.children[14]);
     const folderText = form.props.children[10];
     folderText.type.should.equal('h4');
     folderText.props.children.should.be.a('string')
@@ -298,7 +336,60 @@ describe('BookmarkView Component', () => {
       .that.equals('Cancel');
   });
 
+  it('Renders CONFIRM and CANCEL button and hides DELETE when delete state is true', () => {
+    /* ------- MOCK DATA ------- */
+    const deleteState = true;
+    const showState = false;
 
+    /* ------ TEST RENDER ------ */
+    const renderer = TestUtils.createRenderer();
+    renderer.render(
+      <BookmarkView
+        onShowEdit={onShowEdit}
+        onShowDelete={onShowDelete}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        show={showState}
+        delete={deleteState}
+        bookmark={bookmark}
+        folderArr={folderArr}
+        folders={folders}
+      />
+    );
+    const result = renderer.getRenderOutput();
+    // console.log(result.props, '<<< RESULT');
 
+    /* ------- TESTS -------- */
+    const view = result.props.children[0];
 
+    const del = view.props.children[6];
+    del.type.should.equal('button');
+    del.props.style.should.be.a('object')
+      .that.has.property('display')
+      .that.is.a('string')
+      .that.equals('none');
+    del.props.onClick.should.be.a('function')
+      .that.eqls(onShowDelete);
+    del.props.children.should.be.a('string')
+      .that.equals('Delete');
+
+    const confirmDel = view.props.children[7];
+    confirmDel.type.should.equal(Link);
+    confirmDel.props.to.should.be.a('string')
+      .that.equals('/main');
+    confirmDel.props.style.should.be.a('object')
+      .that.eqls({});
+    confirmDel.props.children.type.should.equal('button');
+    confirmDel.props.children.props.children.should.be.a('string')
+      .that.equals('Confirm');
+
+    const cancelDel = view.props.children[8];
+    cancelDel.type.should.equal('button');
+    cancelDel.props.style.should.be.a('object')
+      .that.eqls({});
+    cancelDel.props.onClick.should.be.a('function')
+      .that.eqls(onShowDelete);
+    cancelDel.props.children.should.be.a('string')
+      .that.equals('Cancel');
+  });
 });
