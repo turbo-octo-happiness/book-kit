@@ -43,12 +43,16 @@ router.post('/', jsonParser, (request, response) => {
     });
   } else {
     const foldername = request.body.foldername;
-
-    // Paramitarize query to protect against SQL injection
-    db.one(queries.INSERT_FOLDER, [foldername, userIdentity])
-      .then((result) => {
-        response.json(result);
-      })
+    db.tx((t) => {
+      // Paramitarize query to protect against SQL injection
+      db.one(queries.INSERT_FOLDER, [foldername, userIdentity])
+        .then((result) => {
+          return db.one(queries.SELECT_FOLDER_INFO, [result.folderid])
+          .then((resultsToReturn) => {
+            response.status('201').json(resultsToReturn);
+          });
+        });
+    })
       .catch((error) => {
         console.log('ERROR:', error.message || error);
         response.status(500).send({
@@ -124,9 +128,14 @@ router.put('/:folderid', jsonParser, (request, response) => {
     const foldername = request.body.foldername;
 
     // Paramitarize query to protect against SQL injection
-    db.one(queries.UPDATE_FOLDER, [folderid, foldername, userIdentity, folderid])
-      .then((result) => {
-        response.json(result);
+      db.tx((t) => {
+        db.one(queries.UPDATE_FOLDER, [folderid, foldername, userIdentity, folderid])
+          .then((result) => {
+            return db.one(queries.SELECT_FOLDER_INFO, [result.folderid])
+            .then((resultsToReturn) => {
+              response.json(resultsToReturn);
+            });
+          });
       })
       .catch((error) => {
         console.log('ERROR:', error.message || error);
