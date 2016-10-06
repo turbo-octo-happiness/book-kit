@@ -556,4 +556,88 @@ describe('/bookmarks endpoints', () => {
       });
     });
   });
+
+  describe('DELETE', () => {
+    it('Should delete a bookmark', () => {
+      let folder = {
+        foldername: 'test folder',
+        customerid: customer1.user_id,
+        email: customer1.email,
+      };
+
+      let bookmark1 = {
+        url: 'test.com',
+        title: 'example title',
+        description: 'example description',
+        screenshot: 'example.png',
+        customerid: '123',
+      };
+
+      let tag1 = {
+        tagname: 'test tag 1'
+      };
+
+      return db.tx((t) => {
+        return t.one(`WITH customer AS (
+                          INSERT INTO customer(customerid, email)
+                          VALUES ('${customer1.user_id}', '${customer1.email}')
+                        ),
+                        folders AS (
+                          INSERT INTO folder(foldername) VALUES ($[foldername])
+                          RETURNING folderid, foldername
+                         )
+                         INSERT INTO customer_folder(customerid, folderid)
+                         VALUES ('${customer1.user_id}', (SELECT folderid from folders))
+                         RETURNING folderid, (SELECT foldername from folders);`, folder)
+          .then((folder) => {
+            bookmark1.folderid = folder.folderid;
+            return t.one(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
+                      VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                      RETURNING *;`,
+                bookmark1)
+              .then(() => {
+                return t.none(`WITH t AS (
+                            INSERT INTO tag (customerid, tagname)
+                            SELECT '${customer1.user_id}', $[tagname]
+                            RETURNING tagid
+                          )
+                          INSERT INTO bookmark_tag(bookmarkid, tagid)
+                          SELECT 1, tagid FROM (
+                            SELECT tagid
+                            FROM t) AS s;`, tag1);
+              });
+          });
+      }).then(() => {
+        return chai.request(app)
+          .delete(`${API_ENDPOINT}/1`)
+          .set('Authorization', `Bearer ${customer1_token}`)
+          .then((res) => {
+            res.should.have.status(200);
+            res.type.should.equal('application/json');
+            res.charset.should.equal('utf-8');
+            res.body.should.be.an('object');
+
+            let bookmark = res.body;
+            bookmark.should.have.property('bookmarkid');
+            bookmark.bookmarkid.should.be.a('number');
+            bookmark.bookmarkid.should.equal(1);
+            bookmark.should.have.property('url');
+            bookmark.url.should.be.a('string');
+            bookmark.url.should.equal(bookmark1.url);
+            bookmark.should.have.property('title');
+            bookmark.title.should.be.an('string');
+            bookmark.title.should.equal(bookmark1.title);
+            bookmark.should.have.property('description');
+            bookmark.description.should.be.an('string');
+            bookmark.description.should.equal(bookmark1.description);
+            bookmark.should.have.property('screenshot');
+            bookmark.screenshot.should.be.an('string');
+            bookmark.screenshot.should.equal(bookmark1.screenshot);
+            bookmark.should.have.property('folderid');
+            bookmark.folderid.should.be.an('number');
+            bookmark.folderid.should.equal(bookmark1.folderid);
+          });
+      });
+    });
+  });
 });
