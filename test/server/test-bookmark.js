@@ -6,10 +6,10 @@ const app = require('../../server').app;
 const exec = require('child_process').exec;
 const db = require('../../pgp');
 // Authentication/User information
-const customer1 = require('./test_setup').customer1;
-const customer1Token = require('./test_setup').customer1Token;
-// const customer2 = require('./test_setup').customer2;
-// const customer2Token = require('./test_setup').customer2Token;
+const customer1 = require('./test-setup').customer1;
+const customer1Token = require('./test-setup').customer1Token;
+// const customer2 = require('./test-setup').customer2;
+// const customer2Token = require('./test-setup').customer2Token;
 
 process.env.DEVELOPMENT = 'testing';
 
@@ -47,8 +47,6 @@ describe('/bookmarks endpoints', () => {
     it('should return a list of bookmarks', () => {
       const folder = {
         foldername: 'test folder',
-        customerid: customer1.user_id,
-        email: customer1.email,
       };
 
       const bookmark1 = {
@@ -70,14 +68,14 @@ describe('/bookmarks endpoints', () => {
       return db.tx((t) => {
         return t.one(`WITH customer AS (
                           INSERT INTO customer(customerid, email)
-                          VALUES ($[customerid], $[email])
+                          VALUES ('${customer1.user_id}', '${customer1.email}')
                         ),
                         folders AS (
                           INSERT INTO folder(foldername) VALUES ($[foldername])
                           RETURNING folderid, foldername
                          )
                          INSERT INTO customer_folder(customerid, folderid)
-                         VALUES ($[customerid], (SELECT folderid from folders))
+                         VALUES ('${customer1.user_id}', (SELECT folderid from folders))
                          RETURNING folderid, (SELECT foldername from folders);`, folder)
           .then((folderResult) => {
             bookmark1.folderid = folderResult.folderid;

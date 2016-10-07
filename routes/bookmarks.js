@@ -30,9 +30,6 @@ router.get('/', (request, response) => {
         db.oneOrNone(queries.INSERT_CUSTOMER, [userIdentity, email])
           .then(() => {
             response.json(resultsToReturn);
-          })
-          .catch((error) => {
-            response.json(error);
           });
       } else {
         // Return existing bookmarks with tags seperated into an array of objects.

@@ -169,14 +169,14 @@ Status: 200 OK
     "folderid": 8,
     "foldername": "fewd",
     "count": "1",
-    "members": ["sierragregg@Gmail.com"]
+    "members": ["123@gmail.com"]
   }
 ]
 ```
 
 ### POST /folders
 
-- _Description:_ Creates a new folder and assigns ownership of the folder to the authenticated customer. If insertion into the database is successful, the new folder name and id is returned to the caller.
+- _Description:_ Creates a new folder and assigns ownership of the folder to the authenticated customer. If insertion into the database is successful, the new folder name, id, count (i.e. number of customer's associated with a folder), and members (i.e. email addresses of all customers associated with a folder) are returned to the caller.
 - _Endpoint:_ `/folders`
 - _Data Parameters:_ An object with the following field: foldername.
 - _Example request:_
@@ -190,7 +190,9 @@ Status: 200 OK
 Status: 201 Created
 {
   "folderid": 9,
-  "foldername": "coding"
+  "foldername": "coding",
+  "count": "1",
+  "members": [ "123@gmail.com" ] }
 }
 ```
 
@@ -204,7 +206,7 @@ Status: 201 Created
 ```json
 > POST /folders/customers/8
 > {
->   "foldername": "456@example.com"
+>   "email": "456@example.com"
 > }
 
 Status: 201 Created
