@@ -10,7 +10,7 @@ const propTypes = {
   token: PropTypes.string,
 };
 
-class NavbarContainer extends React.Component {
+export class NavbarContainer extends React.Component {
   constructor() {
     super();
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
@@ -67,4 +67,4 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = connect(mapStateToProps)(NavbarContainer);
+export default connect(mapStateToProps)(NavbarContainer);
