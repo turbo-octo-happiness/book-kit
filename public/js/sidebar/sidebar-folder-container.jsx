@@ -9,7 +9,7 @@ const propTypes = {
   token: PropTypes.string,
 };
 
-class FolderContainer extends React.Component {
+export class FolderContainer extends React.Component {
   constructor() {
     super();
     this.onShowEdit = this.onShowEdit.bind(this);
@@ -58,6 +58,4 @@ function mapStateToProps(state) {
   };
 }
 
-const Container = connect(mapStateToProps)(FolderContainer);
-
-module.exports = Container;
+export default connect(mapStateToProps)(FolderContainer);

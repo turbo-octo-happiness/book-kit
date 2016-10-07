@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
 
-class Profile extends React.Component {
+export class Profile extends React.Component {
 
   render() {
     return(
@@ -31,4 +31,4 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps)(Profile);

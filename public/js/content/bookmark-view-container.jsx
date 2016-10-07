@@ -13,7 +13,7 @@ const propTypes = {
   owner: PropTypes.number,
 };
 
-class BookmarkViewContainer extends React.Component {
+export class BookmarkViewContainer extends React.Component {
   constructor() {
     super();
     this.onShowDelete = this.onShowDelete.bind(this);
@@ -93,6 +93,4 @@ const mapStateToProps = state => {
 
 BookmarkViewContainer.propTypes = propTypes;
 
-const Container = connect(mapStateToProps)(BookmarkViewContainer);
-
-module.exports = Container;
+export default connect(mapStateToProps)(BookmarkViewContainer);

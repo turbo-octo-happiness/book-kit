@@ -9,7 +9,7 @@ const propTypes = {
   token: PropTypes.string,
 };
 
-class BookmarkFormContainer extends React.Component {
+export class BookmarkFormContainer extends React.Component {
   constructor() {
     super();
     this.onAdd = this.onAdd.bind(this);
@@ -39,6 +39,4 @@ const mapStateToProps = state => {
 
 BookmarkFormContainer.propTypes = propTypes;
 
-const Container = connect(mapStateToProps)(BookmarkFormContainer);
-
-module.exports = Container;
+export default connect(mapStateToProps)(BookmarkFormContainer);
