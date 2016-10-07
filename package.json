@@ -10,7 +10,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js & npm run watch",
     "heroku-postbuild": "npm run build",
-    "test": "createdb test-bookmarks && psql test-bookmarks < db/bookmarks_schema.sql > /dev/null && mocha --compilers js:babel-register test/*/*.js*; dropdb test-bookmarks",
+    "test": "createdb test-bookmarks && psql test-bookmarks < db/bookmarks_schema.sql &> /dev/null && mocha --compilers js:babel-register test/main.js test/server/*.js*; dropdb test-bookmarks",
     "mkdir": "mkdir -p public/build",
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:img && npm run build:js",
     "watch": "npm run watch:html & npm run watch:css & npm run watch:img & npm run watch:js",

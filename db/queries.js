@@ -263,5 +263,5 @@ exports.COPY_BOOKMARK = `SELECT url, title, description, folder.folderid,
 // NOTE: 'on conflict' is specific to Postgres and will not work with other SQL databases.
 // changed
 exports.INSERT_CUSTOMER = `INSERT INTO customer(customerid, email)
-                        VALUES ($1, $2) on conflict (customerid) do nothing
-                        RETURNING customerid, email;`;
+                           VALUES ($1, $2) on conflict (customerid) do nothing
+                           RETURNING customerid, email;`;
