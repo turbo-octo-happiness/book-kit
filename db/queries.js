@@ -131,6 +131,7 @@ exports.INSERT_FOLDER = `WITH folders AS (
                          RETURNING folderid, (SELECT foldername from folders);`;
 
 // Works given the customerid
+// Used to facilitate shared folders
 exports.ADD_USER_TO_FOLDER_BY_ID = `INSERT INTO customer_folder(customerid, folderid)
                                     VALUES ($1, $2) RETURNING customerid, folderid;`;
 
