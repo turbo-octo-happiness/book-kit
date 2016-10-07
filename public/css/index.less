@@ -6,33 +6,29 @@
 @gray15: #F6F7F7;
 @gray5: #FAFBFB;
 @white: #F4F8FC;
-
 @blue: #85C7F2;
 @blue125: darken(@blue, 30%);
 @blue75: mix(@blue, @white, 75%);
 @blue50: mix(@blue, @white, 50%);
 @blue25: mix(@blue, @white, 25%);
 @blue5: mix(@blue, @white, 7%);
-
 @green: #23CE6B;
 @green125: darken(@green, 10%);
 @green75: mix(@green, @white, 75%);
 @green50: mix(@green, @white, 50%);
 @green25: mix(@green, @white, 25%);
 @green5: mix(@green, @white, 7%);
-
 // Globals
-
-body, html {
+body,
+html {
   height: 100%;
   color: @gray75;
   background-color: @white;
-
   font-size: 1rem;
   line-height: 1.875;
   -webkit-font-smoothing: antialiased;
   font-family: 'Open Sans', sans-serif;
-  letter-spacing: 0.04rem;
+  letter-spacing: 0.02rem;
 }
 
 * {
@@ -41,8 +37,8 @@ body, html {
 }
 
 h1 {
-  font-family: 'Oswald', sans-serif;
-  font-size: 3rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
 }
 
 a {
@@ -75,7 +71,7 @@ button {
   color: @white;
   border-radius: 0.5rem;
   border: none;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: bold;
   font-size: 0.9rem;
   margin-bottom: 1rem;
@@ -91,8 +87,8 @@ button:disabled {
   background-color: @green25;
 }
 
-textarea,
-input {
+input,
+textarea {
   border-radius: 0.5rem;
   border: 0.5px solid @gray40;
   padding: 0.5rem;
@@ -116,9 +112,7 @@ select {
 .prof-pic {
   border-radius: 50%;
 }
-
 // Section Styles
-
 /**
  * HEADER SECTION - nav
  */
@@ -170,21 +164,44 @@ header {
     }
   }
 }
-
 /**
  * Main body section under nav
  */
-
 /**
  *  Pre-login Splash Page
  */
+
 .splash-page {
   .splash-main {
     background-image: url('img/splash.jpeg');
     background-position: top;
     background-size: cover;
-
     height: 35rem;
+
+    display: flex;
+    justify-content: center;
+  }
+
+  .splash-head-text {
+    position: absolute;
+    margin-top: 6rem;
+    font-size: 3rem;
+    font-family: 'Roboto', sans-serif;
+    color: @green;
+    display: flex;
+    flex-direction: column;
+    width: 1024px;
+
+    .main-tagline {
+      margin-top: -1rem;
+      text-shadow: 0 1px 1px rgba(30, 40, 53, .2);
+    }
+
+    .second-tagline {
+      font-size: 1rem;
+      font-family: 'Open Sans', sans-serif;
+      color: @gray50;
+    }
   }
 
   .splash-btn {
@@ -192,16 +209,19 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     position: absolute;
     left: 0;
     margin-left: 50%;
 
     .learn-more {
       position: absolute;
-      min-width: 10rem;
+      min-width: 7rem;
       text-align: center;
-      padding-bottom: 7rem;
+      margin-top: -3.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-bottom: 2px solid @white;
+      transition: border-color 0.3s ease;
     }
 
     .splash-scroll-btn {
@@ -212,16 +232,118 @@ header {
       border-radius: 50%;
       padding: 0 1rem;
       color: @green;
+      z-index: 1;
+    }
+  }
+
+  .splash-btn:hover {
+    .learn-more {
+      border-color: @green125;
     }
   }
 
   .splash-features {
     background-color: @green;
-    height: 35rem;
+    z-index: 0;
+
+    .feature-container {
+      width: 1024px;
+      color: @white;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h1 {
+        margin-top: 7rem;
+      }
+
+      .features {
+        display: flex;
+        margin-top: 3rem;
+
+        &:nth-child(3) {
+          margin-bottom: 7rem;
+        }
+
+        .features-child {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 18rem;
+
+          i {
+            padding: 1.3rem;
+            background-color: @green125;
+            color: @green;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+          }
+
+          span {
+            width: 80%;
+            text-align: center;
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
   }
 
-}
+  .splash-about {
+    .about-container {
+      width: 1020px;
+      margin: 0 auto;
 
+      .about {
+        margin-top: 7rem;
+        display: flex;
+        flex-direction: column;
+
+        a {
+          color: @green;
+
+          &:hover {
+            color: @green125;
+          }
+        }
+
+        .about-child {
+          margin-bottom: 7rem;
+          display: flex;
+          justify-content: space-around;
+
+          div {
+            width: 23rem;
+          }
+
+          img {
+            height: 12rem;
+          }
+        }
+      }
+    }
+  }
+
+  .splash-footer {
+    background-color: @green;
+    color: @white;
+
+    .footer-container {
+      width: 1020px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 0;
+
+      img {
+        width: 7rem;
+        margin-right: 2rem;
+      }
+    }
+  }
+}
 /**
  * Post-Login Styling
  */
@@ -236,7 +358,6 @@ header {
     max-width: 1024px;
     margin: 0 auto;
   }
-
   // same styling for main pages and manage page
   .sidebar {
     width: 20%;
@@ -253,9 +374,9 @@ header {
       color: @green125;
     }
 
-    .search-bar,
+    .add-bookmark,
     .add-folder,
-    .add-bookmark {
+    .search-bar {
       width: 80%;
     }
 
@@ -271,11 +392,9 @@ header {
       margin-bottom: 2rem;
     }
   }
-
   /**
    * Styling for manage/profile account page
    */
-
   .profile {
     display: flex;
     justify-content: center;
@@ -301,11 +420,9 @@ header {
       }
     }
   }
-
   /**
    * Styling for bookmark view page
    */
-
   .bookmark-section {
     display: flex;
     justify-content: space-between;
@@ -381,18 +498,14 @@ header {
       }
     }
   }
-
   /**
    * Styling for everything right of the sidebar
    */
-
   .content-section {
     width: 80%;
-
     /**
      * MANAGE FOLDER PAGE
      */
-
     .folder-header {
       border-bottom: 0.5px solid @gray40;
       margin-bottom: 1rem;
@@ -440,11 +553,9 @@ header {
         }
       }
     }
-
     /**
      * BOOKMARK TILES SECTION
      */
-
     ul {
       display: flex;
       flex-wrap: wrap;
@@ -477,7 +588,7 @@ header {
         text-align: center;
         align-items: center;
         justify-content: center;
-        font-family: 'Oswald', sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-weight: 900;
         font-size: 1.5rem;
         line-height: 2.3rem;
@@ -495,7 +606,7 @@ header {
         bottom: 0;
         left: 0;
         right: 0;
-        opacity: .4;
+        opacity: 0.4;
         background-size: cover;
         background-position: center;
         border-radius: 0.8rem;
@@ -503,11 +614,9 @@ header {
       }
     }
   }
-
   /**
    * BOOKMARK FORM
    */
-
   .bookmark-form-container {
     display: flex;
     justify-content: center;

@@ -21,6 +21,17 @@ function Navbar(props) {
         scope: 'openid name email identities picture',
       },
     },
+
+    theme: {
+      logo: 'img/auth0-logo.png',
+      primaryColor: '#23CE6B',
+
+    },
+
+    languageDictionary: {
+      emailInputPlaceholder: 'something@youremail.com',
+      title: 'Log me in',
+    },
   });
 
   lock.on('authenticated', (authResult) => {

@@ -77,7 +77,7 @@ class BookmarkView extends React.Component {
     const httpCheck = /http/;
     const url = httpCheck.test(bookmark.url) ? bookmark.url : `//${bookmark.url}`;
 
-    const sharedMarker = folder[0].members ? (
+    const sharedMarker = folder[0].members.length > 1 ? (
       <span className="shared-marker">Shared</span>
     ) : (
       <span />
