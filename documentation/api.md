@@ -301,7 +301,7 @@ Status: 200 OK
 - _Example:_
 
 ```json
-> PUT /tags
+> POST /tags
 > {
 >   "tagname": "Python"
 > }

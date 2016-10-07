@@ -216,7 +216,7 @@ describe('/folders endpoints', () => {
   });
 
   describe('PUT', () => {
-    it('Should update folder', () => {
+    it('Should be able to update a folder', () => {
       const folder = {
         foldername: 'test 1',
       };

@@ -443,7 +443,7 @@ describe('/bookmarks endpoints', () => {
   });
 
   describe('PUT', () => {
-    it('Should update bookmark', () => {
+    it('Should be able to update a bookmark', () => {
       const folder = {
         foldername: 'test folder',
         customerid: customer1.user_id,

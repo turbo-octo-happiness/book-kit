@@ -182,4 +182,79 @@ describe('/tags endpoints', () => {
       });
     });
   });
+
+  describe('POST', () => {
+    it('Should create a bookmark, not associated with a bookmark', () => {
+      const message = {
+        tagname: 'tag1',
+      };
+
+      return db.tx((t) => {
+        return t.none(`INSERT INTO customer(customerid, email)
+                       VALUES ('${customer1.user_id}', '${customer1.email}')`);
+      })
+      .then(() => {
+        return chai.request(app)
+          .post(API_ENDPOINT)
+          .set('Authorization', `Bearer ${customer1Token}`)
+          .send(message)
+          .then((res) => {
+            res.should.have.status(200);
+            res.type.should.equal('application/json');
+            res.charset.should.equal('utf-8');
+            res.body.should.be.an('object');
+
+            const resTag = res.body;
+            resTag.should.have.property('tagid');
+            resTag.tagid.should.be.a('number');
+            resTag.tagid.should.equal(1);
+            resTag.should.have.property('tagname');
+            resTag.tagname.should.be.a('string');
+            resTag.tagname.should.equal(message.tagname);
+          });
+      });
+    });
+  });
+
+  describe('PUT', () => {
+    it('Should be able to update a tag', () => {
+      const tag = {
+        tagname: 'tag1',
+      };
+
+      const message = {
+        tagname: 'updated tag1',
+      };
+
+      return db.tx((t) => {
+        return t.none(`INSERT INTO customer(customerid, email)
+                       VALUES ('${customer1.user_id}', '${customer1.email}')`)
+              .then(() => {
+                t.none(`INSERT INTO tag(customerid, tagname)
+                        VALUES ('${customer1.user_id}', $[tagname]);`, tag);
+              });
+      })
+      .then(() => {
+        return chai.request(app)
+          .put(`${API_ENDPOINT}/1`)
+          .set('Authorization', `Bearer ${customer1Token}`)
+          .send(message)
+          .then((res) => {
+            res.should.have.status(200);
+            res.type.should.equal('application/json');
+            res.charset.should.equal('utf-8');
+            res.body.should.be.an('object');
+
+            const resTag = res.body;
+            resTag.should.be.an('object');
+            resTag.should.have.property('tagid');
+            resTag.tagid.should.be.a('number');
+            resTag.tagid.should.equal(1);
+            resTag.should.have.property('tagname');
+            resTag.tagname.should.be.a('string');
+            resTag.tagname.should.equal(message.tagname);
+          });
+      });
+    });
+  });
 });
