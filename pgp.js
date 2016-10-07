@@ -1,7 +1,7 @@
 let CONNECT_URL = '';
 
 if (process.env.DEVELOPMENT === 'testing') {
-  CONNECT_URL = 'postgres://localhost:5432/test-bookmarks';
+  CONNECT_URL = 'postgres://localhost:5432/test_bookmarks';
 } else {
   CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/bookmarks';
 }

@@ -112,26 +112,24 @@ Tags - You will only be able to add new tags while editing/adding a bookmark.
 
 ## version 1.2 (MVP By Friday 9/31)
 
-- [ ] Sharing folders between users
+- [x] Sharing folders between users
 
-  - [ ] Can add bookmarks to shared folder
-  - [ ] Cannot edit bookmarks they did not create
+  - [x] Can add bookmarks to shared folder
+  - [x] Cannot edit bookmarks they did not create
 
-- [ ] Add my Account page
+- [x] Add my Account page
 
-  - [ ] Basic Information about user (i.e. name, email, photo)
-  - [ ] List Folder with the ability to delete, update, and shared
-  - [ ] List of Tags with the ability to delete (i.e. remove tag from all bookmarks) and edit
-  - [ ] Change sidebar to be browsing only
+  - [x] Basic Information about user (i.e. name, email, photo)
+  - [x] List Folder with the ability to delete, update, and shared
+  - [x] List of Tags with the ability to delete (i.e. remove tag from all bookmarks) and edit
+  - [x] Change sidebar to be browsing only
 
 ## Features we would like to complete by 10/7/16
 
-- [ ] Styling
+- [x] Styling
 
 - [ ] Chrome extension
 
   - Pull info from page
   - example: <http://bookit.thinkful.example/create?url=http%2a%2a%2fetc.etc.etc%2f&title=Example+Bookmark>
   - Separate window or popup window
-
-- [ ] uploading and storing screenshots in the database

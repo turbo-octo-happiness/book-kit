@@ -18,7 +18,7 @@ All endpoints use JWT authentication.
 
 #### GET /bookmarks
 
-- _Description:_ Returns an array of all the bookmarks associated with an authenticated user. A bookmark record normally consist of an id, url, title, description, a folder id, and a customer id (i.e. the owner/creator of a bookmark). For the connivence of the front-end, the endpoint also returns the folder name, an array of all users with access to the bookmark, and a list of tags. If the user doesn't exit in the database, they are added and an empty array is returned.
+- _Description:_ Returns an array of all the bookmarks associated with an authenticated user. A bookmark record normally consist of an id, url, title, description, a folder id, and a customer id (i.e. the owner/creator of a bookmark). For the connivence of the front-end, the endpoint also returns the folder name, an array of all users with access to the bookmark, and a list of tags. If the user doesn't exist in the database, they are added and an empty array is returned.
 - _Endpoint:_ `/bookmarks`
 - _Example:_
 
@@ -47,7 +47,7 @@ Status: 200 OK
 
 #### POST /bookmarks
 
-- _Description:_ Inserts a bookmark into the database and associates it with a folder and tag(s). The bookmark is automatically assigned to the authenticated customer. If insertion into database is successful, then the new bookmark plus tags are returned to the caller.
+- _Description:_ Inserts a bookmark into the database and associates it with a folder and tag(s). The bookmark is automatically assigned to the authenticated customer. If insertion into database is successful, then the new bookmark, a list of associated tags, and a list of customers who have access to the bookmark are returned to the caller.
 - _Endpoint:_ `/bookmark`
 - _Data Parameters:_ An object with the following fields: url, title, description (optional), folderid, foldername, screenshot (optional), and an array of tags (optional).
 
@@ -87,23 +87,23 @@ Status: 201 Created
 
 #### PUT /bookmarks/:bookmarkid
 
-- _Description:_ Updates a bookmark and it's associations in the database. If the update is successful, then the edited bookmark is returned to the caller.
+- _Description:_ Updates a bookmark and it's associations in the database. If the update is successful, then the updated bookmark, a list of associated tags, and a list of customers who have access to the bookmark are returned to the caller.
 - _Endpoint:_ `/bookmarks/:bookmarkid`
 - _Data Parameters:_ An object with the following fields: url, title, description (optional), folderid, foldername, screenshot (optional), and an array of tags.
 - _Example Request:_
 
 ```json
-PUT /bookmark/40
-{
-  "url": "https://webdesign.tutsplus.com/articles/designing-for-and-as-a-color-blind-person--webdesign-3408",
-  "title": "Designing For, and As, a Color-Blind Person",
-  "description": "Be careful about color combinations.",
-  "screenshot": "https://cdn.tutsplus.com/webdesign/uploads/legacy/articles/003_colorBlind/colortest.png",
-  "bookmarkid": 40,
-  "folderid": "8",
-  "foldername": "fewd",
-  "tags": ["a11y","color"]
-}
+> PUT /bookmark/40
+> {
+>   "url": "https://webdesign.tutsplus.com/articles/designing-for-and-as-a-color-blind-person--webdesign-3408",
+>   "title": "Designing For, and As, a Color-Blind Person",
+>   "description": "Be careful about color combinations.",
+>   "screenshot": "https://cdn.tutsplus.com/webdesign/uploads/legacy/articles/003_colorBlind/colortest.png",
+>   "bookmarkid": 40,
+>   "folderid": "8",
+>   "foldername": "fewd",
+>   "tags": ["a11y","color"]
+> }
 
 Status: 200 Ok
 {
@@ -169,14 +169,14 @@ Status: 200 OK
     "folderid": 8,
     "foldername": "fewd",
     "count": "1",
-    "members": ["sierragregg@Gmail.com"]
+    "members": ["123@gmail.com"]
   }
 ]
 ```
 
 ### POST /folders
 
-- _Description:_ Creates a new folder and assigns ownership of the folder to the authenticated customer. If insertion into the database is successful, the new folder name and id is returned to the caller.
+- _Description:_ Creates a new folder and assigns ownership of the folder to the authenticated customer. If insertion into the database is successful, the new folder name, id, count (i.e. number of customer's associated with the folder), and members (i.e. email addresses of all customers associated with the folder) are returned to the caller.
 - _Endpoint:_ `/folders`
 - _Data Parameters:_ An object with the following field: foldername.
 - _Example request:_
@@ -190,13 +190,15 @@ Status: 200 OK
 Status: 201 Created
 {
   "folderid": 9,
-  "foldername": "coding"
+  "foldername": "coding",
+  "count": "1",
+  "members": [ "123@gmail.com" ] }
 }
 ```
 
 #### POST /folders/customers/:folderid
 
-- _Description:_ Allows folders to be shared among multiple customers. Requires a folderid as url param and the customer email in the request body.
+- _Description:_ Allows folders to be shared among multiple customers. Requires a folderid as url param and the customer email in the request body. Returns
 - _Endpoint:_ `/folders/customers/:folderid`
 - _Data Parameters:_ An object with the following fields: email
 - _Example:_
@@ -204,20 +206,22 @@ Status: 201 Created
 ```json
 > POST /folders/customers/8
 > {
->   "foldername": "456@example.com"
+>   "email": "456@example.com"
 > }
 
 Status: 201 Created
 {
-  "customerid": "456",
-  "folderid": 8
+  "foldername": "JS",
+  "folderid": 8,
+  "count": "2",
+  "members": [ "123@gmail.com", "456@gmail.com" ]
 }
 ```
 
-#### PUT /folders
+#### PUT /folders/:folderid
 
-- _Description:_ Updates a folder's name. If update is successful, then the edited folder is returned to the caller. Only non-shared folders can be edited.
-- _Endpoint:_ `/folders`
+- _Description:_ Updates a folder's name. If update is successful, then the edited folder name, id, count (i.e. number of customer's associated with the folder), and members (i.e. email addresses of all customers associated with the folder) are returned to the caller. Only non-shared folders can be edited.
+- _Endpoint:_ `/folders/:folderid`
 - _Data Parameters:_ An object with the following fields: foldername
 - _Example:_
 
@@ -230,13 +234,15 @@ Status: 201 Created
 Status: 201 Created
 {
   "folderid": 10,
-  "foldername": "Javascript"
+  "foldername": "Javascript",
+  "count": "1",
+  "members": [ "123@gmail.com" ]
 }
 ```
 
-#### DELETE /folder/:folderid
+#### DELETE /folders/:folderid
 
-- _Description:_ Attempts to delete the specified folder. Folders can only be deleted if the deleter does not own any bookmarks in the folder. Shared folders are not deleted until the last member has left. If deleting from the database is successful, then the deleted folder is returned to the caller.
+- _Description:_ Attempts to delete the specified folder. Folders can only be deleted if the deleter does not own any bookmarks in the folder. Shared folders are not deleted until the last member has left. If the removal of the folder is successful, then the deleted folder is returned to the caller.
 - _Endpoint:_ `/folders/:folderid`
 - _Example:_
 
@@ -295,7 +301,7 @@ Status: 200 OK
 - _Example:_
 
 ```json
-> PUT /tags
+> POST /tags
 > {
 >   "tagname": "Python"
 > }
@@ -309,7 +315,7 @@ Status: 201 OK
 
 #### PUT /tags/:tagid
 
-- _Description:_ Updates a user's tagname. Only the tag's creator can edit it; if someone besides the owner of the tag tries it will return 0 results.
+- _Description:_ Updates a user's tagname. Only the tag's creator can edit it; if someone besides the owner of the tag tries it will return an error.
 - _Endpoint:_ `/tags`
 - _Data Parameters:_ An object with the following fields: tagname
 - _Example:_

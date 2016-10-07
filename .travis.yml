@@ -1,0 +1,12 @@
+sudo: required
+env:
+  matrix:
+    secure: WIACLzJSb1qlBrMYfO3X9CQlzT+sB47nOAeDSSfjDfu6SHWYHZ7OgY0PeJX/6XoWgT++LBBTUV31MZpnfGbjM920O3Lau+wskkh4YVCZyF7EOTSJqMvLMldK1Omnlxyh/naUA/2GSNfwzFf4s3IU6DzBk9B45rZ6wVSE4Oeak+ce7JbttS1cEpzHUmOrQZ265MCRataGqCUNHjnDfEjQtzkrH9tt29P6RWuVJEzPG4w5rhiZmj0zCX68UY50+UA8HF+JK/GehIe9SbFHeu0vAJJpFevK4XMCxotBtn8HVXQXRAQUuctva6Vibjg2BMXvjd25VJDim9efFLY/RDbj9oCf0tGrERh0tCO9tnRG+YjZjyMKqGIUkbhAZBg/1ifab6kCCxGYLhfTV9pgdvN/0z7rsij+5bsXwXD8jM2FdmjMC2vmmEil8R5iKrhIavnShn/bjdkESZxCupWyCBMHpRFIvqsIfls3eHyhFfsBT3dBrgNHi7s0pln6ZS4OYul7kB4jqMRmBQk+DulE/ds1N/xMQLoEArgNTbGxfsQanA+0jPOKSjsI+GpGf//P/r65Gz19ok+79yXqM6jFisegaX4tkZOSru+7NhG4Gf/11jLFDQ/ycCSBj3Swugi1WhNWvRDQIhw/pzJAKBXe8YEkwWuHYhnOt33iEdaFwQScEzQ=
+language: node_js
+node_js: node
+services:
+- postgresql
+addons:
+  postgresql: "9.5"
+before_script:
+- psql -U postgres -c 'CREATE DATABASE test_bookmarks;'

@@ -11,7 +11,7 @@ const propTypes = {
   children: PropTypes.object,
 };
 
-function AppContainer(props) {
+export function AppContainer(props) {
   const display = !props.isAuthenticated ? (
     <SplashPage />
   ) : (
@@ -34,4 +34,4 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = connect(mapStateToProps)(AppContainer);
+export default connect(mapStateToProps)(AppContainer);

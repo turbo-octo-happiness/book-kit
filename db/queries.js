@@ -131,6 +131,7 @@ exports.INSERT_FOLDER = `WITH folders AS (
                          RETURNING folderid, (SELECT foldername from folders);`;
 
 // Works given the customerid
+// Used to facilitate shared folders
 exports.ADD_USER_TO_FOLDER_BY_ID = `INSERT INTO customer_folder(customerid, folderid)
                                     VALUES ($1, $2) RETURNING customerid, folderid;`;
 
@@ -263,5 +264,5 @@ exports.COPY_BOOKMARK = `SELECT url, title, description, folder.folderid,
 // NOTE: 'on conflict' is specific to Postgres and will not work with other SQL databases.
 // changed
 exports.INSERT_CUSTOMER = `INSERT INTO customer(customerid, email)
-                        VALUES ($1, $2) on conflict (customerid) do nothing
-                        RETURNING customerid, email;`;
+                           VALUES ($1, $2) on conflict (customerid) do nothing
+                           RETURNING customerid, email;`;
