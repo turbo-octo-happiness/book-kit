@@ -5,10 +5,11 @@ const chaiHttp = require('chai-http');
 const app = require('../../server').app;
 const exec = require('child_process').exec;
 const db = require('../../pgp');
+const makeSpy = require('./spy');
 // Authentication/User information
 const customer1 = require('./test-setup').customer1;
 const customer1Token = require('./test-setup').customer1Token;
-// const customer2 = require('./test-setup').customer2;
+const customer2 = require('./test-setup').customer2;
 // const customer2Token = require('./test-setup').customer2Token;
 
 process.env.DEVELOPMENT = 'testing';
@@ -184,7 +185,7 @@ describe('/tags endpoints', () => {
   });
 
   describe('POST', () => {
-    it('Should create a bookmark, not associated with a bookmark', () => {
+    it('Should create a tag, not associated with a bookmark', () => {
       const message = {
         tagname: 'tag1',
       };
@@ -199,7 +200,7 @@ describe('/tags endpoints', () => {
           .set('Authorization', `Bearer ${customer1Token}`)
           .send(message)
           .then((res) => {
-            res.should.have.status(200);
+            res.should.have.status(201);
             res.type.should.equal('application/json');
             res.charset.should.equal('utf-8');
             res.body.should.be.an('object');
@@ -246,13 +247,135 @@ describe('/tags endpoints', () => {
             res.body.should.be.an('object');
 
             const resTag = res.body;
-            resTag.should.be.an('object');
             resTag.should.have.property('tagid');
             resTag.tagid.should.be.a('number');
             resTag.tagid.should.equal(1);
             resTag.should.have.property('tagname');
             resTag.tagname.should.be.a('string');
             resTag.tagname.should.equal(message.tagname);
+          });
+      });
+    });
+
+    it('Should only allow a tag\'s owner to edit', () => {
+      const tag = {
+        tagname: 'tag1',
+      };
+
+      const message = {
+        tagname: 'updated tag1',
+      };
+
+      const spy = makeSpy();
+
+      return db.tx((t) => {
+        return t.batch([
+          t.none(`INSERT INTO customer(customerid, email)
+                  VALUES ('${customer1.user_id}', '${customer1.email}')`),
+          t.none(`INSERT INTO customer(customerid, email)
+                  VALUES ('${customer2.user_id}', '${customer2.email}')`),
+        ])
+        .then(() => {
+          t.none(`INSERT INTO tag(customerid, tagname)
+                  VALUES ('${customer2.user_id}', $[tagname]);`, tag);
+        });
+      })
+      .then(() => {
+        return chai.request(app)
+          .put(`${API_ENDPOINT}/1`)
+          .set('Authorization', `Bearer ${customer1Token}`)
+          .send(message)
+          .then(spy)
+          .catch((error) => {
+            // If the request fails, make sure it contains the expected error
+            const res = error.response;
+            res.should.have.status(500);
+            res.type.should.equal('application/json');
+            res.charset.should.equal('utf-8');
+            res.body.should.be.an('object');
+            res.body.should.have.property('error');
+            res.body.error.should.equal('Only a tag\'s owner can edit it.');
+          })
+          .then(() => {
+            // Check that the request didn't succeed
+            spy.called.should.be.false;
+          });
+      });
+    });
+  });
+
+  describe('DELETE', () => {
+    it('Should delete specified tag', () => {
+      const tag = {
+        tagname: 'tag1',
+      };
+
+      return db.tx((t) => {
+        return t.none(`INSERT INTO customer(customerid, email)
+                       VALUES ('${customer1.user_id}', '${customer1.email}')`)
+              .then(() => {
+                t.none(`INSERT INTO tag(customerid, tagname)
+                        VALUES ('${customer1.user_id}', $[tagname]);`, tag);
+              });
+      })
+      .then(() => {
+        return chai.request(app)
+          .delete(`${API_ENDPOINT}/1`)
+          .set('Authorization', `Bearer ${customer1Token}`)
+          .then((res) => {
+            res.should.have.status(200);
+            res.type.should.equal('application/json');
+            res.charset.should.equal('utf-8');
+            res.body.should.be.an('object');
+
+            const resTag = res.body;
+            resTag.should.have.property('tagid');
+            resTag.tagid.should.be.a('number');
+            resTag.tagid.should.equal(1);
+            resTag.should.have.property('tagname');
+            resTag.tagname.should.be.a('string');
+            resTag.tagname.should.equal(tag.tagname);
+          });
+      });
+    });
+
+    it('Should only allow a tag\'s owner to delete', () => {
+      const tag = {
+        tagname: 'tag1',
+      };
+
+      const spy = makeSpy();
+
+      return db.tx((t) => {
+        return t.batch([
+          t.none(`INSERT INTO customer(customerid, email)
+                  VALUES ('${customer1.user_id}', '${customer1.email}')`),
+          t.none(`INSERT INTO customer(customerid, email)
+                  VALUES ('${customer2.user_id}', '${customer2.email}')`),
+        ])
+        .then(() => {
+          t.none(`INSERT INTO tag(customerid, tagname)
+                  VALUES ('${customer2.user_id}', $[tagname]);`, tag);
+        });
+      })
+      .then(() => {
+        return chai.request(app)
+          .delete(`${API_ENDPOINT}/1`)
+          .set('Authorization', `Bearer ${customer1Token}`)
+          .then(spy)
+          .catch((error) => {
+            // If the request fails, make sure it contains the expected error
+            const res = error.response;
+            res.should.have.status(500);
+            res.type.should.equal('application/json');
+            res.charset.should.equal('utf-8');
+            res.body.should.be.an('object');
+            res.body.should.have.property('error');
+            res.body.error.should.equal('Only a tag\'s owner can delete it.');
+          })
+          .then(() => {
+            // Check that the request didn't succeed
+            spy.called.should.be.false;
           });
       });
     });

@@ -20,37 +20,9 @@ router.get('/', (request, response) => {
       response.json(result);
     })
     .catch((error) => {
-      console.log('ERROR:', error.message || error);
+      console.error('ERROR:', error.message || error);
       response.status(500);
     });
-});
-
-/**
- * @description `PUT /tags/:tagid` endpoint. Updates a user's tagname.
- * Only the tag's creator can edit it; if someone besides the owner of
- * the tag tries it will return 0 results.
- */
-router.put('/:tagid', jsonParser, (request, response) => {
-  // Some user_id's are numbers and some are alphanumeric.
-  const userIdentity = `${request.user.identities[0].user_id}`;
-
-  const tagid = request.params.tagid;
-  if (!request.body.tagname) {
-    response.status(422).json({
-      message: 'Missing field: tagname',
-    });
-  } else {
-    const tagname = request.body.tagname;
-
-    db.one(queries.UPDATE_TAG, [tagname, tagid, userIdentity])
-      .then((result) => {
-        response.json(result);
-      })
-      .catch((error) => {
-        console.log('ERROR:', error.message || error);
-        response.status(500);
-      });
-  }
 });
 
 /**
@@ -70,11 +42,47 @@ router.post('/', jsonParser, (request, response) => {
 
     db.one(queries.INSERT_TAG, [userIdentity, tag, userIdentity, tag])
       .then((result) => {
+        response.status(201).json(result);
+      })
+      .catch((error) => {
+        console.error('ERROR:', error.message || error);
+        response.status(500);
+      });
+  }
+});
+
+/**
+ * @description `PUT /tags/:tagid` endpoint. Updates a user's tagname.
+ * Only the tag's creator can edit it; if someone besides the owner of
+ * the tag tries it will return an error.
+ */
+router.put('/:tagid', jsonParser, (request, response) => {
+  // Some user_id's are numbers and some are alphanumeric.
+  const userIdentity = `${request.user.identities[0].user_id}`;
+
+  const tagid = request.params.tagid;
+  if (!request.body.tagname) {
+    response.status(422).json({
+      message: 'Missing field: tagname',
+    });
+  } else {
+    const tagname = request.body.tagname;
+
+    db.one(queries.UPDATE_TAG, [tagname, tagid, userIdentity])
+      .then((result) => {
         response.json(result);
       })
       .catch((error) => {
-        console.log('ERROR:', error.message || error);
-        response.status(500);
+        let errorMessage = error.message || error;
+
+        if (errorMessage === 'No data returned from the query.') {
+          errorMessage = 'Only a tag\'s owner can edit it.';
+        }
+
+        console.error('ERROR:', errorMessage);
+        response.status(500).send({
+          error: errorMessage,
+        });
       });
   }
 });
@@ -91,12 +99,19 @@ router.delete('/:tagid', jsonParser, (request, response) => {
 
   db.one(queries.DELETE_TAG, [tagid, userIdentity])
     .then((result) => {
-      console.log(result);
       response.json(result);
     })
     .catch((error) => {
-      console.log('ERROR:', error.message || error);
-      response.status(500);
+      let errorMessage = error.message || error;
+
+      if (errorMessage === 'No data returned from the query.') {
+        errorMessage = 'Only a tag\'s owner can delete it.';
+      }
+
+      console.error('ERROR:', errorMessage);
+      response.status(500).send({
+        error: errorMessage,
+      });
     });
 });
 

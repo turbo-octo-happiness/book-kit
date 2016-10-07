@@ -315,7 +315,7 @@ Status: 201 OK
 
 #### PUT /tags/:tagid
 
-- _Description:_ Updates a user's tagname. Only the tag's creator can edit it; if someone besides the owner of the tag tries it will return 0 results.
+- _Description:_ Updates a user's tagname. Only the tag's creator can edit it; if someone besides the owner of the tag tries it will return an error.
 - _Endpoint:_ `/tags`
 - _Data Parameters:_ An object with the following fields: tagname
 - _Example:_
