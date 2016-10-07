@@ -176,7 +176,7 @@ Status: 200 OK
 
 ### POST /folders
 
-- _Description:_ Creates a new folder and assigns ownership of the folder to the authenticated customer. If insertion into the database is successful, the new folder name, id, count (i.e. number of customer's associated with a folder), and members (i.e. email addresses of all customers associated with a folder) are returned to the caller.
+- _Description:_ Creates a new folder and assigns ownership of the folder to the authenticated customer. If insertion into the database is successful, the new folder name, id, count (i.e. number of customer's associated with the folder), and members (i.e. email addresses of all customers associated with the folder) are returned to the caller.
 - _Endpoint:_ `/folders`
 - _Data Parameters:_ An object with the following field: foldername.
 - _Example request:_
@@ -198,7 +198,7 @@ Status: 201 Created
 
 #### POST /folders/customers/:folderid
 
-- _Description:_ Allows folders to be shared among multiple customers. Requires a folderid as url param and the customer email in the request body.
+- _Description:_ Allows folders to be shared among multiple customers. Requires a folderid as url param and the customer email in the request body. Returns
 - _Endpoint:_ `/folders/customers/:folderid`
 - _Data Parameters:_ An object with the following fields: email
 - _Example:_
@@ -211,15 +211,17 @@ Status: 201 Created
 
 Status: 201 Created
 {
-  "customerid": "456",
-  "folderid": 8
+  "foldername": "JS",
+  "folderid": 8,
+  "count": "2",
+  "members": [ "123@gmail.com", "456@gmail.com" ]
 }
 ```
 
-#### PUT /folders
+#### PUT /folders/:folderid
 
-- _Description:_ Updates a folder's name. If update is successful, then the edited folder is returned to the caller. Only non-shared folders can be edited.
-- _Endpoint:_ `/folders`
+- _Description:_ Updates a folder's name. If update is successful, then the edited folder name, id, count (i.e. number of customer's associated with the folder), and members (i.e. email addresses of all customers associated with the folder) are returned to the caller. Only non-shared folders can be edited.
+- _Endpoint:_ `/folders/:folderid`
 - _Data Parameters:_ An object with the following fields: foldername
 - _Example:_
 
@@ -232,13 +234,15 @@ Status: 201 Created
 Status: 201 Created
 {
   "folderid": 10,
-  "foldername": "Javascript"
+  "foldername": "Javascript",
+  "count": "1",
+  "members": [ "123@gmail.com" ]
 }
 ```
 
-#### DELETE /folder/:folderid
+#### DELETE /folders/:folderid
 
-- _Description:_ Attempts to delete the specified folder. Folders can only be deleted if the deleter does not own any bookmarks in the folder. Shared folders are not deleted until the last member has left. If deleting from the database is successful, then the deleted folder is returned to the caller.
+- _Description:_ Attempts to delete the specified folder. Folders can only be deleted if the deleter does not own any bookmarks in the folder. Shared folders are not deleted until the last member has left. If the removal of the folder is successful, then the deleted folder is returned to the caller.
 - _Endpoint:_ `/folders/:folderid`
 - _Example:_
 

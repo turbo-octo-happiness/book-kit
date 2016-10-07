@@ -2,17 +2,13 @@
 const mocha = require('mocha');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const app = require('../../server')
-  .app;
-const exec = require('child_process')
-  .exec;
+const app = require('../../server').app;
+const exec = require('child_process').exec;
 const db = require('../../pgp');
 // Authentication/User information
-const customer1 = require('./test-setup')
-  .customer1;
-const customer1Token = require('./test-setup')
-  .customer1Token;
-// const customer2 = require('./test-setup').customer2;
+const customer1 = require('./test-setup').customer1;
+const customer1Token = require('./test-setup').customer1Token;
+const customer2 = require('./test-setup').customer2;
 // const customer2Token = require('./test-setup').customer2Token;
 
 process.env.DEVELOPMENT = 'testing';
@@ -161,6 +157,62 @@ describe('/folders endpoints', () => {
             });
         });
     });
+
+    it('Should allow folders to be shared', () => {
+      const folder = {
+        foldername: 'shared',
+      };
+
+      const message = {
+        email: customer2.email,
+      };
+
+      return db.tx((t) => {
+        return t.batch([
+          t.none(`INSERT INTO customer(customerid, email)
+                  VALUES ('${customer1.user_id}', '${customer1.email}');`),
+          t.none(`INSERT INTO customer(customerid, email)
+                  VALUES ('${customer2.user_id}', '${customer2.email}');`),
+        ]).then(() => {
+          return t.none(`WITH folders AS (
+                    INSERT INTO folder(foldername)
+                    VALUES ($[foldername])
+                    RETURNING folderid, foldername
+                  )
+                  INSERT INTO customer_folder(customerid, folderid)
+                  VALUES ('${customer1.user_id}', (SELECT folderid from folders));`, folder);
+        });
+      }).then(() => {
+        return chai.request(app)
+          .post(`${API_ENDPOINT}/customers/1`)
+          .set('Authorization', `Bearer ${customer1Token}`)
+          .send(message)
+          .then((res) => {
+            res.should.have.status(201);
+            res.type.should.equal('application/json');
+            res.charset.should.equal('utf-8');
+            res.body.should.be.an('object');
+
+            const resFolder = res.body;
+            resFolder.should.have.property('folderid');
+            resFolder.folderid.should.be.a('number');
+            resFolder.folderid.should.equal(1);
+            resFolder.should.have.property('foldername');
+            resFolder.foldername.should.be.a('string');
+            resFolder.foldername.should.equal(folder.foldername);
+            resFolder.should.have.property('count');
+            resFolder.count.should.be.a('string');
+            resFolder.count.should.equal('2');
+            resFolder.should.have.property('members');
+            resFolder.members.should.be.a('array');
+            resFolder.members.length.should.equal(2);
+            resFolder.members[0].should.be.a('string');
+            resFolder.members[0].should.equal(customer1.email);
+            resFolder.members[1].should.be.a('string');
+            resFolder.members[1].should.equal(customer2.email);
+          });
+      });
+    });
   });
 
   describe('PUT', () => {
@@ -211,6 +263,47 @@ describe('/folders endpoints', () => {
               resFolder.members.should.be.a('array');
               resFolder.members.length.should.equal(1);
               resFolder.members[0].should.equal(customer1.email);
+            });
+        });
+    });
+  });
+
+  describe('DELETE', () => {
+    it('Should remove the folder', () => {
+      const folder = {
+        foldername: 'test 1',
+      };
+
+      return db.tx((t) => {
+        return t.none(`INSERT INTO customer(customerid, email)
+                       VALUES ('${customer1.user_id}', '${customer1.email}');`)
+            .then(() => {
+              return t.none(`WITH folders AS (
+                        INSERT INTO folder(foldername)
+                        VALUES ($[foldername])
+                        RETURNING folderid, foldername
+                      )
+                      INSERT INTO customer_folder(customerid, folderid)
+                      VALUES ('${customer1.user_id}', (SELECT folderid from folders));`, folder);
+            });
+      })
+        .then(() => {
+          return chai.request(app)
+            .delete(`${API_ENDPOINT}/1`)
+            .set('Authorization', `Bearer ${customer1Token}`)
+            .then((res) => {
+              res.should.have.status(200);
+              res.type.should.equal('application/json');
+              res.charset.should.equal('utf-8');
+              res.body.should.be.an('object');
+
+              const resFolder = res.body;
+              resFolder.should.have.property('folderid');
+              resFolder.folderid.should.be.a('number');
+              resFolder.folderid.should.equal(1);
+              resFolder.should.have.property('foldername');
+              resFolder.foldername.should.be.a('string');
+              resFolder.foldername.should.equal(folder.foldername);
             });
         });
     });

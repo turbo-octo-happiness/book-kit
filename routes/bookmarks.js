@@ -234,12 +234,14 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
           });
         });
       });
-    }).then((data) => {
-      response.json(data);
-    }).catch((error) => {
-      console.error('ERROR:', error.message || error);
-      response.status(500);
-    });
+    })
+      .then((data) => {
+        response.json(data);
+      })
+      .catch((error) => {
+        console.error('ERROR:', error.message || error);
+        response.status(500);
+      });
   }
 });
 
