@@ -29,7 +29,7 @@ describe('ManageFolders Component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    // console.log(result.props.children[1], '<<< RESULT');
+    // console.log(result, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.equal('li');
@@ -100,7 +100,7 @@ describe('ManageFolders Component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    console.log(result.props.children[0].props.children[2].props.children[0].props, '<<< RESULT');
+    // console.log(result, '<<< RESULT');
 
     /* ------- TESTS -------- */
     const folderName = result.props.children[0].props.children[0];
