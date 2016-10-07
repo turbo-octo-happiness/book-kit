@@ -143,6 +143,7 @@ function folderReducer(state = [], action) {
       return action.folders;
     }
 
+    case actionTypes.SHARE_FOLDER_SUCCESS:
     case actionTypes.EDIT_FOLDER_SUCCESS: {
       console.log(action.folder, 'Reducer/ updated folder');
       const tempArr = state.slice();
@@ -172,7 +173,8 @@ function folderReducer(state = [], action) {
 
     case actionTypes.ADD_FOLDER_ERROR:
     case actionTypes.GET_FOLDERS_ERROR:
-    case actionTypes.EDIT_FOLDER_ERROR: {
+    case actionTypes.EDIT_FOLDER_ERROR:
+    case actionTypes.SHARE_FOLDER_ERROR: {
       console.log(action.error, 'Reducer/ edit folder error');
       return state;
     }

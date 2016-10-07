@@ -43,12 +43,16 @@ router.post('/', jsonParser, (request, response) => {
     });
   } else {
     const foldername = request.body.foldername;
-
-    // Paramitarize query to protect against SQL injection
-    db.one(queries.INSERT_FOLDER, [foldername, userIdentity])
-      .then((result) => {
-        response.json(result);
-      })
+    db.tx((t) => {
+      // Paramitarize query to protect against SQL injection
+      db.one(queries.INSERT_FOLDER, [foldername, userIdentity])
+        .then((result) => {
+          return db.one(queries.SELECT_FOLDER_INFO, [result.folderid])
+          .then((resultsToReturn) => {
+            response.status('201').json(resultsToReturn);
+          });
+        });
+    })
       .catch((error) => {
         console.log('ERROR:', error.message || error);
         response.status(500).send({
@@ -76,25 +80,32 @@ router.post('/customers/:folderid', jsonParser, (request, response) => {
     const email = request.body.email;
     const folderid = request.params.folderid;
 
-    db.one(queries.ADD_USER_TO_FOLDER_BY_EMAIL, [folderid, email, email])
-      .then((result) => {
-        response.status(201).json(result);
-      }).catch((error) => {
-        let errorMessage = error.message || error;
-
-        if (errorMessage === 'duplicate key value violates unique constraint "user_folder_pkey"') {
-          errorMessage = `${email} already has access to ${folderid}`;
-        }
-
-        if (errorMessage === 'No data returned from the query.') {
-          
-        }
-
-        console.log('ERROR:', error.message || error);
-        response.status(500).send({
-          error: errorMessage,
+    // Database transaction, all queries within will either complete or fail.
+    db.tx((t) => {
+      return db.one(queries.ADD_USER_TO_FOLDER_BY_EMAIL, [folderid, email, email])
+        .then((result) => {
+          console.log(`queries.ADD_USER_TO_FOLDER_BY_EMAIL result: ${result}`);
+          return db.one(queries.SELECT_FOLDER_INFO, [result.folderid]);
         });
+    }).then((data) => {
+      console.log('transaction then', data);
+      response.status(201).json(data);
+    }).catch((error) => {
+      let errorMessage = error.message || error;
+
+      if (errorMessage === 'duplicate key value violates unique constraint "user_folder_pkey"') {
+        errorMessage = `${email} already has access to ${folderid}`;
+      }
+
+      if (errorMessage === 'No data returned from the query.') {
+        errorMessage = `${email} does not exist in the database.`;
+      }
+
+      console.log('ERROR:', error.message || error);
+      response.status(500).send({
+        error: errorMessage,
       });
+    });
   }
 });
 
@@ -117,9 +128,14 @@ router.put('/:folderid', jsonParser, (request, response) => {
     const foldername = request.body.foldername;
 
     // Paramitarize query to protect against SQL injection
-    db.one(queries.UPDATE_FOLDER, [folderid, foldername, userIdentity, folderid])
-      .then((result) => {
-        response.json(result);
+      db.tx((t) => {
+        db.one(queries.UPDATE_FOLDER, [folderid, foldername, userIdentity, folderid])
+          .then((result) => {
+            return db.one(queries.SELECT_FOLDER_INFO, [result.folderid])
+            .then((resultsToReturn) => {
+              response.json(resultsToReturn);
+            });
+          });
       })
       .catch((error) => {
         console.log('ERROR:', error.message || error);
@@ -155,10 +171,12 @@ router.delete('/:folderid', (request, response) => {
         }
         console.log(result);
         return t.one(queries.DELETE_FOLDER_REFERENCE, [folderid, userIdentity])
-          .then(() => {
-            return t.oneOrNone(queries.DELETE_FOLDER, [folderid, userIdentity])
+          .then((data) => {
+            return t.oneOrNone(queries.DELETE_FOLDER, [folderid, folderid])
               .then((delFolder) => {
-                return Promise.resolve(delFolder);
+                console.log(`delFolder = ${delFolder}; data = ${data}`)
+                const resultsToReturn = delFolder || data;
+                return Promise.resolve(resultsToReturn);
               });
           });
       });

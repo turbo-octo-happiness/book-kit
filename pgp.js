@@ -1,4 +1,10 @@
-const CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/bookmarks';
+let CONNECT_URL = '';
+
+if (process.env.DEVELOPMENT === 'testing') {
+  CONNECT_URL = 'postgres://localhost:5432/test-bookmarks';
+} else {
+  CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/bookmarks';
+}
 
 const pgp = require('pg-promise')();
 

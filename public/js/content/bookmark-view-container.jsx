@@ -10,6 +10,7 @@ const propTypes = {
   params: PropTypes.object,
   folders: PropTypes.array,
   token: PropTypes.string,
+  owner: PropTypes.number,
 };
 
 export class BookmarkViewContainer extends React.Component {
@@ -70,11 +71,12 @@ export class BookmarkViewContainer extends React.Component {
         onShowDelete={this.onShowDelete}
         onEdit={this.onEdit}
         onDelete={this.onDelete}
-        delete={this.state.delete}
+        deleted={this.state.delete}
         show={this.state.show}
-        bookmark={bookmark}
+        bookmark={bookmark[0]}
         folderArr={folderArr}
         folders={this.props.folders}
+        owner={this.props.owner}
       />
     );
   }
@@ -85,6 +87,7 @@ const mapStateToProps = state => {
     bookmarks: state.bookmarks,
     folders: state.folders,
     token: state.auth.token,
+    owner: state.auth.profile.identities[0].user_id,
   };
 };
 

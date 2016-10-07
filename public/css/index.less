@@ -6,28 +6,24 @@
 @gray15: #F6F7F7;
 @gray5: #FAFBFB;
 @white: #F4F8FC;
-
 @blue: #85C7F2;
 @blue125: darken(@blue, 30%);
 @blue75: mix(@blue, @white, 75%);
 @blue50: mix(@blue, @white, 50%);
 @blue25: mix(@blue, @white, 25%);
 @blue5: mix(@blue, @white, 7%);
-
 @green: #23CE6B;
 @green125: darken(@green, 10%);
 @green75: mix(@green, @white, 75%);
 @green50: mix(@green, @white, 50%);
 @green25: mix(@green, @white, 25%);
 @green5: mix(@green, @white, 7%);
-
 // Globals
-
-body, html {
+body,
+html {
   height: 100%;
   color: @gray75;
   background-color: @white;
-
   font-size: 1rem;
   line-height: 1.875;
   -webkit-font-smoothing: antialiased;
@@ -41,18 +37,18 @@ body, html {
 }
 
 h1 {
-  font-family: 'Karla', sans-serif;
-  font-weight: bold;
-  font-size: 3rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
 }
 
 a {
   text-decoration: none;
   color: @white;
+  transition: color 0.3s ease;
+}
 
-  :hover {
-    color: @green125;
-  }
+a:hover {
+  color: @green125;
 }
 
 #app {
@@ -75,18 +71,24 @@ button {
   color: @white;
   border-radius: 0.5rem;
   border: none;
-  font-family: 'Karla', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: bold;
   font-size: 0.9rem;
   margin-bottom: 1rem;
-
-  :hover {
-    background-color: @green125
-  }
+  transition: background-color 0.3s ease;
+  letter-spacing: 0.04rem;
 }
 
-textarea,
-input {
+button:hover {
+  background-color: @green125;
+}
+
+button:disabled {
+  background-color: @green25;
+}
+
+input,
+textarea {
   border-radius: 0.5rem;
   border: 0.5px solid @gray40;
   padding: 0.5rem;
@@ -110,9 +112,7 @@ select {
 .prof-pic {
   border-radius: 50%;
 }
-
 // Section Styles
-
 /**
  * HEADER SECTION - nav
  */
@@ -120,8 +120,7 @@ header {
   display: flex;
   justify-content: center;
   background-color: @green;
-  font-family: 'Karla', sans-serif;
-  margin-bottom: 1rem;
+  font-family: 'Open Sans', sans-serif;
 
   nav {
     display: flex;
@@ -131,6 +130,10 @@ header {
     max-width: 1024px;
     height: 3rem;
 
+    a {
+      padding: 0.5rem 0;
+    }
+
     a:hover {
       color: @green125;
     }
@@ -138,11 +141,16 @@ header {
     a.main-logo {
       display: flex;
       align-items: center;
+
+      img {
+        width: 7rem;
+      }
     }
 
     a.prof-link {
       display: flex;
       align-items: center;
+      padding: 0;
     }
 
     .logout {
@@ -156,29 +164,193 @@ header {
     }
   }
 }
-
 /**
  * Main body section under nav
  */
-
 /**
  *  Pre-login Splash Page
  */
-.splash-page {
-  position: absolute;
-  top: 3rem;
-  bottom: 0px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
+.splash-page {
+  .splash-main {
+    background-image: url('img/splash.jpeg');
+    background-position: top;
+    background-size: cover;
+    height: 35rem;
+
+    display: flex;
+    justify-content: center;
+  }
+
+  .splash-head-text {
+    position: absolute;
+    margin-top: 6rem;
+    font-size: 3rem;
+    font-family: 'Roboto', sans-serif;
+    color: @green;
+    display: flex;
+    flex-direction: column;
+    width: 1024px;
+
+    .main-tagline {
+      margin-top: -1rem;
+      text-shadow: 0 1px 1px rgba(30, 40, 53, .2);
+    }
+
+    .second-tagline {
+      font-size: 1rem;
+      font-family: 'Open Sans', sans-serif;
+      color: @gray50;
+    }
+  }
+
+  .splash-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    margin-left: 50%;
+
+    .learn-more {
+      position: absolute;
+      min-width: 7rem;
+      text-align: center;
+      margin-top: -3.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-bottom: 2px solid @white;
+      transition: border-color 0.3s ease;
+    }
+
+    .splash-scroll-btn {
+      position: absolute;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background-color: @white;
+      border-radius: 50%;
+      padding: 0 1rem;
+      color: @green;
+      z-index: 1;
+    }
+  }
+
+  .splash-btn:hover {
+    .learn-more {
+      border-color: @green125;
+    }
+  }
+
+  .splash-features {
+    background-color: @green;
+    z-index: 0;
+
+    .feature-container {
+      width: 1024px;
+      color: @white;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h1 {
+        margin-top: 7rem;
+      }
+
+      .features {
+        display: flex;
+        margin-top: 3rem;
+
+        &:nth-child(3) {
+          margin-bottom: 7rem;
+        }
+
+        .features-child {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 18rem;
+
+          i {
+            padding: 1.3rem;
+            background-color: @green125;
+            color: @green;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+          }
+
+          span {
+            width: 80%;
+            text-align: center;
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+
+  .splash-about {
+    .about-container {
+      width: 1020px;
+      margin: 0 auto;
+
+      .about {
+        margin-top: 7rem;
+        display: flex;
+        flex-direction: column;
+
+        a {
+          color: @green;
+
+          &:hover {
+            color: @green125;
+          }
+        }
+
+        .about-child {
+          margin-bottom: 7rem;
+          display: flex;
+          justify-content: space-around;
+
+          div {
+            width: 23rem;
+          }
+
+          img {
+            height: 12rem;
+          }
+        }
+      }
+    }
+  }
+
+  .splash-footer {
+    background-color: @green;
+    color: @white;
+
+    .footer-container {
+      width: 1020px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 0;
+
+      img {
+        width: 7rem;
+        margin-right: 2rem;
+      }
+    }
+  }
+}
 /**
  * Post-Login Styling
  */
 .main-section {
   // consistent across the board for all components
+  margin-top: 1rem;
+
   .main-container {
     display: flex;
     justify-content: space-between;
@@ -186,21 +358,25 @@ header {
     max-width: 1024px;
     margin: 0 auto;
   }
-
   // same styling for main pages and manage page
   .sidebar {
     width: 20%;
     display: flex;
     flex-direction: column;
     padding-top: 0.55rem;
+    font-size: 0.9rem;
 
     a {
       color: @gray75;
     }
 
-    .search-bar,
+    a:hover {
+      color: @green125;
+    }
+
+    .add-bookmark,
     .add-folder,
-    .add-bookmark {
+    .search-bar {
       width: 80%;
     }
 
@@ -216,16 +392,22 @@ header {
       margin-bottom: 2rem;
     }
   }
-
   /**
    * Styling for manage/profile account page
    */
-
   .profile {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
+
+    a {
+      color: @green;
+    }
+
+    a:hover {
+      color: @green125;
+    }
 
     .prof-text {
       display: flex;
@@ -238,17 +420,19 @@ header {
       }
     }
   }
-
   /**
    * Styling for bookmark view page
    */
-
   .bookmark-section {
     display: flex;
     justify-content: space-between;
 
     a {
       color: @green;
+    }
+
+    a:hover {
+      color: @green125;
     }
 
     button {
@@ -258,7 +442,27 @@ header {
     .bookmark-view {
       width: 100%;
 
-      p {
+      .view-folder {
+        display: flex;
+        margin-bottom: 1rem;
+        align-items: center;
+
+        p {
+          margin-right: 0.8rem;
+        }
+
+        .shared-marker {
+          font-size: 0.7rem;
+          padding: 0 0.5rem;
+          background-color: @gray40;
+          border-radius: 0.5rem;
+        }
+      }
+
+      .tags-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
         margin-bottom: 1rem;
       }
 
@@ -276,6 +480,7 @@ header {
           height: 16rem;
           background-color: black;
           background-size: cover;
+          background-position: center;
           border-radius: 0.5rem;
         }
       }
@@ -293,54 +498,86 @@ header {
       }
     }
   }
-
   /**
    * Styling for everything right of the sidebar
    */
-
   .content-section {
     width: 80%;
-
     /**
      * MANAGE FOLDER PAGE
      */
-
     .folder-header {
       border-bottom: 0.5px solid @gray40;
       margin-bottom: 1rem;
     }
 
-    .manage-folder {
-      display: flex;
-      justify-content: space-between;
+    .manage-folder-container {
       border-bottom: 0.5px solid @gray40;
       margin-bottom: 1rem;
-    }
+      padding-bottom: 1rem;
 
-    .manage-buttons {
-      display: flex;
+      .manage-folder {
+        display: flex;
+        justify-content: space-between;
 
-      button {
-        margin-left: 0.3rem;
-        background-color: @green75;
+        input {
+          margin-bottom: 0;
+        }
+      }
+
+      .manage-buttons {
+        display: flex;
+
+        button {
+          margin-left: 0.3rem;
+          margin-bottom: 0;
+          background-color: @green75;
+        }
+
+        button:hover {
+          background-color: @green125;
+        }
+
+        button:disabled {
+          background-color: @green25;
+        }
+      }
+
+      .folder-share {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        li {
+          font-size: 0.9rem;
+        }
       }
     }
-
     /**
      * BOOKMARK TILES SECTION
      */
-
     ul {
       display: flex;
       flex-wrap: wrap;
       align-items: flex-end;
-      justify-content: space-between;
     }
 
     .bookmark-tile {
       width: 16.86rem;
       list-style: none;
       margin-left: 0;
+
+      a {
+        text-shadow: 0 0 0.3px @gray50;
+      }
+
+      a:hover {
+        text-shadow: none;
+      }
+
+      a:active {
+        color: @green125;
+      }
 
       h3 {
         height: 10rem;
@@ -351,7 +588,15 @@ header {
         text-align: center;
         align-items: center;
         justify-content: center;
-        text-shadow: 0 0 1px @gray75;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        font-size: 1.5rem;
+        line-height: 2.3rem;
+
+        span {
+          margin: 0 1rem;
+          letter-spacing: 0.04rem;
+        }
       }
 
       .bg {
@@ -361,17 +606,17 @@ header {
         bottom: 0;
         left: 0;
         right: 0;
-        opacity: .4;
+        opacity: 0.4;
         background-size: cover;
+        background-position: center;
         border-radius: 0.8rem;
+        border: 0.5px solid @gray40;
       }
     }
   }
-
   /**
    * BOOKMARK FORM
    */
-
   .bookmark-form-container {
     display: flex;
     justify-content: center;

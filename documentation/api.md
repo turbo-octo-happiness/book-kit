@@ -73,8 +73,9 @@ Status: 201 Created
   "folderid": 8,
   "screenshot": "https://cdn.tutsplus.com/webdesign/uploads/legacy/articles/003_colorBlind/colortest.png",
   "bookmarkid": 40,
-  "customerid": "123",
+  "owner": "123",
   "foldername": "fewd",
+  "members": ["123"],
   "tags": [
     {
       "tagid": 17,
@@ -114,6 +115,7 @@ Status: 200 Ok
   "bookmarkid": 40,
   "customerid": "123",
   "foldername":"fewd",
+  "members": ["123"],
   "tags": [
     {
       "tagid": 17,

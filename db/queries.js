@@ -1,6 +1,3 @@
-// Where the database is located
-exports.CONNECT_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/bookmarks';
-
 /* ---- Postgres Queries Used by the API ---- */
 
 /*
@@ -119,6 +116,12 @@ exports.SELECT_FOLDER = `SELECT folderid, foldername, count(customerid) AS count
                           SELECT email FROM customer WHERE customerid = $1
                         ) = ANY(array_agg(email));`;
 
+exports.SELECT_FOLDER_INFO = `SELECT folderid, foldername, count(customerid) AS count,
+                                array_agg(email) AS members
+                              FROM folder NATURAL JOIN customer_folder NATURAL JOIN customer
+                              WHERE folderid = $1
+                              GROUP  BY folderid;`;
+
 exports.INSERT_FOLDER = `WITH folders AS (
 	                         INSERT INTO folder(foldername) VALUES ($1)
                            RETURNING folderid, foldername
@@ -136,15 +139,6 @@ exports.ADD_USER_TO_FOLDER_BY_EMAIL = `INSERT INTO customer_folder(customerid, f
                                        WHERE email = $2
                                        RETURNING $3 AS email, folderid;`;
 
-// Who has the right to delete a folder?
-// This query will delete the folder and all references to it in the customer_folder table
-exports.DELETE_FOLDER = `DELETE FROM folder
-                         WHERE folderid = $1 AND NOT EXISTS (
-                           SELECT folderid
-                           FROM customer_folder
-                           WHERE folderid = $2
-                         )
-                         RETURNING *;`;
 // Deleteing a folder requires multiple queries.
 // 1. Check that the user who is deleting the folder does not own any bookmarks in the folder.
 // params: [folderid, customerid]
@@ -157,6 +151,16 @@ exports.CHECK_FOLDER_CONTENT = `SELECT bookmarkid
 exports.DELETE_FOLDER_REFERENCE = `DELETE FROM customer_folder
                                    WHERE folderid = $1 AND customerid = $2
                                    RETURNING *;`;
+
+// 3. Attempt to remove the folder from the folder table. If people are still associated with the
+// the folder, then nothing will happen.
+exports.DELETE_FOLDER = `DELETE FROM folder
+                        WHERE folderid = $1 AND NOT EXISTS (
+                          SELECT folderid
+                          FROM customer_folder
+                          WHERE folderid = $2
+                        )
+                        RETURNING *;`;
 
 // Non-shared folders can be updated, but shared folders cannot be changed
 // param: [folderid, foldername, customerid, folderid]
@@ -171,7 +175,7 @@ exports.UPDATE_FOLDER = `WITH count AS (
                          AND customer_folder.customerid = $3
                          AND folder.folderid = $4
                          AND (SELECT * FROM count) = 1
-                        RETURNING folder.folderid, foldername;`;
+                        RETURNING folder.folderid AS folderid, foldername;`;
 
 /*
  ==================================================================================================
@@ -192,6 +196,7 @@ exports.SELECT_BOOKMARK = `SELECT bookmark.bookmarkid, url, title, description, 
                             LEFT JOIN bookmark_tag ON
                             bookmark.bookmarkid = bookmark_tag.bookmarkid LEFT JOIN tag ON
                             bookmark_tag.tagid = tag.tagid
+                          WHERE bookmark.bookmarkid IS NOT NULL
                           GROUP BY bookmark.bookmarkid, folder.folderid
                           HAVING (
                             SELECT customerid FROM customer WHERE customerid = $1
@@ -200,7 +205,18 @@ exports.SELECT_BOOKMARK = `SELECT bookmark.bookmarkid, url, title, description, 
 exports.INSERT_BOOKMARK = `INSERT INTO bookmark(url, title, description,
                               folderid, screenshot, customerid)
                             VALUES ($1, $2, $3, $4, $5, $6)
-                            RETURNING *, (SELECT foldername FROM folder WHERE folderid = $7);`;
+                            RETURNING bookmarkid, url, title, description, folderid, screenshot,
+                            customerid AS owner, (
+                              SELECT foldername
+                              FROM folder
+                              WHERE folderid = $7
+                            ),
+                            (
+                              SELECT array_agg(DISTINCT customer_folder.customerid) AS members
+                              FROM customer_folder
+                              WHERE folderid = $8
+                              GROUP BY folderid
+                            ) AS members;`;
 
 exports.DELETE_BOOKMARK = `DELETE FROM bookmark
                            WHERE bookmarkid = $1 AND customerid = $2
@@ -212,7 +228,17 @@ exports.DELETE_BOOKMARK = `DELETE FROM bookmark
 exports.UPDATE_BOOKMARK = `UPDATE bookmark SET (url, title, description, folderid, screenshot) =
                             ($1, $2, $3, $4, $5)
                            WHERE bookmarkid = $6 AND customerid = $7
-                           RETURNING *, (SELECT foldername FROM folder WHERE folderid = $8);`;
+                           RETURNING *, $8 AS owner, (
+                             SELECT foldername
+                             FROM folder
+                             WHERE folderid = $9
+                           ),
+                           (
+                             SELECT array_agg(DISTINCT customer_folder.customerid) AS members
+                             FROM customer_folder
+                             WHERE folderid = $10
+                             GROUP BY folderid
+                           ) AS members;`;
 
 // Copies bookmark to a new folder, iff customer already has access to that folder.
 // params: [bookmarkid, customerid]

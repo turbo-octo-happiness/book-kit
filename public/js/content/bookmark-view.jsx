@@ -3,14 +3,15 @@ import { Link } from 'react-router';
 
 const propTypes = {
   onEdit: PropTypes.func,
-  bookmark: PropTypes.array,
+  bookmark: PropTypes.object,
   show: PropTypes.bool,
-  delete: PropTypes.bool,
+  deleted: PropTypes.bool,
   folderArr: PropTypes.array,
   onShowEdit: PropTypes.func,
   onShowDelete: PropTypes.func,
   onDelete: PropTypes.func,
   folders: PropTypes.array,
+  owner: PropTypes.number,
 };
 
 class BookmarkView extends React.Component {
@@ -22,14 +23,12 @@ class BookmarkView extends React.Component {
   onSubmitEdit(event) {
     event.preventDefault();
 
-    console.log(this.props, '<<< props');
-
     this.props.onEdit({
       url: this.url.value,
       title: this.title.value,
       description: this.description.value,
       screenshot: this.screenshot.value,
-      bookmarkid: this.props.bookmark[0].bookmarkid,
+      bookmarkid: this.props.bookmark.bookmarkid,
       folderid: this.folder.value,
       foldername: this.props.folders.filter((folder) => {
         if (this.folder.value === folder.folderid.toString()) {
@@ -44,54 +43,75 @@ class BookmarkView extends React.Component {
   }
 
   render() {
-    const textStyle = this.props.show ? { display: 'none' } : {};
-    const inputStyle = this.props.show ? {} : { display: 'none' };
-    const textDeleteStyle = this.props.delete ? { display: 'none' } : {};
-    const deleteStyle = this.props.delete ? {} : { display: 'none' };
-    const imgStyle = this.props.show ? {
-      backgroundImage: `url(${this.props.bookmark[0].screenshot})`,
+    const { show, deleted, bookmark, owner, folders, folderArr } = this.props;
+
+    const textStyle = show ? { display: 'none' } : {};
+    const inputStyle = show ? {} : { display: 'none' };
+    const textDeleteStyle = deleted ? { display: 'none' } : {};
+    const deleteStyle = deleted ? {} : { display: 'none' };
+    const imgStyle = show ? {
+      backgroundImage: `url(${bookmark.screenshot})`,
       display: 'none',
     } : {
-      backgroundImage: `url(${this.props.bookmark[0].screenshot})`,
+      backgroundImage: `url(${bookmark.screenshot})`,
     };
 
-    const folder = this.props.folders.filter((folderObj) => {
-      // console.log(this.props.bookmark, '<=== bookmark');
-      // console.log(folderObj, '<=== folder');
-      return this.props.bookmark[0].folderid === folderObj.folderid;
+    const disabled = owner.toString() !== bookmark.owner;
+
+    const folder = folders.filter((folderObj) => {
+      return bookmark.folderid === folderObj.folderid;
     });
 
     let tags;
-    if (this.props.bookmark[0].tags && this.props.bookmark[0].tags[0] !== null) {
-      tags = this.props.bookmark[0].tags.map((tagObj) => {
+    let tagsList;
+    if (bookmark.tags && bookmark.tags[0] !== null) {
+      tags = bookmark.tags.map((tagObj, index) => {
+        return <li key={index}>{tagObj.tagname}</li>;
+      });
+
+      tagsList = bookmark.tags.map((tagObj) => {
         return tagObj.tagname;
       });
     }
+
+    const httpCheck = /http/;
+    const url = httpCheck.test(bookmark.url) ? bookmark.url : `//${bookmark.url}`;
+
+    const sharedMarker = folder[0].members.length > 1 ? (
+      <span className="shared-marker">Shared</span>
+    ) : (
+      <span />
+    );
 
     return (
       <section className="content-section bookmark-section">
         <div className="bookmark-view" style={textStyle}>
           <div className="bookmark-header">
             <div className="bookmark-title">
-              <h2>{this.props.bookmark[0].title}</h2>
+              <h2>{bookmark.title}</h2>
               <h4>
-                <a href={this.props.bookmark[0].url}>
-                  {this.props.bookmark[0].url}
+                <a href={url} target="_blank">
+                  {bookmark.url}
                 </a>
               </h4>
             </div>
-            <div className="bookmark-screenshot" style={imgStyle}>
-            </div>
+            <div className="bookmark-screenshot" style={imgStyle} />
           </div>
 
-
-          <p>{this.props.bookmark[0].description}</p>
+          <p>{bookmark.description}</p>
           <h4>Folder:</h4>
-          <p>{folder[0].foldername}</p>
+          <div className="view-folder">
+            <p>{folder[0].foldername}</p>
+            {sharedMarker}
+          </div>
+
+          <h4>Tags:</h4>
+          <ul className="tags-list">{tags}</ul>
 
           <button
             style={textStyle}
             onClick={this.props.onShowEdit}
+            disabled={disabled}
           >Edit
           </button>
           <button
@@ -102,11 +122,12 @@ class BookmarkView extends React.Component {
           <button
             style={textDeleteStyle}
             onClick={this.props.onShowDelete}
+            disabled={disabled}
           >Delete
           </button>
           <Link to={'/main'} style={deleteStyle}>
             <button
-              onClick={() => { this.props.onDelete(this.props.bookmark[0].bookmarkid); }}
+              onClick={() => { this.props.onDelete(bookmark.bookmarkid); }}
             >Confirm
             </button>
           </Link>
@@ -121,19 +142,19 @@ class BookmarkView extends React.Component {
         </div>
 
         <div className="bookmark-edit" style={inputStyle}>
-          <form onSubmit={this.onSubmitEdit}>
+          <form>
             <h4>Title *</h4>
             <input
               type="text"
               ref={title => { this.title = title; }}
-              defaultValue={this.props.bookmark[0].title}
+              defaultValue={bookmark.title}
               placeholder="Title *" required
             />
             <h4>URL *</h4>
             <input
               type="text"
               ref={url => { this.url = url; }}
-              defaultValue={this.props.bookmark[0].url}
+              defaultValue={bookmark.url}
               placeholder="URL *"
               required
             />
@@ -141,7 +162,7 @@ class BookmarkView extends React.Component {
             <textarea
               className="edit-description"
               ref={description => { this.description = description; }}
-              defaultValue={this.props.bookmark[0].description}
+              defaultValue={bookmark.description}
               placeholder="Description"
               rows="7"
             />
@@ -149,24 +170,24 @@ class BookmarkView extends React.Component {
             <input
               type="text"
               ref={screenshot => { this.screenshot = screenshot; }}
-              defaultValue={this.props.bookmark[0].screenshot}
+              defaultValue={bookmark.screenshot}
               placeholder="Screenshot URL"
             />
-          <h4>Tags</h4>
+            <h4>Tags</h4>
             <input
               type="text"
               className="form-control"
-              ref={tags => { this.tags = tags; }}
-              defaultValue={tags}
+              ref={tagsInput => { this.tags = tagsInput; }}
+              defaultValue={tagsList}
             />
             <h4>Folder *</h4>
             <select
-              ref={folder => { this.folder = folder; }}
+              ref={folderInput => { this.folder = folderInput; }}
               required
-            >{this.props.folderArr}
+            >{folderArr}
             </select><br />
-            <button type="submit">Submit</button>
-            <button onClick={() => this.props.onShowEdit}>Cancel</button>
+            <button onClick={this.onSubmitEdit} type="submit">Submit</button>
+            <button onClick={() => { this.props.onShowEdit(); }}>Cancel</button>
           </form>
         </div>
       </section>

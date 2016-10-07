@@ -11,13 +11,19 @@ function Tile(props) {
     backgroundImage: `url(${props.screenshot})`,
   };
 
+  const title = props.title.length > 40 ? (
+    props.title.slice(0, 40).concat('...').toUpperCase()
+  ) : (
+    props.title.toUpperCase()
+  );
+
   return (
     <li className="bookmark-tile col-md-3">
       <Link to={`/bookmarks/${props.id}`}>
         <h3>
           <div className="bg" style={style} />
           <span>
-            {props.title}
+            {title}
           </span>
         </h3>
       </Link>

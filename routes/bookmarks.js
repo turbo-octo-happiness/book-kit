@@ -37,7 +37,7 @@ router.get('/', (request, response) => {
         // Returning customer with bookmarks, return them with tags seperated into an array of
         // objects.
       } else {
-        console.log('GET SELECT_BOOKMARK', resultsToReturn);
+        // console.log('GET SELECT_BOOKMARK', resultsToReturn);
         for (let i = 0; i < resultsToReturn.length; i++) {
           if (resultsToReturn[i].tags[0] !== null) {
             resultsToReturn[i].tags = resultsToReturn[i].tags.map((current) => {
@@ -49,7 +49,7 @@ router.get('/', (request, response) => {
             });
           }
         }
-        console.log('RESPOSE SELECT_BOOKMARK: ', resultsToReturn);
+        // console.log('RESPOSE SELECT_BOOKMARK: ', resultsToReturn);
         response.json(resultsToReturn);
       }
     })
@@ -110,7 +110,7 @@ router.post('/', jsonParser, (request, response) => {
     db.tx((t) => {
         // First insert new bookmark
       return t.one(queries.INSERT_BOOKMARK, [url, title, bdescription,
-            folderid, bscreenshot, userIdentity, folderid,
+            folderid, bscreenshot, userIdentity, folderid, folderid,
           ])
           .then((bookmark) => {
             console.log('bookmark inserted: ', bookmark);
@@ -142,7 +142,7 @@ router.post('/', jsonParser, (request, response) => {
     })
       .then((data) => {
         console.log('transaction then', data);
-        response.json(data);
+        response.status(201).json(data);
       })
       .catch((error) => {
         console.log('ERROR:', error.message || error);
@@ -232,7 +232,7 @@ router.put('/:bookmarkid', jsonParser, (request, response) => {
           console.log('inserted tag updates', results);
 
           return t.one(queries.UPDATE_BOOKMARK, [url, title, bdescription,
-            folderid, bscreenshot, bookmarkid, userIdentity, folderid,
+            folderid, bscreenshot, bookmarkid, userIdentity, userIdentity, folderid, folderid,
           ]).then((newBookmark) => {
             console.log('inserted bookmark ===>', newBookmark);
             resultsToReturn = Object.assign({}, resultsToReturn, newBookmark);
