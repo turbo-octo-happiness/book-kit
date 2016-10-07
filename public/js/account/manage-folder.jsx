@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import FolderContainer from './manage-folder-container';
 
-function ManageFolders(props) {
+export function ManageFolders(props) {
   const { folders } = props;
   const foldersArr = folders.map((folder, index) => {
     return (
@@ -31,4 +31,4 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = connect(mapStateToProps)(ManageFolders);
+export default connect(mapStateToProps)(ManageFolders);

@@ -22,39 +22,32 @@ describe('BookmarkViewContainer Component', () => {
     };
     const folders = [folder];
     const params = 'bookmarkId';
+    const deleted = false;
 
     /* ------ TEST RENDER ------ */
     const renderer = TestUtils.createRenderer();
     renderer.render(
       <BookmarkViewContainer
         bookmarks={bookmarks}
+        bookmark={bookmark}
         folders={folders}
+        deleted={deleted}
         params={params}
       />
     );
     const result = renderer.getRenderOutput();
-    // console.log(result.props.bookmark, '<<< RESULT');
+    // console.log(result, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.be.a('function');
-    result.props.should.have.property('onShowEdit')
-      .that.is.a('function');
-    result.props.should.have.property('onShowDelete')
-      .that.is.a('function');
-    result.props.should.have.property('onEdit')
-      .that.is.a('function');
-    result.props.should.have.property('onDelete')
-      .that.is.a('function');
-    result.props.should.have.property('delete')
-      .that.is.a('boolean');
-    result.props.should.have.property('show')
-      .that.is.a('boolean');
-    result.props.should.have.property('bookmark')
-      .that.is.a('array');
-    result.props.should.have.property('folderArr')
-      .that.is.a('array');
-    result.props.should.have.property('folders')
-      .that.is.a('array');
+    result.props.onShowEdit.should.be.a('function');
+    result.props.onShowDelete.should.be.a('function');
+    result.props.onEdit.should.be.a('function');
+    result.props.onDelete.should.be.a('function');
+    result.props.deleted.should.be.a('boolean');
+    result.props.show.should.be.a('boolean');
+    result.props.folderArr.should.be.a('array');
+    result.props.folders.should.be.a('array');
 
     const folderArr = result.props.folderArr;
     folderArr[0].type.should.be.a('function');

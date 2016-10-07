@@ -9,7 +9,7 @@ process.env.DEVELOPMENT = 'testing';
 const should = chai.should();
 
 /* ------- MOCK DATA ------- */
-const bookmark = [{
+const bookmark = {
   bookmarkid: 'bookmarkId',
   title: 'bookmarkTitle',
   url: 'bookmarkUrl',
@@ -19,14 +19,16 @@ const bookmark = [{
     { tagid: 'tagId', tagname: 'tagName' },
   ],
   folderid: 'folderId',
-}];
+};
 
 const folder = {
   folderid: 'folderId',
   foldername: 'folderName',
+  members: ['somename@somewhere.com'],
 };
 const folders = [folder];
 const folderArr = [folder];
+const owner = 4;
 const onShowEdit = () => {
   // Test Function
 };
@@ -51,6 +53,7 @@ describe('BookmarkView Component', () => {
     const renderer = TestUtils.createRenderer();
     renderer.render(
       <BookmarkView
+        owner={owner}
         onShowEdit={onShowEdit}
         onShowDelete={onShowDelete}
         onEdit={onEdit}
@@ -63,7 +66,7 @@ describe('BookmarkView Component', () => {
       />
     );
     const result = renderer.getRenderOutput();
-    // console.log(result.props.children[0].props.children[0], '<<< RESULT');
+    // console.log(result, '<<< RESULT');
 
     /* ------- TESTS -------- */
     result.type.should.equal('section');
@@ -75,7 +78,7 @@ describe('BookmarkView Component', () => {
     view.props.className.should.equal('bookmark-view');
     view.props.style.should.be.a('object')
       .that.eqls({});
-    view.props.children.should.have.length(10);
+    view.props.children.should.have.length(12);
 
     const header = view.props.children[0];
     header.type.should.equal('div');
@@ -94,7 +97,7 @@ describe('BookmarkView Component', () => {
     url.type.should.equal('h4');
     url.props.children.type.should.equal('a');
     url.props.children.props.should.have.property('href')
-      .that.equals('bookmarkUrl');
+      .that.equals('//bookmarkUrl');
     url.props.children.props.children.should.be.a('string')
       .that.equals('bookmarkUrl');
 
@@ -114,11 +117,26 @@ describe('BookmarkView Component', () => {
     bookmarkFolder[2].type.should.equal('h4');
     bookmarkFolder[2].props.children.should.be.a('string')
       .that.equals('Folder:');
-    bookmarkFolder[3].type.should.equal('p');
-    bookmarkFolder[3].props.children.should.be.a('string')
+    bookmarkFolder[3].type.should.equal('div');
+    bookmarkFolder[3].props.children.should.be.a('array')
+    bookmarkFolder[3].props.children[0].type.should.equal('p');
+    bookmarkFolder[3].props.children[0].props.children.should.be.a('string')
       .that.equals('folderName');
+    bookmarkFolder[3].props.children[1].type.should.equal('span');
 
-    const edit = view.props.children[4];
+    const tagsLabel = view.props.children[4];
+    tagsLabel.type.should.equal('h4');
+    tagsLabel.props.children.should.be.a('string')
+      .that.equals('Tags:');
+
+    const tagList = view.props.children[5];
+    tagList.type.should.equal('ul');
+    tagList.props.className.should.equal('tags-list');
+    tagList.props.children[0].type.should.equal('li');
+    tagList.props.children[0].props.children.should.be.a('string')
+      .that.equals('tagName');
+
+    const edit = view.props.children[6];
     edit.type.should.equal('button');
     edit.props.style.should.be.a('object')
       .that.eqls({});
@@ -127,7 +145,7 @@ describe('BookmarkView Component', () => {
     edit.props.children.should.be.a('string')
       .that.equals('Edit');
 
-    const cancel = view.props.children[5];
+    const cancel = view.props.children[7];
     cancel.type.should.equal('button');
     cancel.props.style.should.be.a('object')
       .that.has.property('display')
@@ -138,16 +156,18 @@ describe('BookmarkView Component', () => {
     cancel.props.children.should.be.a('string')
       .that.equals('Cancel');
 
-    const del = view.props.children[6];
+    const del = view.props.children[8];
     del.type.should.equal('button');
     del.props.style.should.be.a('object')
       .that.eqls({});
     del.props.onClick.should.be.a('function')
       .that.eqls(onShowDelete);
+    del.props.disabled.should.be.a('boolean')
+      .that.equals(true);
     del.props.children.should.be.a('string')
       .that.equals('Delete');
 
-    const confirmDel = view.props.children[7];
+    const confirmDel = view.props.children[9];
     confirmDel.type.should.equal(Link);
     confirmDel.props.to.should.be.a('string')
       .that.equals('/main');
@@ -159,7 +179,7 @@ describe('BookmarkView Component', () => {
     confirmDel.props.children.props.children.should.be.a('string')
       .that.equals('Confirm');
 
-    const cancelDel = view.props.children[8];
+    const cancelDel = view.props.children[10];
     cancelDel.type.should.equal('button');
     cancelDel.props.style.should.be.a('object')
       .that.has.property('display')
@@ -170,7 +190,7 @@ describe('BookmarkView Component', () => {
     cancelDel.props.children.should.be.a('string')
       .that.equals('Cancel');
 
-    const close = view.props.children[9];
+    const close = view.props.children[11];
     close.type.should.equal(Link);
     close.props.to.should.be.a('string')
       .that.equals('/main');
@@ -189,6 +209,7 @@ describe('BookmarkView Component', () => {
     const renderer = TestUtils.createRenderer();
     renderer.render(
       <BookmarkView
+        owner={owner}
         onShowEdit={onShowEdit}
         onShowDelete={onShowDelete}
         onEdit={onEdit}
@@ -205,7 +226,7 @@ describe('BookmarkView Component', () => {
     /* ------- TESTS -------- */
     const view = result.props.children[0];
 
-    const edit = view.props.children[4];
+    const edit = view.props.children[6];
     edit.type.should.equal('button');
     edit.props.style.should.be.a('object')
       .that.has.property('display')
@@ -224,7 +245,6 @@ describe('BookmarkView Component', () => {
 
     const form = editForm.props.children;
     form.type.should.equal('form');
-    form.props.onSubmit.should.be.a('function');
     form.props.children.should.have.length(15);
 
     const titleText = form.props.children[0];
@@ -342,6 +362,7 @@ describe('BookmarkView Component', () => {
     const renderer = TestUtils.createRenderer();
     renderer.render(
       <BookmarkView
+        owner={owner}
         onShowEdit={onShowEdit}
         onShowDelete={onShowDelete}
         onEdit={onEdit}
@@ -359,31 +380,33 @@ describe('BookmarkView Component', () => {
     /* ------- TESTS -------- */
     const view = result.props.children[0];
 
-    const del = view.props.children[6];
+    const del = view.props.children[8];
     del.type.should.equal('button');
     del.props.style.should.be.a('object')
-      .that.has.property('display')
-      .that.is.a('string')
-      .that.equals('none');
+      .that.eqls({});
     del.props.onClick.should.be.a('function')
       .that.eqls(onShowDelete);
     del.props.children.should.be.a('string')
       .that.equals('Delete');
 
-    const confirmDel = view.props.children[7];
+    const confirmDel = view.props.children[9];
     confirmDel.type.should.equal(Link);
     confirmDel.props.to.should.be.a('string')
       .that.equals('/main');
     confirmDel.props.style.should.be.a('object')
-      .that.eqls({});
+      .that.has.property('display')
+      .that.is.a('string')
+      .that.equals('none');
     confirmDel.props.children.type.should.equal('button');
     confirmDel.props.children.props.children.should.be.a('string')
       .that.equals('Confirm');
 
-    const cancelDel = view.props.children[8];
+    const cancelDel = view.props.children[10];
     cancelDel.type.should.equal('button');
     cancelDel.props.style.should.be.a('object')
-      .that.eqls({});
+      .that.has.property('display')
+      .that.is.a('string')
+      .that.equals('none');
     cancelDel.props.onClick.should.be.a('function')
       .that.eqls(onShowDelete);
     cancelDel.props.children.should.be.a('string')
