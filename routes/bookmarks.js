@@ -21,18 +21,86 @@ router.get('/', (request, response) => {
 
   db.manyOrNone(queries.SELECT_BOOKMARK, [userIdentity])
     .then((data) => {
-      const resultsToReturn = data;
+      let resultsToReturn = data;
 
       // Customer has either, just registered or has not created any bookmarks.
       // Try to insert potential new customer.
       if (!resultsToReturn.length) {
-        db.oneOrNone(queries.INSERT_CUSTOMER, [userIdentity, email])
-          .then(() => {
-            response.json(resultsToReturn);
-          })
-          .catch((error) => {
-            response.json(error);
-          });
+        db.tx((t) => {
+          t.oneOrNone(queries.INSERT_CUSTOMER, [userIdentity, email])
+            .then(() => {
+              t.one(queries.INSERT_FOLDER, ['Coding', userIdentity])
+                .then((folder) => {
+                  // first bookmark
+                  const b1 = {
+                    url: 'https://developer.mozilla.org/en-US/',
+                    title: 'Mozilla Developer Network',
+                    folderid: folder.folderid,
+                    tags: ['CDN'],
+                    description: 'The Mozilla Developer Network (MDN) is an evolving learning platform for Web technologies and the software that powers the Web, including: Web standards such as CSS, HTML, and JavaScript, Open Web app development, Firefox add-on development and B2G OS',
+                    screenshot: 'http://i.imgur.com/Yh3Nfoq.jpg',
+                  };
+
+                  // second bookmark
+                  const b2 = {
+                    url: 'http://www.w3schools.com/',
+                    title: 'W3 Schools',
+                    folderid: folder.folderid,
+                    tags: ['Documentation'],
+                    description: 'W3Schools is a web developers site, with tutorials and references on web development languages such as HTML, CSS, JavaScript, PHP, SQL, and Bootstrap, covering most aspects of web programming.',
+                    screenshot: 'http://i.imgur.com/njmN7KQ.png',
+                  };
+
+                  // third bookmark
+                  const b3 = {
+                    url: 'https://github.com/',
+                    title: 'GitHub',
+                    folderid: folder.folderid,
+                    tags: ['Tools'],
+                    description: 'GitHub fosters a fast, flexible, and collaborative development process that lets you work on your own or with others.',
+                    screenshot: 'http://i.imgur.com/GUdCc4a.jpg',
+                  };
+
+                  t.batch([
+                    t.none(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
+                            VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                            RETURNING *;`,
+                      b1),
+                    t.none(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
+                              VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                              RETURNING *;`,
+                      b2),
+                    t.none(`INSERT INTO bookmark(url, title, description, folderid, screenshot, customerid)
+                            VALUES ($[url], $[title], $[description], $[folderid], $[screenshot], $[customerid])
+                            RETURNING *;`,
+                      b3),
+                  ]).then(() => {
+                    t.manyOrNone(queries.SELECT_BOOKMARK, [userIdentity])
+                      .then((newBookmarks) => {
+                        resultsToReturn = newBookmarks;
+                      })
+                      .then(() => {
+                        for (let i = 0; i < resultsToReturn.length; i++) {
+                          if (resultsToReturn[i].tags[0] !== null) {
+                            resultsToReturn[i].tags = resultsToReturn[i].tags.map((current) => {
+                              const temp = current.split(',');
+                              return {
+                                tagid: parseInt(temp[0], 10),
+                                tagname: temp[1],
+                              };
+                            });
+                          }
+                        }
+                        // console.log('RESPOSE SELECT_BOOKMARK: ', resultsToReturn);
+                        response.json(resultsToReturn);
+                      });
+                  });
+                });
+            })
+            .catch((error) => {
+              response.json(error);
+            });
+        });
 
         // Returning customer with bookmarks, return them with tags seperated into an array of
         // objects.
