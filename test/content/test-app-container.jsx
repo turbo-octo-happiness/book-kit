@@ -2,6 +2,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import chai from 'chai';
 import { AppContainer } from '../../public/js/app-container';
+import SplashPage from '../../public/js/content/splash-page';
 
 process.env.DEVELOPMENT = 'testing';
 
@@ -39,9 +40,7 @@ describe('AppContainer component', () => {
       .with.property('store');
 
     const splashPage = result.props.children[1];
-    splashPage.type.should.equal('div');
-    splashPage.props.className.should.equal('splash-page');
-    // Test for splash page elements go here
+    splashPage.type.should.equal(SplashPage);
   });
 
   it('Renders the NavbarContainer and children if authenticated', () => {

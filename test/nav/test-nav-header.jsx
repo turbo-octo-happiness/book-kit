@@ -37,7 +37,7 @@ describe('Navbar component', () => {
     link.props.style.should.be.a('object');
     link.props.style.should.eql({});
     link.props.children.type.should.equal('img');
-    link.props.children.props.src.should.equal('img/logo.png');
+    link.props.children.props.src.should.equal('img/book-kit-logo.svg');
     link.props.children.props.alt.should.equal('Book Kit!');
 
     const login = nav.props.children[1];
@@ -87,7 +87,7 @@ describe('Navbar component', () => {
     link.props.style.should.be.a('object');
     link.props.style.should.eql({});
     link.props.children.type.should.equal('img');
-    link.props.children.props.src.should.equal('img/logo.png');
+    link.props.children.props.src.should.equal('img/book-kit-logo.svg');
     link.props.children.props.alt.should.equal('Book Kit!');
 
     const account = nav.props.children[1];

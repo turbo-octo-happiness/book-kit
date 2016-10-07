@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import actions from '../redux/actions';
 import Folder from './manage-folder-child';
 
-class FolderContainer extends React.Component {
+export class FolderContainer extends React.Component {
   constructor() {
     super();
     this.onShowEdit = this.onShowEdit.bind(this);
@@ -69,4 +69,4 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = connect(mapStateToProps)(FolderContainer);
+export default connect(mapStateToProps)(FolderContainer);

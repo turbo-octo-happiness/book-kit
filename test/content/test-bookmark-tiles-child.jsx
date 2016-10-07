@@ -49,6 +49,6 @@ describe('Tile Component', () => {
 
     const nameDisplay = name.props.children[1];
     nameDisplay.type.should.equal('span');
-    nameDisplay.props.children.should.equal('title');
+    nameDisplay.props.children.should.equal('TITLE');
   });
 });
