@@ -21,7 +21,7 @@ const API_ENDPOINT = '/folders';
 describe('/folders endpoints', () => {
   afterEach((done) => {
     // Clear the database by deleting every table and then re-creating them
-    exec('psql test-bookmarks < db/bookmarks_schema.sql', (error) => {
+    exec('psql test_bookmarks < db/bookmarks_schema.sql', (error) => {
       if (error) {
         console.error(`exec error: ${error}`);
         return;

@@ -3,7 +3,7 @@ env:
   global:
     - PGPORT=5433
     - PGHOST=localhost
-    - DATABASE_URL=postgres://localhost:5433/test-bookmarks
+    - DATABASE_URL=postgres://localhost:5433/testbookmarks
 language: node_js
 node_js: node
 services:
@@ -19,4 +19,4 @@ addons:
 before_script:
   - sudo cp /etc/postgresql/9.4/main/pg_hba.conf /etc/postgresql/9.5/main/pg_hba.conf
   - sudo /etc/init.d/postgresql restart
-  - psql -U postgres -c "CREATE DATABASE 'test-bookmarks';"
+  - psql -U postgres -c 'CREATE DATABASE testbookmarks;'
