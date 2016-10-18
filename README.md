@@ -21,11 +21,11 @@ Note on compatibility: The API relies on NodeJS v6.3.1 and PostgreSQL v9.5.3 All
 
 #### Scenario 1:
 
-Sierra and Robby are in a class where all of their bookmarks and resources are gobbled up by Slack. Therefore Sierra and Robby need a way to track these learning resources. They have a bookmark folder in their Chrome browser that "save" the resources but are not very descriptive and very hard to sort through. Sierra and Robby go to Book Kit and make accounts in order to organize their resources for later review.
+Sierra and Robby are in a class where all of their bookmarks and resources are gobbled up by Slack. Therefore Sierra and Robby need a way to track these learning resources. They have a bookmark folder in their Chrome browser that "saves" the resources but it is not very descriptive and is very hard to sort through. Sierra and Robby go to Book Kit and make accounts in order to organize their resources for later review.
 
 #### Scenario 2:
 
-Chris has a vast collection of cat videos he likes to use for various sarcastic moments. However in his long list of bookmarks, he tends to lose track of them. He even sent an irrelevant cat video to his coworker (gasp). Chris recently signed up for bookmarkproject.com and found that here, he can tag his videos according to their sarcastic purposes.
+Chris has a vast collection of cat videos he likes to use for various sarcastic moments. However, in his long list of bookmarks, he tends to lose track of them. He even sent an irrelevant cat video to his coworker (gasp). Chris recently signed up for Book Kit and found that with the service, he can tag his videos according to their sarcastic purposes.
 
 ### Non Goals
 
