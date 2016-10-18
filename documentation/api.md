@@ -1,8 +1,8 @@
-# RESTful API for Book-Kit
+# RESTful API for Book Kit
 
 ## Overview
 
-RESTful API using NodeJS, Express, and Postgres. The API serves information for the Book-Kit project.
+RESTful API using NodeJS, Express, and Postgres. The API serves information for the Book Kit project.
 
 ## Database
 
