@@ -1,4 +1,4 @@
-# Book IT
+# Book-Kit
 
 ## Functional Specification
 
@@ -13,8 +13,7 @@ Disclaimer: This project is mainly built for learning purposes and not intended 
 1. After cloning this repo. Run `npm install` at the command line.
 2. Start a local Postgres server. Create a new database with `createdb bookmarks`.
 3. Run `psql bookmarks < db/bookmarks.sql` to import the database schema.
-4. To start the server run `npm run start`.
-5. Finally, start the front-end by running `npm run build` in a new terminal window.
+4. To start the app run `npm run start`, book-kit will be live at <http://localhost:8000>.
 
 Note on compatibility: The API relies on NodeJS v6.3.1 and PostgreSQL v9.5.3 All other dependencies are listed in the _package.json_ file. Although the API might run on alternative versions, it has not been tested.
 
@@ -131,5 +130,4 @@ Tags - You will only be able to add new tags while editing/adding a bookmark.
 - [ ] Chrome extension
 
   - Pull info from page
-  - example: <http://bookit.thinkful.example/create?url=http%2a%2a%2fetc.etc.etc%2f&title=Example+Bookmark>
   - Separate window or popup window
