@@ -8,7 +8,10 @@ const propTypes = {
 };
 function Tile(props) {
   const style = {
-    backgroundImage: `url(${props.screenshot})`,
+    backgroundImage: `linear-gradient(
+      rgba(64, 72, 83, 0.35),
+      rgba(64, 72, 83, 0.35)
+    ), url(${props.screenshot})`,
   };
 
   const title = props.title.length > 40 ? (
