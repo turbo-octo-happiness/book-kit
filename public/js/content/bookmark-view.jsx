@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import { markdown } from 'markdown';
 
 const propTypes = {
   onEdit: PropTypes.func,
@@ -83,6 +84,8 @@ class BookmarkView extends React.Component {
       <span />
     );
 
+    const markdownDescription = <div dangerouslySetInnerHTML={{ __html: markdown.toHTML(bookmark.description) }} />;
+
     return (
       <section className="content-section bookmark-section">
         <div className="bookmark-view" style={textStyle}>
@@ -98,7 +101,7 @@ class BookmarkView extends React.Component {
             <div className="bookmark-screenshot" style={imgStyle} />
           </div>
 
-          <p>{bookmark.description}</p>
+          <p>{markdownDescription}</p>
           <h4>Folder:</h4>
           <div className="view-folder">
             <p>{folder[0].foldername}</p>
