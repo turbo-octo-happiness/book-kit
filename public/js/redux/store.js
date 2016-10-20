@@ -45,7 +45,7 @@ const initialState = {
 const store = createStore(
   reducers.rootReducer,
   initialState,
-  applyMiddleware(thunk, logger)
+  applyMiddleware(thunk)
 );
 
 module.exports = store;
