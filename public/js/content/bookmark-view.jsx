@@ -1,5 +1,9 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import marked from 'marked';
+import hljs, { highlightAuto } from 'highlight.js';
+
+hljs.initHighlightingOnLoad();
 
 const propTypes = {
   onEdit: PropTypes.func,
@@ -43,6 +47,12 @@ class BookmarkView extends React.Component {
   }
 
   render() {
+    marked.setOptions({
+      highlight: code => {
+        return highlightAuto(code).value;
+      },
+    });
+
     const { show, deleted, bookmark, owner, folders, folderArr } = this.props;
 
     const textStyle = show ? { display: 'none' } : {};
@@ -83,6 +93,8 @@ class BookmarkView extends React.Component {
       <span />
     );
 
+    const markdownDescription = <p dangerouslySetInnerHTML={{ __html: marked(bookmark.description) }} />;
+
     return (
       <section className="content-section bookmark-section">
         <div className="bookmark-view" style={textStyle}>
@@ -98,7 +110,7 @@ class BookmarkView extends React.Component {
             <div className="bookmark-screenshot" style={imgStyle} />
           </div>
 
-          <p>{bookmark.description}</p>
+          <div>{markdownDescription}</div>
           <h4>Folder:</h4>
           <div className="view-folder">
             <p>{folder[0].foldername}</p>
