@@ -101,6 +101,7 @@ The current version does not support the following features:
 1. Click the 'Add Bookmark' button on the sidebar
 
 ![add bookmark](http://i.imgur.com/yWhdWah.png)
+
 2. Fill out the required information (Title, URL, Folder)
 3. Click 'Submit'
 
@@ -122,6 +123,7 @@ The current version does not support the following features:
 1. Click on "My Account" in the navbar
 
 ![my account](http://i.imgur.com/pUkSQkS.png)
+
 2. Select "Manage Folders" in the sidebar
 3. Select "Share" for the selected folder
 4. Add emails of users you want to share with to the field
