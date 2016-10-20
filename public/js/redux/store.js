@@ -1,4 +1,4 @@
-import createLogger from 'redux-logger';
+// import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 import jwtDecode from 'jwt-decode';
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -27,7 +27,7 @@ function getToken() {
   return localStorage.getItem('idToken');
 }
 
-const logger = createLogger();
+// const logger = createLogger();
 
 const initialState = {
   auth: {
