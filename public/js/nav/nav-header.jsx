@@ -45,12 +45,16 @@ function Navbar(props) {
         <img src={profile.picture} height="40px" alt="profile" className="prof-pic" />
       </Link>
       <Link to="/manage/profile">My Account</Link>
+      <a href="https://github.com/turbo-octo-happiness/book-kit/#how-to">Help</a>
       <Link to="/" onClick={onLogoutClick}>
         Logout
       </Link>
     </div>
   ) : (
     <div className="login">
+      <a href="https://github.com/turbo-octo-happiness/book-kit/#how-to">
+        Help
+      </a>
       <Link to="#" onClick={() => { lock.show(); }}>
         Login
       </Link>
