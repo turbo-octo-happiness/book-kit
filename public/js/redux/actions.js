@@ -9,14 +9,14 @@ const SERVER_URL = window.location.origin;
 
 function fetchHelp(url, init = {}) {
   return fetch(url, init).then((res) => {
-    console.log(res.status);
+    // console.log(res.status);
     if (res.status < 200 || res.status >= 300) {
       const error = new Error(res.statusText);
       error.response = res;
       throw error;
     }
     // console.log(res.clone().text(), '<<< fetchHelp response');
-    console.log(url, '<< url');
+    // console.log(url, '<< url');
     return res.text().then(text => {
       // console.log(text, '<<< text');
       // console.log(JSON.parse(text), '<<< JSON.parse');
@@ -44,16 +44,16 @@ function loginError(error) {
 }
 
 function logoutSuccess() {
-  console.log('inside logoutsuccess');
+  // console.log('inside logoutsuccess');
   return {
     type: actionTypes.LOGOUT_SUCCESS,
   };
 }
 
 function logout() {
-  console.log('inside actions');
+  // console.log('inside actions');
   return dispatch => {
-    console.log('inside dispatch');
+    // console.log('inside dispatch');
     localStorage.removeItem('idToken');
     localStorage.removeItem('profile');
     return dispatch(logoutSuccess());
@@ -127,10 +127,10 @@ function addBookmarkError(error) {
 }
 
 function addBookmark(newBookmark, token) {
-  console.log('inside addBookmark, new bookmark ===>', newBookmark);
+  // console.log('inside addBookmark, new bookmark ===>', newBookmark);
   return (dispatch) => {
     newBookmark.foldername = newBookmark.foldername[0].foldername;
-    console.log(newBookmark, '<<< new bookmark for request');
+    // console.log(newBookmark, '<<< new bookmark for request');
     const tempFoldername = newBookmark.foldername;
     const init = {
       method: 'POST',
@@ -148,10 +148,10 @@ function addBookmark(newBookmark, token) {
 
     newFetch.then((bookmark) => {
       // bookmark.foldername = tempFoldername;
-      console.log('returned bookmark=====>', bookmark);
+      // console.log('returned bookmark=====>', bookmark);
       return dispatch(addBookmarkSuccess(bookmark));
     }).catch((error) => {
-      console.log(error);
+      // console.log(error);
       return dispatch(addBookmarkError(error));
     });
   };
@@ -173,10 +173,10 @@ function editBookmarkError(error) {
 }
 
 function editBookmark(editedBookmark, token) {
-  console.log(editedBookmark, '<<<< Actions/ edited bookmark');
+  // console.log(editedBookmark, '<<<< Actions/ edited bookmark');
   return (dispatch) => {
     editedBookmark.foldername = editedBookmark.foldername[0].foldername;
-    console.log(editedBookmark, '<<< new bookmark for request');
+    // console.log(editedBookmark, '<<< new bookmark for request');
     const init = {
       method: 'PUT',
       headers: {
@@ -191,11 +191,11 @@ function editBookmark(editedBookmark, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
-      console.log(bookmark, '<<< Actions/ returned bookmark');
+      // console.log(bookmark, '<<< Actions/ returned bookmark');
       // console.log(JSON.stringify(bookmark), '<<< stringify bookmark');
       return dispatch(editBookmarkSuccess(bookmark));
     }).catch((err) => {
-      console.log(err, 'Actions/ error message');
+      // console.log(err, 'Actions/ error message');
       return dispatch(editBookmarkError(err));
     });
   };
@@ -226,15 +226,15 @@ function deleteBookmark(bookmarkid, token) {
         Authorization: `Bearer ${token}`,
       },
     };
-    console.log(bookmarkid);
+    // console.log(bookmarkid);
     const url = `${SERVER_URL}/bookmarks/${bookmarkid}`;
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((bookmark) => {
-      console.log('works');
+      // console.log('works');
       return dispatch(deleteBookmarkSuccess(bookmark));
     }).catch((error) => {
-      console.log('error');
+      // console.log('error');
       return dispatch(deleteBookmarkError(error));
     });
   };
@@ -315,10 +315,10 @@ function addFolder(newFolder, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((folder) => {
-      console.log(folder);
+      // console.log(folder);
       return dispatch(addFolderSuccess(folder));
     }).catch((error) => {
-      console.log(error);
+      // console.log(error);
       return dispatch(addFolderError(error));
     });
   };
@@ -381,7 +381,7 @@ function editFolderError(error) {
 }
 
 function editFolder(folderId, folderName, token) {
-  console.log(folderId, folderName, '<<<< Actions/ folderId, folderName');
+  // console.log(folderId, folderName, '<<<< Actions/ folderId, folderName');
   return (dispatch) => {
     const folder = {
       folderid: folderId,
@@ -401,10 +401,10 @@ function editFolder(folderId, folderName, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((editedFolder) => {
-      console.log(editedFolder, '<<<< Actions/ returned edited folder');
+      // console.log(editedFolder, '<<<< Actions/ returned edited folder');
       dispatch(editFolderSuccess(editedFolder));
     }).catch((error) => {
-      console.log(error, '<<<< ERROR');
+      // console.log(error, '<<<< ERROR');
       dispatch(editFolderError(error));
     });
   };
@@ -506,7 +506,7 @@ function editTagError(error) {
 }
 
 function editTag(tagId, tagName, token) {
-  console.log(tagId, tagName, '<<<< actions/ new tagid and tagname');
+  // console.log(tagId, tagName, '<<<< actions/ new tagid and tagname');
   return (dispatch) => {
     const tag = {
       tagid: tagId,
@@ -526,10 +526,10 @@ function editTag(tagId, tagName, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((editedTag) => {
-      console.log(editedTag, '<<<< edited tag response');
+      // console.log(editedTag, '<<<< edited tag response');
       dispatch(editTagSuccess(editedTag));
     }).catch((error) => {
-      console.log(error, '<<<< edit tag ERROR');
+      // console.log(error, '<<<< edit tag ERROR');
       dispatch(editTagError(error));
     });
   };
@@ -550,7 +550,7 @@ function deleteTagError(error) {
 }
 
 function deleteTag(tagid, token) {
-  console.log('in actions/deleteTag, tagid==>', tagid);
+  // console.log('in actions/deleteTag, tagid==>', tagid);
   return (dispatch) => {
     const init = {
       method: 'DELETE',
@@ -565,10 +565,10 @@ function deleteTag(tagid, token) {
     const newFetch = fetchHelp(url, init);
 
     newFetch.then((tag) => {
-      console.log('response tag===>', tag);
+      // console.log('response tag===>', tag);
       return dispatch(deleteTagSuccess(tag));
     }).catch((error) => {
-      console.log('error==>', error);
+      // console.log('error==>', error);
       return dispatch(deleteTagError(error));
     });
   };

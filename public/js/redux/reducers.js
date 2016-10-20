@@ -55,13 +55,13 @@ function bookmarkReducer(state = [], action) {
   switch (action.type) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
-      console.log(action.bookmark, '<<<< BkmrkReducer/ New Bookmark');
+      // console.log(action.bookmark, '<<<< BkmrkReducer/ New Bookmark');
       tempArr.unshift(action.bookmark);
       return tempArr;
     }
 
     case actionTypes.EDIT_FOLDER_SUCCESS: {
-      console.log(action.folder, '<<<< BkmrkReducer/ Updated Folder');
+      // console.log(action.folder, '<<<< BkmrkReducer/ Updated Folder');
       const tempArr = state.slice();
       tempArr.forEach((value) => {
         if (value.folderid === action.folder.folderid) {
@@ -78,7 +78,7 @@ function bookmarkReducer(state = [], action) {
     }
 
     case actionTypes.EDIT_BOOKMARK_SUCCESS: {
-      console.log(action.bookmark, '<<<< BkmrkReducer/ Updated Bookmark');
+      // console.log(action.bookmark, '<<<< BkmrkReducer/ Updated Bookmark');
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.bookmarkid === action.bookmark.bookmarkid) {
@@ -103,7 +103,7 @@ function bookmarkReducer(state = [], action) {
 
     case actionTypes.DELETE_TAG_SUCCESS: {
       const tempArr = state.slice();
-      console.log(tempArr, '<<< BookmarkReducer/ Current state');
+      // console.log(tempArr, '<<< BookmarkReducer/ Current state');
       for (let i = 0; i < tempArr.length; i++) {
         for (let j = 0; j < tempArr[i].tags.length; j++) {
           if (tempArr[i].tags[j] && (tempArr[i].tags[j].tagid === action.tag.tagid)) {
@@ -145,7 +145,7 @@ function folderReducer(state = [], action) {
 
     case actionTypes.SHARE_FOLDER_SUCCESS:
     case actionTypes.EDIT_FOLDER_SUCCESS: {
-      console.log(action.folder, 'Reducer/ updated folder');
+      // console.log(action.folder, 'Reducer/ updated folder');
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.folderid === action.folder.folderid) {
@@ -158,7 +158,7 @@ function folderReducer(state = [], action) {
     }
 
     case actionTypes.DELETE_FOLDER_SUCCESS: {
-      console.log(action.folder, '<<<< Reducers/ deleted folder');
+      // console.log(action.folder, '<<<< Reducers/ deleted folder');
 
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
@@ -175,11 +175,11 @@ function folderReducer(state = [], action) {
     case actionTypes.GET_FOLDERS_ERROR:
     case actionTypes.EDIT_FOLDER_ERROR:
     case actionTypes.SHARE_FOLDER_ERROR: {
-      console.log(action.error, 'Reducer/ edit folder error');
+      // console.log(action.error, 'Reducer/ edit folder error');
       return state;
     }
     case actionTypes.DELETE_FOLDER_ERROR: {
-      console.log(action.error, '<<<< Reducers/ delete folder error');
+      // console.log(action.error, '<<<< Reducers/ delete folder error');
       return state;
     }
 
@@ -195,8 +195,8 @@ function tagReducer(state = [], action) {
     case actionTypes.ADD_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
       const tempTags = action.bookmark.tags.slice();
-      console.log(tempArr, '<<< Tag Reducer/ Tag State Before');
-      console.log(tempTags, '<<< tempTags');
+      // console.log(tempArr, '<<< Tag Reducer/ Tag State Before');
+      // console.log(tempTags, '<<< tempTags');
       const newArr = tempTags.filter((tag) => {
         for (let i = 0; i < tempArr.length; i++) {
           if (tag.tagid === tempArr[i].tagid) {
@@ -206,15 +206,15 @@ function tagReducer(state = [], action) {
         return true;
       });
 
-      console.log(newArr, '<<< newArr');
+      // console.log(newArr, '<<< newArr');
       return tempArr.concat(newArr);
     }
 
     case actionTypes.EDIT_BOOKMARK_SUCCESS: {
       const tempArr = state.slice();
       const tempTags = action.bookmark.tags.slice();
-      console.log(tempArr, '<<< Tag Reducer/ Tag State Before');
-      console.log(tempTags, '<<< tempTags');
+      // console.log(tempArr, '<<< Tag Reducer/ Tag State Before');
+      // console.log(tempTags, '<<< tempTags');
       const newArr = tempTags.filter((tag) => {
         for (let i = 0; i < tempArr.length; i++) {
           if (tag.tagid === tempArr[i].tagid) {
@@ -224,17 +224,17 @@ function tagReducer(state = [], action) {
         return true;
       });
 
-      console.log(newArr, '<<< newArr');
+      // console.log(newArr, '<<< newArr');
       return tempArr.concat(newArr);
     }
 
     case actionTypes.GET_TAGS_SUCCESS: {
-      console.log(action.tags, '<=== Reducers/ action.tags');
+      // console.log(action.tags, '<=== Reducers/ action.tags');
       return action.tags;
     }
 
     case actionTypes.EDIT_TAG_SUCCESS: {
-      console.log(action.tag, '<<<< Reducer/ updated tag');
+      // console.log(action.tag, '<<<< Reducer/ updated tag');
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.tagid === action.tag.tagid) {
@@ -247,7 +247,7 @@ function tagReducer(state = [], action) {
     }
 
     case actionTypes.DELETE_TAG_SUCCESS: {
-      console.log(action.tag.tagid, '<<<< Reducers/ deleted tag id');
+      // console.log(action.tag.tagid, '<<<< Reducers/ deleted tag id');
       const tempArr = state.slice();
       tempArr.forEach((value, i) => {
         if (value.tagid === action.tag.tagid) {
