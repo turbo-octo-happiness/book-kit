@@ -75,10 +75,11 @@ class BookmarkForm extends React.Component {
               Description
             </label>
             <div>
-              <input
-                type="text"
+              <textarea
+                className="edit-description"
                 ref={description => { this.description = description; }}
-                className="form-control"
+                placeholder="Description"
+                rows="7"
                 id="form-description"
               />
             </div>
