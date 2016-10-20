@@ -10,12 +10,6 @@ export default function SplashPage() {
           <span className="second-tagline">Made by bootcamp students for bootcamp students.</span>
         </div>
       </section>
-      {/* <a href="#features" className="splash-btn">
-        <span className="learn-more">Learn More</span>
-        <span className="splash-scroll-btn">
-          <i className="fa fa-caret-down" aria-hidden="true" />
-        </span>
-      </a> */}
       <section className="splash-features" id="features">
         <div className="feature-container">
           <h1>Organize all of your bookmarks</h1>
