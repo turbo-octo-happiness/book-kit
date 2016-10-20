@@ -15,33 +15,45 @@ export default function SplashPage() {
           <h1>Organize all of your bookmarks</h1>
           <div className="features">
             <div className="features-child">
-              <i className="fa fa-folder fa-2x" aria-hidden="true" />
+              <div>
+                <i className="fa fa-folder fa-2x" aria-hidden="true" />
+              </div>
               <span>Organize your bookmarks into customizable folders and access them easily with folder filtering</span>
             </div>
 
             <div className="features-child">
-              <i className="fa fa-tags fa-2x" aria-hidden="true" />
+              <div>
+                <i className="fa fa-tags fa-2x" aria-hidden="true" />
+              </div>
               <span>Add re-usable tags to your bookmarks to link resources in different folders</span>
             </div>
 
             <div className="features-child">
-              <i className="fa fa-search fa-2x" aria-hidden="true" />
+              <div>
+                <i className="fa fa-search fa-2x" aria-hidden="true" />
+              </div>
               <span>Sift through your bookmarks instantly with real-time searching</span>
             </div>
           </div>
           <div className="features">
           <div className="features-child">
-            <i className="fa fa-share-alt fa-2x" aria-hidden="true" />
+            <div>
+              <i className="fa fa-share-alt fa-2x" aria-hidden="true" />
+            </div>
             <span>Share folders with other users to maintain a collective library of resources for your co-hort</span>
           </div>
 
           <div className="features-child">
-            <i className="fa fa-picture-o fa-2x" aria-hidden="true" />
+            <div>
+              <i className="fa fa-picture-o fa-2x" aria-hidden="true" />
+            </div>
             <span>Upload screenshots with your bookmarks to have a visual for your resource</span>
           </div>
 
           <div className="features-child">
-            <i className="fa fa-laptop fa-2x" aria-hidden="true" />
+            <div>
+              <i className="fa fa-laptop fa-2x" aria-hidden="true" />
+            </div>
             <span>Book Kit is open source and our source code is public for users to contribute to</span>
           </div>
           </div>

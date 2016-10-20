@@ -52,12 +52,12 @@ function Navbar(props) {
     </div>
   ) : (
     <div className="login">
-      <a href="https://github.com/turbo-octo-happiness/book-kit/#how-to">
-        Help
-      </a>
       <Link to="#" onClick={() => { lock.show(); }}>
         Login
       </Link>
+      <a href="https://github.com/turbo-octo-happiness/book-kit/#how-to">
+        Help
+      </a>
     </div>
   );
 
