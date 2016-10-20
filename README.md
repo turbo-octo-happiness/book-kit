@@ -98,29 +98,31 @@ The current version does not support the following features:
 
 ## Add Bookmarks
 
-1) Click the 'Add Bookmark' button on the sidebar
+1. Click the 'Add Bookmark' button on the sidebar
+
 ![add bookmark](http://i.imgur.com/yWhdWah.png)
-2) Fill out the required information (Title, URL, Folder)
-3) Click 'Submit'
+2. Fill out the required information (Title, URL, Folder)
+3. Click 'Submit'
 
 ## Add Folders
 
-1) Add a new folder name to the 'Add Folder' input field in the sidebar
-2) Click Enter on your keyboard to add
+1. Add a new folder name to the 'Add Folder' input field in the sidebar
+2. Click Enter on your keyboard to add
 
 ## Add Tags
 
-1) When adding a bookmark, type in your tags in the Tags input field separated by commas
+1. When adding a bookmark, type in your tags in the Tags input field separated by commas
 
 ## Search
 
-1) Using the text input field, type in the title of the bookmark for the live search feature
+1. Using the text input field, type in the title of the bookmark for the live search feature
 
 ## Share Folders
 
-1) Click on "My Account" in the navbar
+1. Click on "My Account" in the navbar
+
 ![my account](http://i.imgur.com/pUkSQkS.png)
-2) Select "Manage Folders" in the sidebar
-3) Select "Share" for the selected folder
-4) Add emails of users you want to share with to the field
-5) Click Enter to add the user
+2. Select "Manage Folders" in the sidebar
+3. Select "Share" for the selected folder
+4. Add emails of users you want to share with to the field
+5. Click Enter to add the user
