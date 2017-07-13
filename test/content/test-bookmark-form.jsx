@@ -96,11 +96,11 @@ describe('BookmarkForm Component', () => {
 
     const descInput = form[5];
     descInput.type.should.equal('div');
-    descInput.props.children.type.should.equal('input');
-    descInput.props.children.ref.should.be.a('function');
-    descInput.props.children.props.type.should.equal('text');
-    descInput.props.children.props.className.should.equal('form-control');
+    descInput.props.children.type.should.equal('textarea');
+    descInput.props.children.props.className.should.equal('edit-description');
     descInput.props.children.props.id.should.equal('form-description');
+    descInput.props.children.props.placeholder.should.equal('Description');
+    descInput.props.children.props.rows.should.equal('7');
 
     const screenshot = form[6];
     screenshot.type.should.equal('label');

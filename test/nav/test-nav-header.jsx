@@ -43,11 +43,14 @@ describe('Navbar component', () => {
     const login = nav.props.children[1];
     login.type.should.equal('div');
     login.props.className.should.equal('login');
-    login.props.children.type.should.equal(Link);
-    login.props.children.props.to.should.equal('#');
-    login.props.children.props.children.should.equal('Login');
-    login.props.children.props.style.should.be.a('object');
-    login.props.children.props.style.should.eql({});
+    login.props.children[0].type.should.equal(Link);
+    login.props.children[0].props.to.should.equal('#');
+    login.props.children[0].props.children.should.equal('Login');
+    login.props.children[0].props.style.should.be.a('object');
+    login.props.children[0].props.style.should.eql({});
+    login.props.children[1].type.should.equal('a');
+    login.props.children[1].props.href.should.equal('https://github.com/turbo-octo-happiness/book-kit/#how-to');
+    login.props.children[1].props.children.should.equal('Help');
   });
 
   it('Renders Navbar with profile pic, account button, and logout button if authenticated', () => {
@@ -92,8 +95,7 @@ describe('Navbar component', () => {
 
     const account = nav.props.children[1];
     account.type.should.equal('div');
-    account.props.children.length.should.equal(3);
-
+    account.props.children.length.should.equal(4);
     const profileLink = account.props.children[0];
     profileLink.type.should.equal(Link);
     profileLink.props.to.should.equal('/manage/profile');
@@ -113,7 +115,12 @@ describe('Navbar component', () => {
     accountButton.props.style.should.be.a('object');
     accountButton.props.style.should.eql({});
 
-    const logout = account.props.children[2];
+    const help = account.props.children[2];
+    help.type.should.equal('a');
+    help.props.href.should.equal('https://github.com/turbo-octo-happiness/book-kit/#how-to');
+    help.props.children.should.equal('Help');
+
+    const logout = account.props.children[3];
     logout.type.should.equal(Link);
     logout.props.to.should.equal('/');
     logout.props.onClick.should.be.a('function');

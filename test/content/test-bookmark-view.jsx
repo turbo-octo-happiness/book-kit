@@ -109,9 +109,8 @@ describe('BookmarkView Component', () => {
       .that.equals('url(bookmarkImg)');
 
     const desc = view.props.children[1];
-    desc.type.should.equal('p');
-    desc.props.children.should.be.a('string')
-      .that.equals('bookmarkDesc');
+    desc.type.should.equal('div');
+    desc.props.children.should.be.a('object');
 
     const bookmarkFolder = view.props.children;
     bookmarkFolder[2].type.should.equal('h4');

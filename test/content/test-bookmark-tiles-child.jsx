@@ -45,7 +45,7 @@ describe('Tile Component', () => {
     background.type.should.equal('div');
     background.props.className.should.equal('bg');
     background.props.style.should.have.property('backgroundImage')
-      .that.equals('url(image)');
+      .that.equals('linear-gradient(\n      rgba(64, 72, 83, 0.35),\n      rgba(64, 72, 83, 0.35)\n    ), url(image)');
 
     const nameDisplay = name.props.children[1];
     nameDisplay.type.should.equal('span');
