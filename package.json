@@ -4,7 +4,7 @@
   "description": "API for the Bookmark-fullstack project.",
   "main": "server.js",
   "engines": {
-    "node": "6.6.0"
+    "node": "8.1.4"
   },
   "scripts": {
     "start": "node server.js",

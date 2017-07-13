@@ -12,10 +12,10 @@ Disclaimer: This project is mainly built for learning purposes and not intended 
 
 1. After cloning this repo, run `npm install` at the command line.
 2. Start a local Postgres server. Create a new database with `createdb bookmarks`.
-3. Run `psql bookmarks < db/bookmarks.sql` to import the database schema.
-4. To start the app, run `npm run start`. Book Kit will be live at <http://localhost:8000>.
+3. Run `psql bookmarks < db/bookmarks_schema.sql` to import the database schema.
+4. To start the app, run `npm run start`. Book Kit will be live at <http://localhost:5000>.
 
-Note on compatibility: The API relies on NodeJS v6.3.1 and PostgreSQL v9.5.3 All other dependencies are listed in the _package.json_ file. Although the API might run on alternative versions, it has not been tested.
+Note on compatibility: The API relies on NodeJS v8.1.4 and PostgreSQL v9.5.3 All other dependencies are listed in the _package.json_ file. Although the API might run on alternative versions, it has not been tested.
 
 ### Scenarios
 
